@@ -1,0 +1,7 @@
+@import './colors.scss';
+
+.loader {
+    border-top-color: $primary-color !important;
+    -webkit-animation: spin 0.5s linear infinite !important;
+    animation: spin 0.5s linear infinite !important;
+}

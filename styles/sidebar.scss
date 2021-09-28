@@ -1,0 +1,55 @@
+@import './colors.scss';
+
+.pro-sidebar>.pro-sidebar-inner>.pro-sidebar-layout .pro-sidebar-header {
+  border-bottom: 0px solid rgba(173, 173, 173, 0.2);
+}
+
+.sidebar {
+  background-color: $primary-color;
+  width: 250px;
+  height: 100%;
+  position: fixed;
+  z-index: 20px;
+}
+
+.Content {
+  margin-left: 250px;
+  height: 100%;
+  width: 100%;
+}
+
+.icons:hover {
+  object-fit: fill !important;
+  color: $primary-color !important;
+}
+
+.sidebar-item {
+  color: white;
+  
+}
+.sidebar-item:hover {
+  color: $primary-color;
+  background: white;
+
+}
+
+
+.sidebar-dropdown-item {
+  color: $primary-color;
+
+}
+.sidebar-dropdown-item:hover {
+  color: white;
+  background: $primary-color;
+}
+
+
+@media (max-width: 1023px) {
+  .sidebar {
+    display: none;
+  }
+
+  .Content {
+    margin-left: 0%;
+  }
+}

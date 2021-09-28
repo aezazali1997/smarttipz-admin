@@ -1,7 +1,30 @@
-import '../styles/globals.css'
+import { useEffect, useState } from 'react'
+import '../styles/index.scss';
+import "tailwindcss/tailwind.css"
 
-function MyApp({ Component, pageProps }) {
-  return <Component {...pageProps} />
+import { parseCookies } from 'nookies';
+import CustomLayout from '../Layout';
+
+
+const MyApp = ({ Component, pageProps }) => {
+  const [authorized, setAuthorized] = useState(null)
+
+  useEffect(() => {
+    const cookies = parseCookies();
+    const token = cookies?.token || null;
+    setAuthorized(token)
+  })
+
+  if (authorized) {
+    return (
+      <CustomLayout>
+        <Component {...pageProps} />
+      </CustomLayout>
+    )
+  }
+  return (
+    <Component {...pageProps} />
+  )
 }
 
-export default MyApp
+export default MyApp;

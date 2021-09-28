@@ -1,0 +1,23 @@
+
+@import './colors.scss';
+
+.btn {
+  background: $primary-color;
+}
+
+.btn:hover {
+  background: $secondary-color;
+}
+
+.icon {
+  color: $primary-color;
+}
+
+.icon:hover {
+  color: $secondary-color;
+}
+
+.btn-disable {
+  background: $btn-hover;
+  pointer-events: none;
+}

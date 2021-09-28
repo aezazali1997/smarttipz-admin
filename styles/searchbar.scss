@@ -1,0 +1,9 @@
+.searchbar {
+    background-color: $light-gray;
+    @apply border text-black h-10 px-5 pr-10 w-full rounded-lg text-sm focus:outline-none placeholder-gray-800;
+}
+
+.searchbar:focus {
+    background-color: $white;
+    @apply  border-gray-300;
+}

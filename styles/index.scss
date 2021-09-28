@@ -1,0 +1,15 @@
+@import './spinner.scss';
+@import './sidebar.scss';
+@import './colors.scss';
+@import './floatingFields.scss';
+@import './button.scss';
+@import './searchbar.scss';
+@import './table.scss';
+
+.background {
+    background: $primary-color;
+}
+
+.text {
+    color: $primary-color;
+}
