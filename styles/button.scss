@@ -1,12 +1,27 @@
-
 @import './colors.scss';
 
-.btn {
+// .btn {
+//   background: $primary-color;
+// }
+
+// .btn:hover {
+//   background: $secondary-color;
+// }
+
+.primary-btn {
   background: $primary-color;
 }
 
-.btn:hover {
+.primary-btn:hover {
   background: $secondary-color;
+}
+
+.danger-btn {
+  background: $danger;
+}
+
+.danger-btn:hover {
+  background: $danger-hover;
 }
 
 .icon {
@@ -20,4 +35,9 @@
 .btn-disable {
   background: $btn-hover;
   pointer-events: none;
+}
+
+.active-btn:hover{
+  background: $primary-color;
+  color: $white;
 }

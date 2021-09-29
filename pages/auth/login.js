@@ -141,7 +141,7 @@ const Login = () => {
 
                                 <Button
                                     type={"submit"}
-                                    classNames={"flex w-full mt-10 justify-center btn text-white p-3 rounded-md"}
+                                    classNames={"flex w-full mt-10 justify-center primary-btn text-white p-3 rounded-md"}
                                     childrens={'Login'}
                                     loading={loading}
                                 />

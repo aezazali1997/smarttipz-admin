@@ -8,3 +8,4 @@ export { default as Searchbar } from './Searchbar';
 export { default as InputField } from './InputField';
 export { default as Modal } from './Modal';
 export { default as AdminForm } from './AdminForm';
+export { default as CategoryFilter } from './CategoryFilter';
