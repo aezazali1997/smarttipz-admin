@@ -43,11 +43,38 @@ class AxiosInstance {
 
     async getAllUsers() {
         console.log('In request GetAllUsers Api: ');
-        return await axios.get(USER_API_BASE_URL + "api/user", this.getAuthHeader());
+        return await axios.get(USER_API_BASE_URL + "api/user/business", this.getAuthHeader());
     }
 
+    async getAllAdmins() {
+        console.log('In request GetAllAdmin Api: ');
+        return await axios.get(USER_API_BASE_URL + "api/admin", this.getAuthHeader());
+    }
 
+    async deleteAdmin(id) {
+        console.log('In delete Admin Api: ', id);
+        return await axios.delete(USER_API_BASE_URL + `api/admin/${id}`, this.getAuthHeader());
+    }
 
+    async setAdminRole(id, payload) {
+        console.log('In set Admin Role Api: ', id, payload);
+        return await axios.put(USER_API_BASE_URL + `api/admin/${id}`, payload, this.getAuthHeader());
+    }
+
+    async createAdmin(payload) {
+        console.log('In createAdmin API')
+        return await axios.post(USER_API_BASE_URL + "api/admin", payload, this.getAuthHeader());
+    }
+
+    async verifyBusinessUser(id) {
+        console.log('In verify business user API')
+        return await axios.post(USER_API_BASE_URL + "api/user/business/verify", id, this.getAuthHeader());
+    }
+
+    async editAdmin(payload) {
+        console.log('In editAdmin API')
+        return await axios.put(USER_API_BASE_URL + "api/admin", payload, this.getAuthHeader());
+    }
 
 
 

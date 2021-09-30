@@ -1,0 +1,139 @@
+const { isEmpty } = require('lodash');
+const sequelize = require('sequelize');
+const Admin = require('../../../models/Admin');
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+
+const Joi = require('joi');
+
+const handler = async (req, res) => {
+    if (req.method === 'GET') {
+        const { headers: { authorization } } = req;
+        try {
+            if (!authorization) {
+                return res.status(401).send({ error: true, data: [], message: 'Please Login' })
+            };
+
+            const result = jwt.verify(
+                authorization.split(' ')[1],
+                process.env.SECRET_KEY
+            );
+
+            const admins = await Admin.findAll({
+                where: {
+                    role: {
+                        [sequelize.Op.not]: 'superadmin'
+                    }
+                }, order: [["createdAt", "DESC"]]
+            });
+
+            console.log('admins: ', admins);
+
+            res.status(200).json({ error: false, data: { admins }, message: 'Admins fetched successfuly.' });
+        } catch (err) {
+            res.status(422).json({ error: true, message: err.message, data: [] });
+        }
+    }
+    else if (req.method === 'POST') {
+        const { body, body: { name, email, password }, headers: { authorization } } = req;
+        const validateSignup = (data) => {
+            const schema = Joi.object({
+                name: Joi.string().required(),
+                // username: Joi.string().required(),
+                email: Joi.string().required().email(),
+                password: Joi.string().required(),
+                role: Joi.string().optional().allow('').allow(null)
+            });
+            return schema.validate(data);
+        };
+
+        const { error } = validateSignup(body);
+
+        if (error) return res.status(400).json({ error: error.details[0].message });
+
+        let user;
+
+        try {
+            if (!authorization) {
+                return res.status(401).send({ error: true, data: [], message: 'Please Login' })
+            };
+
+            const result = jwt.verify(
+                authorization.split(' ')[1],
+                process.env.SECRET_KEY
+            );
+            // user = await Admin.findOne({ where: { username } });
+            // if (user) {
+            //     throw new Error('Username already exists');
+            // }
+
+            user = await Admin.findOne({ where: { email } });
+            if (user) {
+                throw new Error('Email already in use');
+            }
+
+            console.log(user)
+
+            const encPassword = await bcrypt.hash(password, 12);
+
+            await Admin.create({
+                name,
+                // username,
+                role: 'admin',
+                email,
+                password: encPassword,
+            });
+
+            res.status(201).json({ error: false, data: {}, message: 'Admin created successfuly.' });
+        } catch (err) {
+            res.status(422).json({ error: true, message: err.message, data: [] });
+        }
+    }
+    else if (req.method === 'PUT') {
+        const { body, body: { name, email, password, id }, headers: { authorization } } = req;
+        const validateSignup = (data) => {
+            const schema = Joi.object({
+                name: Joi.string().required(),
+                email: Joi.string().required().email(),
+                // username: Joi.string().required(),
+                // password: Joi.string().optional().allow('').allow(null),
+                // id: Joi.string().optional().allow('').allow(null),
+            });
+            return schema.validate(data);
+        };
+
+        const data = {
+            name, email
+        }
+        const { error } = validateSignup(data);
+
+        if (error) return res.status(400).json({ error: error.details[0].message });
+
+        try {
+            if (!authorization) {
+                return res.status(401).send({ error: true, data: [], message: 'Please Login' })
+            };
+
+            const result = jwt.verify(
+                authorization.split(' ')[1],
+                process.env.SECRET_KEY
+            );
+            if (!password) {
+                await Admin.update({ name, email }, { where: { id } });
+            }
+            else {
+                const encPassword = await bcrypt.hash(password, 12);
+                await Admin.update({ name, email, password: encPassword }, { where: { id } });
+            }
+
+            res.status(201).json({ error: false, data: {}, message: 'Admin updated successfuly.' });
+        } catch (err) {
+            res.status(422).json({ error: true, message: err.message, data: [] });
+        }
+    }
+    else {
+        res.status(404).end('Page Not Found');
+    }
+};
+
+export default handler;

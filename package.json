@@ -33,10 +33,12 @@
     "react-dom": "17.0.2",
     "react-helmet": "^6.1.0",
     "react-sidebar": "^3.0.2",
+    "react-tooltip": "^4.2.21",
     "sass": "^1.32.13",
     "sequelize": "^6.6.5",
     "sweetalert": "^2.1.2",
     "sweetalert2": "^11.1.7",
+    "video-react": "^0.14.1",
     "yup": "^0.32.9"
   },
   "devDependencies": {

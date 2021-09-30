@@ -5,6 +5,10 @@
 @import './button.scss';
 @import './searchbar.scss';
 @import './table.scss';
+@import './videoplayer.scss';
+@import './card.scss';
+@import '../node_modules/video-react/dist/video-react.css';
+
 
 .background {
     background: $primary-color;

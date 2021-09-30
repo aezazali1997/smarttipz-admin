@@ -1,10 +1,10 @@
 const jwt = require('jsonwebtoken');
 
-const User = require('../../../models/User');
+const Admin = require('../../../../models/Admin');
 
 const handler = async (req, res) => {
-    if (req.method === 'GET') {
-        const { headers } = req;
+    if (req.method === 'POST') {
+        const { headers, body: { id } } = req;
 
         try {
             if (!headers.authorization) {
@@ -16,13 +16,9 @@ const handler = async (req, res) => {
                 process.env.SECRET_KEY
             );
 
-            const users = await User.findAll();
-            console.log(users);
-            if (!users) {
-                return res.status(404).send({ error: true, message: 'No users yet', data: [] });
-            }
+            await Admin.update({ isApproved: true }, { where: { id } });
 
-            res.status(200).send({ error: false, data: { users }, message: 'Data fetched successfully' });
+            res.status(200).send({ error: false, data: {}, message: 'Admin verified successfully' });
 
         } catch (err) {
             res.status(500).json({ error: true, message: err.message, data: [] });

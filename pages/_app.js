@@ -3,7 +3,7 @@ import '../styles/index.scss';
 import "tailwindcss/tailwind.css"
 
 import { parseCookies } from 'nookies';
-import CustomLayout from '../Layout';
+import CustomLayout from 'Layout';
 
 
 const MyApp = ({ Component, pageProps }) => {

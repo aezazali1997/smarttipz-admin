@@ -39,7 +39,7 @@ const Modal = ({ _Toggle, body, title, footer }) => {
                             {body}
                         </div>
                     </div>
-                    <div className="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+                    <div className=" py-3 px-6 flex flex-row-reverse items-center justify-center">
                         {footer}
                     </div>
                 </div>

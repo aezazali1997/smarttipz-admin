@@ -6,7 +6,7 @@ import { useFormik } from 'formik';
 import axiosInstance from 'APIs/axiosInstance';
 import { Button, Searchbar, Spinner, Modal, AdminForm, CategoryFilter } from 'components';
 import { CreateAdminValidationSchema, OptionalAdminSchema } from 'utils/validation_shema';
-import { useRouter } from 'next/router';
+import { data } from 'autoprefixer';
 
 const initials = {
     name: '',
@@ -15,12 +15,6 @@ const initials = {
 }
 
 const Dashboard = () => {
-
-    // const router = useRouter();
-    // const { asPath, query } = router;
-    // const { active } = query;
-    // console.log(`${query}, ${active}`)
-
     const color = "light";
     const [users, setUsers] = useState([]);
     const [allUsers, setAllUsers] = useState([]);
@@ -32,7 +26,7 @@ const Dashboard = () => {
     const [activeCategory, setActiveCategory] = useState('All');
 
     useEffect(() => {
-        // if (active) {
+
         enableLoading();
         axiosInstance.getAllUsers().then(({ data: { data: { users } } }) => {
             setAllUsers(users)
@@ -49,7 +43,7 @@ const Dashboard = () => {
             });
             disableLoading();
         })
-        // }
+
     }, [])
 
     useEffect(() => { }, [users, initialValues, activeCategory]);
@@ -77,7 +71,6 @@ const Dashboard = () => {
         setShowModal(!showModal);
     }
 
-
     const ToggleAccessModal = () => {
         setModalTitle('Access View');
         setShowModal(!showModal);
@@ -90,14 +83,14 @@ const Dashboard = () => {
     }
 
 
-    const _OnDelete = (id) => {
-        console.log('ID to delete: ', id);
+
+    const SwalModal = (text, confirmBtnText, onConfirmAction) => {
         Swal.fire({
             title: 'Are you sure?',
-            text: "You won't be able to revert this!",
+            text: text,
             icon: 'question',
             showCancelButton: true,
-            confirmButtonText: 'Delete',
+            confirmButtonText: confirmBtnText,
             buttonsStyling: false,
             customClass: {
                 confirmButton: 'w-full inline-flex justify-center rounded-md border-none px-4 py-2 primary-btn text-base font-medium text-white focus:outline-none sm:ml-3 sm:w-auto sm:text-sm',
@@ -105,6 +98,7 @@ const Dashboard = () => {
             }
         }).then((result) => {
             if (result.isConfirmed) {
+                onConfirmAction();
                 // axiosInstance.deleteTestimonial(data?.id).then(({ data: { message } }) => {
                 // 	Swal.fire({
                 // 		text: message,
@@ -128,6 +122,42 @@ const Dashboard = () => {
                 // 	})
             }
         })
+    }
+
+    const _OnDelete = (id) => {
+        console.log('ID to delete: ', id);
+        SwalModal("You won't be able to revert this!", "Delete")
+    }
+
+    const _HandleBlock = () => {
+        SwalModal("You won't be able to revert this!", "Block")
+
+    }
+
+    const _Onverify = (id) => {
+        axiosInstance.verifyBusinessUser({ id }).then(({ data: { data: { message } } }) => {
+            Swal.fire({
+                text: message,
+                icon: 'success',
+                timer: 3000,
+                showCancelButton: false,
+                showConfirmButton: false
+            })
+            let copyOriginal = [...users];
+            let updatedArray = copyOriginal.map(user => {
+                if (user.id !== id) return user;
+                else {
+                    user.isApproved = true;
+                    return user;
+                }
+            })
+            setUsers(updatedArray);
+        })
+    }
+
+    const _HandleVerify = (id) => {
+        SwalModal("You want to verify this user", "Verify", () => _Onverify(id))
+
     }
 
 
@@ -253,17 +283,19 @@ const Dashboard = () => {
                                         </th>
                                         <th
                                             className={
-                                                "px-6 align-middle border border-solid py-3 text-xs uppercase border-t-0 border-l-0 border-r-0 whitespace-nowrap font-semibold text-left " +
+                                                " px-12 align-middle border border-solid py-3 text-xs uppercase border-t-0 border-l-0 border-r-0 whitespace-nowrap font-semibold text-left " +
                                                 (color === "light"
                                                     ? "bg-blueGray-50 text-blueGray-500 border-blueGray-100"
                                                     : "bg-blueGray-600 text-blueGray-200 border-blueGray-500")
                                             }
-                                        ></th>
+                                        >
+                                            Actions
+                                        </th>
                                     </tr>
                                 </thead>
                                 <tbody className="divide-y-2">
                                     {
-                                        users.map(({ name, email, isApproved, id }, index) => (
+                                        users.map(({ name, email, isApproved, id, phoneNumber }, index) => (
                                             <tr key={index} className={isApproved ? 'admin-table' : 'unverified'}>
                                                 <td className="border-t-0 w-max space-x-3 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-wrap  p-4 text-left flex items-center">
                                                     {/* <img
@@ -280,14 +312,14 @@ const Dashboard = () => {
                                                     </span>
                                                 </td>
                                                 <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                                                    {email}
+                                                    {phoneNumber}
                                                 </td>
                                                 <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
                                                     <i className="fas fa-circle text-orange-500 mr-2"></i>
                                                     {'******'}
                                                 </td>
                                                 <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 whitespace-nowrap p-4">
-                                                    MarkX@yahoo.com
+                                                    {email}
                                                 </td>
                                                 <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap">
                                                     {
@@ -307,13 +339,13 @@ const Dashboard = () => {
                                                             :
                                                             <div className="flex justify-around w-full space-x-3">
                                                                 <Button
-                                                                    // onSubmit={ToggleCreateModal}
+                                                                    onSubmit={() => _HandleVerify(id)}
                                                                     type="button"
                                                                     childrens={'Verify'}
                                                                     classNames={"px-3 py-2 flex w-28 justify-center items-center text-white text-sm primary-btn rounded-md"}
                                                                 />
                                                                 <Button
-                                                                    // onSubmit={ToggleCreateModal}
+                                                                    onSubmit={() => _HandleBlock(id)}
                                                                     type="button"
                                                                     childrens={'Block'}
                                                                     classNames={"px-3 py-2 w-28 flex justify-center items-center text-white text-sm danger-btn rounded-md"}

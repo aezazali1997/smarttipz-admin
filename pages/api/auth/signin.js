@@ -1,8 +1,9 @@
+const Admin = require('../../../models/Admin');
+
 const jwt = require('jsonwebtoken');
 const Joi = require('joi');
 const bcrypt = require('bcryptjs');
 
-const User = require('../../../models/User');
 
 const handler = async (req, res) => {
     if (req.method === 'POST') {
@@ -27,18 +28,12 @@ const handler = async (req, res) => {
         const { email, password } = body;
 
         try {
-            const user = await User.findOne({ where: { email } });
+            const user = await Admin.findOne({ where: { email } });
             if (!user) {
                 return res.status(403).json({ error: true, message: 'Validation failed', data: [] });
             }
 
-            const { emailConfirmed, id, picture } = user;
-
-            if (emailConfirmed === false) {
-                return res
-                    .status(405)
-                    .json({ error: true, message: 'Confirmation code sent to email address', data: [] });
-            }
+            const { id } = user;
 
             const match = await bcrypt.compare(password, user.password);
 
@@ -50,7 +45,7 @@ const handler = async (req, res) => {
 
             res
                 .status(200)
-                .json({ error: false, message: 'Login successful', data: { id: id, username: user.username, image: picture, token } });
+                .json({ error: false, message: 'Login successful', data: { id: id, username: user.username, token } });
         } catch (err) {
             res.status(500).json({ error: true, message: err.message, data: [] });
         }

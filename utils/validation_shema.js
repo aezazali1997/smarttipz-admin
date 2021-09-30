@@ -40,3 +40,4 @@ export const OptionalAdminSchema = Yup.object().shape({
         .max(50, "Maximum 50 characters")
         .optional(),
 });
+

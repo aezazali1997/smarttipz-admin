@@ -7,6 +7,7 @@ import { Plus } from 'assets/SVGs';
 import axiosInstance from '../../APIs/axiosInstance';
 import { Button, Searchbar, Spinner, Modal, AdminForm } from '../../components';
 import { CreateAdminValidationSchema, OptionalAdminSchema } from 'utils/validation_shema';
+import { isEmpty } from 'lodash';
 
 
 const initials = {
@@ -24,11 +25,12 @@ const Dashboard = () => {
 	const [showPassword, setShowPassword] = useState(false);
 	const [modalTitle, setModalTitle] = useState('Create Admin');
 	const [initialValues, setInitialValues] = useState(initials);
+	// const [accessView, setAccessView] = useState('admin');
 
 	useEffect(() => {
 		enableLoading();
-		axiosInstance.getAllUsers().then(({ data: { data: { users } } }) => {
-			setUsers(users);
+		axiosInstance.getAllAdmins().then(({ data: { data: { admins } } }) => {
+			setUsers(admins);
 			disableLoading();
 		}).catch((e) => {
 			console.log('API Error: ', e);
@@ -49,23 +51,66 @@ const Dashboard = () => {
 	const ToggleCreateModal = () => {
 		setInitialValues(initials);
 		setModalTitle('Create Admin');
+		setShowPassword(false)
 		setShowModal(!showModal);
 	}
 
-	const ToggleEditModal = (name, email) => {
+	const ToggleEditModal = (id, name, email) => {
 		setInitialValues({
-			name, email, password: ''
+			id, name, email, password: ''
 		});
 		setModalTitle('Edit Admin');
+		setShowPassword(false);
 		setShowModal(!showModal);
 	}
 
 
-	const ToggleAccessModal = () => {
+	const ToggleAccessModal = (id, role) => {
+		setInitialValues({ id, role });
 		setModalTitle('Access View');
 		setShowModal(!showModal);
 	}
 
+
+	const handleAccessChange = (e) => {
+		const { value } = e.target;
+		console.log('accessView: ', value)
+		setInitialValues({ ...initialValues, role: value });
+	}
+
+	const _OnAccess = () => {
+		console.log(initialValues);
+		const payload = {
+			role: initialValues?.role
+		}
+		axiosInstance.setAdminRole(initialValues?.id, payload).then(({ data: { message } }) => {
+			Swal.fire({
+				text: message,
+				icon: 'success',
+				timer: 3000,
+				showCancelButton: false,
+				showConfirmButton: false
+			})
+			const copyArray = [...users];
+			const updatedUsers = copyArray.map(user => {
+				if (user.id !== initialValues?.id) return user;
+				else {
+					user.role = initialValues?.role
+					return user;
+				}
+			});
+			setUsers(updatedUsers);
+			ToggleAccessModal();
+		}).catch(({ response: { data: { maessage } } }) => {
+			Swal.fire({
+				text: message,
+				icon: 'error',
+				timer: 3000,
+				showCancelButton: false,
+				showConfirmButton: false
+			})
+		})
+	}
 
 
 	const _OnDelete = (id) => {
@@ -83,27 +128,27 @@ const Dashboard = () => {
 			}
 		}).then((result) => {
 			if (result.isConfirmed) {
-				// axiosInstance.deleteTestimonial(data?.id).then(({ data: { message } }) => {
-				// 	Swal.fire({
-				// 		text: message,
-				// 		icon: 'success',
-				// 		timer: 3000,
-				// 		showCancelButton: false,
-				// 		showConfirmButton: false
-				// 	})
-				// 	let copyOriginal = [...testimonial];
-				// 	let updatedArray = copyOriginal.filter(item => item.id !== data?.id ? item : '');
-				// 	setTestimonial(updatedArray);
-				// })
-				// 	.catch(e => {
-				// 		Swal.fire({
-				// 			text: e.response.data.message,
-				// 			icon: 'error',
-				// 			timer: 3000,
-				// 			showCancelButton: false,
-				// 			showConfirmButton: false
-				// 		})
-				// 	})
+				axiosInstance.deleteAdmin(id).then(({ data: { message } }) => {
+					Swal.fire({
+						text: message,
+						icon: 'success',
+						timer: 3000,
+						showCancelButton: false,
+						showConfirmButton: false
+					})
+					let copyOriginal = [...users];
+					let updatedArray = copyOriginal.filter(item => item.id !== id && item);
+					setUsers(updatedArray);
+				})
+					.catch(({ response: { data: { message } } }) => {
+						Swal.fire({
+							text: message,
+							icon: 'error',
+							timer: 3000,
+							showCancelButton: false,
+							showConfirmButton: false
+						})
+					})
 			}
 		})
 	}
@@ -112,6 +157,61 @@ const Dashboard = () => {
 	const _OnSubmit = (values, setSubmitting) => {
 		setSubmitting(true);
 		console.log('values: ', values);
+		axiosInstance.createAdmin(values).then(({ data: { message, data } }) => {
+			Swal.fire({
+				text: message,
+				icon: 'success',
+				timer: 3000,
+				showConfirmButton: false,
+				showCancelButton: false
+			})
+			const copyOriginalArray = [...users];
+			setUsers([values, ...copyOriginalArray]);
+			ToggleCreateModal();
+		}).catch(({ response: { data: { message } } }) => {
+			Swal.fire({
+				text: message,
+				icon: 'error',
+				timer: 3000,
+				showConfirmButton: false,
+				showCancelButton: false
+			})
+		})
+		setSubmitting(false);
+	}
+
+	const _OnEdit = (values, setSubmitting) => {
+		setSubmitting(true);
+		console.log('values: ', values);
+		axiosInstance.editAdmin(values).then(({ data: { message, data } }) => {
+			Swal.fire({
+				text: message,
+				icon: 'success',
+				timer: 3000,
+				showConfirmButton: false,
+				showCancelButton: false
+			})
+			const copyOriginalArray = [...users];
+			const updatedData = copyOriginalArray.map(user => {
+				if (user.id !== values.id) return user;
+				else {
+					user.name = values.name
+					user.email = values.email
+					return user;
+				}
+			})
+			console.log({ updatedData });
+			setUsers(updatedData);
+			ToggleEditModal();
+		}).catch(({ response: { data: { message } } }) => {
+			Swal.fire({
+				text: message,
+				icon: 'error',
+				timer: 3000,
+				showConfirmButton: false,
+				showCancelButton: false
+			})
+		})
 		setSubmitting(false);
 	}
 
@@ -121,8 +221,16 @@ const Dashboard = () => {
 		validationSchema: (modalTitle === 'Create Admin' ? CreateAdminValidationSchema : OptionalAdminSchema),
 		validateOnBlur: true,
 		onSubmit: (values, { setSubmitting }) => {
-			_OnSubmit(values, setSubmitting)
+
+			{
+				modalTitle === 'Create Admin' ?
+					_OnSubmit(values, setSubmitting)
+					:
+					_OnEdit(values, setSubmitting)
+			}
+
 		},
+
 
 	});
 
@@ -154,11 +262,18 @@ const Dashboard = () => {
 					</div>
 				)
 					:
-					<div
-						className={
-							"relative flex flex-col min-w-0 break-words w-full admin-table rounded-lg"}
-					>
-						{/* <div className="rounded-t mb-0 px-4 py-3 border-0">
+
+					isEmpty(users) ? (
+						<div className="flex w-full justify-center items-center">
+							<p className="text-gray-500"> No Admins Yet</p>
+						</div>
+					)
+						:
+						<div
+							className={
+								"relative flex flex-col min-w-0 break-words w-full admin-table rounded-lg"}
+						>
+							{/* <div className="rounded-t mb-0 px-4 py-3 border-0">
                     <div className="flex flex-wrap items-center">
                         <div className="relative w-full px-4 max-w-full flex-grow flex-1">
                             <h3
@@ -172,125 +287,125 @@ const Dashboard = () => {
                         </div>
                     </div>
                 </div> */}
-						<div className="block w-full overflow-x-auto">
-							{/* Projects table */}
-							<table className="items-center w-full bg-transparent border-collapse">
-								<thead>
-									<tr>
-										<th
-											className={
-												"px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 border-t-0 whitespace-nowrap font-semibold text-left " +
-												(color === "light"
-													? "bg-blueGray-50 text-blueGray-500 border-blueGray-100"
-													: "bg-blueGray-600 text-blueGray-200 border-blueGray-500")
-											}
-										>
-											Name
-										</th>
-										<th
-											className={
-												"px-6 align-middle border border-solid py-3 text-xs uppercase border-t-0 border-l-0 border-r-0 whitespace-nowrap font-semibold text-left " +
-												(color === "light"
-													? "bg-blueGray-50 text-blueGray-500 border-blueGray-100"
-													: "bg-blueGray-600 text-blueGray-200 border-blueGray-500")
-											}
-										>
-											Email
-										</th>
-										<th
-											className={
-												"px-6 align-middle border border-solid py-3 text-xs uppercase border-t-0 border-l-0 border-r-0 whitespace-nowrap font-semibold text-left " +
-												(color === "light"
-													? "bg-blueGray-50 text-blueGray-500 border-blueGray-100"
-													: "bg-blueGray-600 text-blueGray-200 border-blueGray-500")
-											}
-										>
-											Password
-										</th>
-										<th
-											className={
-												"px-6 align-middle border border-solid py-3 text-xs uppercase border-t-0 border-l-0 border-r-0 whitespace-nowrap font-semibold text-left " +
-												(color === "light"
-													? "bg-blueGray-50 text-blueGray-500 border-blueGray-100"
-													: "bg-blueGray-600 text-blueGray-200 border-blueGray-500")
-											}
-										>
-											Access
-										</th>
-										<th
-											className={
-												"px-6 align-middle border border-solid py-3 text-xs uppercase border-t-0 border-l-0 border-r-0 whitespace-nowrap font-semibold text-left " +
-												(color === "light"
-													? "bg-blueGray-50 text-blueGray-500 border-blueGray-100"
-													: "bg-blueGray-600 text-blueGray-200 border-blueGray-500")
-											}
-										>
-											Actions
-										</th>
-										<th
-											className={
-												"px-6 align-middle border border-solid py-3 text-xs uppercase border-t-0 border-l-0 border-r-0 whitespace-nowrap font-semibold text-left " +
-												(color === "light"
-													? "bg-blueGray-50 text-blueGray-500 border-blueGray-100"
-													: "bg-blueGray-600 text-blueGray-200 border-blueGray-500")
-											}
-										></th>
-									</tr>
-								</thead>
-								<tbody className="divide-y-2">
-									{
-										users.map(({ name, email, picture, id }, index) => (
-											<tr key={index}>
-												<td className="border-t-0 w-max space-x-3 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-wrap  p-4 text-left flex items-center">
-													<img
-														src={picture}
-														className="h-12 w-12 bg-white rounded-full border"
-														alt="..."
-													/>
-													<span
-														className={
-															"font-bold text-blueGray-600"
-														}
-													>
-														{name}
-													</span>
-												</td>
-												<td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-													{email}
-												</td>
-												<td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-													<i className="fas fa-circle text-orange-500 mr-2"></i>
-													{'******'}
-												</td>
-												<td className="border-t-0 px-6 align-middle border-l-0 border-r-0 whitespace-nowrap p-4">
-													<div onClick={() => ToggleAccessModal()} className="flex hover:underline hover:font-semibold text-md cursor-pointer text-purple-600">
-														View
-													</div>
-												</td>
-												<td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-													<div className="flex justify-between w-full space-x-2">
-														<p onClick={() => ToggleEditModal(name, email)} className="flex items-center cursor-pointer">
-															<svg className="w-5 h-5 icon" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-																<path d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z" /><path fillRule="evenodd" d="M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z" clipRule="evenodd" />
-															</svg>
-														</p>
-														<p onClick={() => _OnDelete(id)} className="flex items-center cursor-pointer">
-															<svg className="w-5 h-5 icon" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-																<path fillRule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clipRule="evenodd" />
-															</svg>
-														</p>
-													</div>
-												</td>
-												{/* <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-right">
+							<div className="block w-full overflow-x-auto">
+								{/* Projects table */}
+								<table className="items-center w-full bg-transparent border-collapse">
+									<thead>
+										<tr>
+											<th
+												className={
+													"px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 border-t-0 whitespace-nowrap font-semibold text-left " +
+													(color === "light"
+														? "bg-blueGray-50 text-blueGray-500 border-blueGray-100"
+														: "bg-blueGray-600 text-blueGray-200 border-blueGray-500")
+												}
+											>
+												Name
+											</th>
+											<th
+												className={
+													"px-6 align-middle border border-solid py-3 text-xs uppercase border-t-0 border-l-0 border-r-0 whitespace-nowrap font-semibold text-left " +
+													(color === "light"
+														? "bg-blueGray-50 text-blueGray-500 border-blueGray-100"
+														: "bg-blueGray-600 text-blueGray-200 border-blueGray-500")
+												}
+											>
+												Email
+											</th>
+											<th
+												className={
+													"px-6 align-middle border border-solid py-3 text-xs uppercase border-t-0 border-l-0 border-r-0 whitespace-nowrap font-semibold text-left " +
+													(color === "light"
+														? "bg-blueGray-50 text-blueGray-500 border-blueGray-100"
+														: "bg-blueGray-600 text-blueGray-200 border-blueGray-500")
+												}
+											>
+												Password
+											</th>
+											<th
+												className={
+													"px-6 align-middle border border-solid py-3 text-xs uppercase border-t-0 border-l-0 border-r-0 whitespace-nowrap font-semibold text-left " +
+													(color === "light"
+														? "bg-blueGray-50 text-blueGray-500 border-blueGray-100"
+														: "bg-blueGray-600 text-blueGray-200 border-blueGray-500")
+												}
+											>
+												Access
+											</th>
+											<th
+												className={
+													"px-6 align-middle border border-solid py-3 text-xs uppercase border-t-0 border-l-0 border-r-0 whitespace-nowrap font-semibold text-left " +
+													(color === "light"
+														? "bg-blueGray-50 text-blueGray-500 border-blueGray-100"
+														: "bg-blueGray-600 text-blueGray-200 border-blueGray-500")
+												}
+											>
+												Actions
+											</th>
+											<th
+												className={
+													"px-6 align-middle border border-solid py-3 text-xs uppercase border-t-0 border-l-0 border-r-0 whitespace-nowrap font-semibold text-left " +
+													(color === "light"
+														? "bg-blueGray-50 text-blueGray-500 border-blueGray-100"
+														: "bg-blueGray-600 text-blueGray-200 border-blueGray-500")
+												}
+											></th>
+										</tr>
+									</thead>
+									<tbody className="divide-y-2">
+										{
+											users.map(({ name, email, picture, id, role }, index) => (
+												<tr key={index}>
+													<td className="border-t-0 w-max space-x-3 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-wrap  p-4 text-left flex items-center">
+														<img
+															src={picture || 'https://thumbs.dreamstime.com/b/solid-purple-gradient-user-icon-web-mobile-design-interface-ui-ux-developer-app-137467998.jpg'}
+															className="h-12 w-12 bg-white rounded-full border"
+															alt="..."
+														/>
+														<span
+															className={
+																"font-bold text-blueGray-600"
+															}
+														>
+															{name}
+														</span>
+													</td>
+													<td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+														{email}
+													</td>
+													<td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+														<i className="fas fa-circle text-orange-500 mr-2"></i>
+														{'******'}
+													</td>
+													<td className="border-t-0 px-6 align-middle border-l-0 border-r-0 whitespace-nowrap p-4">
+														<div onClick={() => ToggleAccessModal(id, role)} className="flex hover:underline hover:font-semibold text-md cursor-pointer text-purple-600">
+															View
+														</div>
+													</td>
+													<td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+														<div className="flex justify-between w-full space-x-2">
+															<p onClick={() => ToggleEditModal(id, name, email)} className="flex items-center cursor-pointer">
+																<svg className="w-5 h-5 icon" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+																	<path d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z" /><path fillRule="evenodd" d="M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z" clipRule="evenodd" />
+																</svg>
+															</p>
+															<p onClick={() => _OnDelete(id)} className="flex items-center cursor-pointer">
+																<svg className="w-5 h-5 icon" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+																	<path fillRule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clipRule="evenodd" />
+																</svg>
+															</p>
+														</div>
+													</td>
+													{/* <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-right">
                                 <TableDropdown />
                             </td> */}
-											</tr>
-										))
-									}
-								</tbody>
-							</table>
+												</tr>
+											))
+										}
+									</tbody>
+								</table>
+							</div>
 						</div>
-					</div>
 			}
 			{
 				showModal && (
@@ -302,19 +417,43 @@ const Dashboard = () => {
 								<div className="flex w-full justify-center items-center">
 									<div className="grid grid-cols-2 gap-6">
 										<label className="flex items-center w-full">
-											<input type="radio" className="form-radio" name="accountType" value="personal" />
+											<input type="radio"
+												className="form-radio"
+												name="admin"
+												value="admin"
+												checked={initialValues?.role === 'admin'}
+												onChange={(e) => handleAccessChange(e)}
+											/>
 											<span className="ml-2">Admin</span>
 										</label>
 										<label className="flex items-center w-full">
-											<input type="radio" className="form-radio" name="accountType" value="busines" />
+											<input type="radio"
+												className="form-radio"
+												name="businessVerification"
+												checked={initialValues?.role === 'businessVerification'}
+												value="businessVerification"
+												onChange={(e) => handleAccessChange(e)}
+											/>
 											<span className="ml-2">Business Verification</span>
 										</label>
 										<label className="flex items-center w-full">
-											<input type="radio" className="form-radio" name="accountType" value="personal" />
+											<input type="radio"
+												className="form-radio"
+												name="manageUsers"
+												checked={initialValues?.role === 'manageUsers'}
+												value="manageUsers"
+												onChange={(e) => handleAccessChange(e)}
+											/>
 											<span className="ml-2">Manage Users</span>
 										</label>
 										<label className="flex items-center w-full">
-											<input type="radio" className="form-radio" name="accountType" value="busines" />
+											<input type="radio"
+												className="form-radio"
+												name="contentManagement"
+												checked={initialValues?.role === 'contentManagement'}
+												value="contentManagement"
+												onChange={(e) => handleAccessChange(e)}
+											/>
 											<span className="ml-2">Content Management</span>
 										</label>
 									</div>
@@ -330,6 +469,7 @@ const Dashboard = () => {
 										Cancel
 									</button>
 									<Button
+										onSubmit={_OnAccess}
 										type="button"
 										className="w-full inline-flex justify-center rounded-md border-none px-4 py-2 primary-btn text-base font-medium text-white focus:outline-none sm:ml-3 sm:w-auto sm:text-sm"
 										childrens={'Done'}
@@ -342,7 +482,7 @@ const Dashboard = () => {
 						:
 						<form onSubmit={formik.handleSubmit}>
 							<Modal
-								_Toggle={modalTitle === 'CreateAdmin' ? ToggleCreateModal : ToggleEditModal}
+								_Toggle={modalTitle === 'Create Admin' ? ToggleCreateModal : ToggleEditModal}
 								title={modalTitle}
 								body={(
 									<>
@@ -356,7 +496,7 @@ const Dashboard = () => {
 								footer={(
 									<>
 										<button
-											onClick={modalTitle === 'CreateAdmin' ? ToggleCreateModal : ToggleEditModal}
+											onClick={modalTitle === 'Create Admin' ? ToggleCreateModal : ToggleEditModal}
 											type="button"
 											className="mt-3 w-full inline-flex justify-center hover:underline  px-4 py-2 text-base font-medium text  sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"
 										>
@@ -374,7 +514,6 @@ const Dashboard = () => {
 								)}
 							/>
 						</form>
-
 				)
 			}
 		</div>
