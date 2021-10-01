@@ -21,6 +21,7 @@ const handler = async (req, res) => {
 
             const admins = await Admin.findAll({
                 where: {
+                    isDelete: false,
                     role: {
                         [sequelize.Op.not]: 'superadmin'
                     }
