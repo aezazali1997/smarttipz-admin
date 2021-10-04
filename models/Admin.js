@@ -1,5 +1,6 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('./db');
+const PermissionType = require('./PermissionType');
 
 const Admin = sequelize.define('Admin', {
     name: {
@@ -28,5 +29,8 @@ const Admin = sequelize.define('Admin', {
         defaultValue: false
     }
 });
+
+Admin.hasMany(PermissionType);
+PermissionType.belongsTo(Admin);
 
 module.exports = Admin;

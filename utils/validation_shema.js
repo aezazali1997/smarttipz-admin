@@ -41,3 +41,6 @@ export const OptionalAdminSchema = Yup.object().shape({
         .optional(),
 });
 
+export const ForgetPasswordSchema = Yup.object().shape({
+    email: Email('Email is a required field'),
+});

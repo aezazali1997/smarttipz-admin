@@ -1,10 +1,10 @@
+import PermissionType from 'models/PermissionType';
+
 const { isEmpty } = require('lodash');
-const sequelize = require('sequelize');
-const Admin = require('../../../models/Admin');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-
 const Joi = require('joi');
+const Admin = require('../../../models/Admin');
 
 const handler = async (req, res) => {
     if (req.method === 'GET') {
@@ -20,19 +20,30 @@ const handler = async (req, res) => {
             );
 
             const admins = await Admin.findAll({
+                include: [
+                    {
+                        model: PermissionType
+                    }
+                ],
                 where: {
                     isDelete: false,
-                    role: {
-                        [sequelize.Op.not]: 'superadmin'
-                    }
-                }, order: [["createdAt", "DESC"]]
+                    // role: {
+                    //     [sequelize.Op.not]: 'superadmin'
+                    // }
+                },
+                // order: [["createdAt", "DESC"]]
             });
+            if (isEmpty(admins)) {
+                return res.status(200).json({ error: false, data: { admins }, message: 'Admins fetched successfuly.' });
+            }
 
-            console.log('admins: ', admins);
+
+
+            // const permissions = await getPermissionTypes();
 
             res.status(200).json({ error: false, data: { admins }, message: 'Admins fetched successfuly.' });
         } catch (err) {
-            res.status(422).json({ error: true, message: err.message, data: [] });
+            res.status(500).json({ error: true, message: err.message, data: [] });
         }
     }
     else if (req.method === 'POST') {
@@ -87,7 +98,7 @@ const handler = async (req, res) => {
 
             res.status(201).json({ error: false, data: {}, message: 'Admin created successfuly.' });
         } catch (err) {
-            res.status(422).json({ error: true, message: err.message, data: [] });
+            res.status(500).json({ error: true, message: err.message, data: [] });
         }
     }
     else if (req.method === 'PUT') {
@@ -129,7 +140,7 @@ const handler = async (req, res) => {
 
             res.status(201).json({ error: false, data: {}, message: 'Admin updated successfuly.' });
         } catch (err) {
-            res.status(422).json({ error: true, message: err.message, data: [] });
+            res.status(500).json({ error: true, message: err.message, data: [] });
         }
     }
     else {

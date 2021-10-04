@@ -1,6 +1,7 @@
+
 const jwt = require('jsonwebtoken');
 
-const Admin = require('../../../../models/Admin');
+const User = require('../../../../models/User');
 
 const handler = async (req, res) => {
     if (req.method === 'POST') {
@@ -16,9 +17,9 @@ const handler = async (req, res) => {
                 process.env.SECRET_KEY
             );
 
-            await Admin.update({ isApproved: true }, { where: { id } });
+            await User.update({ isApproved: true }, { where: { id } });
 
-            res.status(200).send({ error: false, data: {}, message: 'Admin verified successfully' });
+            res.status(200).send({ error: false, data: {}, message: 'User verified successfully' });
 
         } catch (err) {
             res.status(500).json({ error: true, message: err.message, data: [] });

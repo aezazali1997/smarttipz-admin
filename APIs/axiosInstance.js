@@ -30,7 +30,7 @@ class AxiosInstance {
     }
 
     async forgetPassword(email) {
-        return await axios.post(USER_API_BASE_URL + "api/user/forgot", { email });
+        return await axios.post(USER_API_BASE_URL + "api/auth/forgot", { email });
     }
 
     async changePassword(data) {
@@ -41,23 +41,14 @@ class AxiosInstance {
         return await axios.post(USER_API_BASE_URL + "api/user/resend", data);
     }
 
-    async getAllUsers() {
-        console.log('In request GetAllUsers Api: ');
-        return await axios.get(USER_API_BASE_URL + "api/user/business", this.getAuthHeader());
-    }
 
     async getAllAdmins() {
         console.log('In request GetAllAdmin Api: ');
         return await axios.get(USER_API_BASE_URL + "api/admin", this.getAuthHeader());
     }
 
-    async deleteAdmin(id) {
-        console.log('In delete Admin Api: ', id);
-        return await axios.delete(USER_API_BASE_URL + `api/admin/${id}`, this.getAuthHeader());
-    }
-
     async setAdminRole(id, payload) {
-        console.log('In set Admin Role Api: ', id, payload);
+        console.log('In set Admin Role Api: ');
         return await axios.put(USER_API_BASE_URL + `api/admin/${id}`, payload, this.getAuthHeader());
     }
 
@@ -66,14 +57,53 @@ class AxiosInstance {
         return await axios.post(USER_API_BASE_URL + "api/admin", payload, this.getAuthHeader());
     }
 
+    async editAdmin(payload) {
+        console.log('In editAdmin API')
+        return await axios.put(USER_API_BASE_URL + "api/admin", payload, this.getAuthHeader());
+    }
+
+    async deleteAdmin(id) {
+        console.log('In delete Admin Api: ');
+        return await axios.delete(USER_API_BASE_URL + `api/admin/${id}`, this.getAuthHeader());
+    }
+
+    async getAllBusinessUsers() {
+        console.log('In request GetAllBusinessUsers Api: ');
+        return await axios.get(USER_API_BASE_URL + "api/user/business", this.getAuthHeader());
+    }
+
     async verifyBusinessUser(id) {
         console.log('In verify business user API')
         return await axios.post(USER_API_BASE_URL + "api/user/business/verify", id, this.getAuthHeader());
     }
 
-    async editAdmin(payload) {
-        console.log('In editAdmin API')
-        return await axios.put(USER_API_BASE_URL + "api/admin", payload, this.getAuthHeader());
+    async blockBusinessUser(payload) {
+        console.log('In block business user API')
+        return await axios.post(USER_API_BASE_URL + "api/user/business/block", payload, this.getAuthHeader());
+    }
+
+    async editVerifiedBusinessUser(payload) {
+        console.log('In edit Verified Business User API: ');
+        return await axios.put(USER_API_BASE_URL + "api/user/business", payload, this.getAuthHeader());
+    }
+
+    async deleteBusinessUser(id) {
+        console.log('In delete Business User Api: ');
+        return await axios.delete(USER_API_BASE_URL + `api/user/business/${id}`, this.getAuthHeader());
+    }
+
+    async getAllPersonalUsers() {
+        console.log('In request Get All Personal Users Api: ');
+        return await axios.get(USER_API_BASE_URL + "api/user/personal", this.getAuthHeader());
+    }
+    async editPersonalUser(payload) {
+        console.log('In edit Personal User API: ');
+        return await axios.put(USER_API_BASE_URL + "api/user/personal", payload, this.getAuthHeader());
+    }
+
+    async deletePersonalUser(id) {
+        console.log('In delete Personal User Api: ');
+        return await axios.delete(USER_API_BASE_URL + `api/user/personal/${id}`, this.getAuthHeader());
     }
 
 
