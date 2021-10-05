@@ -17,3 +17,16 @@
 .text {
     color: $primary-color;
 }
+
+.text-danger {
+    color: $danger
+}
+
+.text-danger:hover {
+    color: $danger-hover
+}
+
+.disable-text {
+    color: $btn-hover;
+    pointer-events: none;
+}

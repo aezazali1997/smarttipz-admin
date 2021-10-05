@@ -220,9 +220,6 @@ const Dashboard = () => {
 	});
 
 
-
-
-
 	const handleActiveTab = (category) => {
 		console.log('category: ', category);
 		let filtered = [];
@@ -404,22 +401,20 @@ const Dashboard = () => {
 																	type="button"
 																	disable={isBlocked}
 																	childrens={'Verify'}
-																	classNames={`px-3 py-2 flex w-28 justify-center items-center text-white text-sm 
-																	${isBlocked ? 'btn-disable' : 'primary-btn'}  rounded-md`}
+																	classNames={`px-1 py-1 flex w-20 justify-center items-center hover:underline cursor-pointer text-sm 
+																	${isBlocked ? 'disable-text' : 'text'}  rounded-md`}
 																/>
 
 																<Button
 																	onSubmit={() => _HandleBlock(id, isBlocked)}
 																	type="button"
 																	childrens={isBlocked ? 'Unblock' : 'Block'}
-																	classNames={"px-3 py-2 w-28 flex justify-center items-center text-white text-sm danger-btn rounded-md"}
+																	classNames={"px-1 py-1 w-20 flex justify-center items-center hover:underline cursor-pointer text-sm text-danger rounded-md"}
 																/>
 															</div>
 													}
 												</td>
-												{/* <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-right">
-                                <TableDropdown />
-                            </td> */}
+
 											</tr>
 										))
 									}
@@ -460,12 +455,10 @@ const Dashboard = () => {
 										loading={formik.isSubmitting}
 
 									/>
-
 								</>
 							)}
 						/>
 					</form>
-
 				)
 			}
 		</div>

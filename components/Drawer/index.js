@@ -9,6 +9,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faNewspaper, faUserCircle, faCog, faPlayCircle, faSignOutAlt, faComment, faClipboardList } from '@fortawesome/free-solid-svg-icons'
 import { useRouter } from 'next/router';
 import Badge from 'components/Badge';
+import { isEmpty } from 'lodash';
 
 const Drawer = ({ isOpen, toggle, logout }) => {
 
@@ -16,10 +17,7 @@ const Drawer = ({ isOpen, toggle, logout }) => {
     const { asPath } = router;
     const [dropdown, setShowDropdown] = useState(false);
 
-    // useEffect(() => {
-    //     asPath === '/privacy-policy' || asPath === '/terms-and-conditions'
-    //         ? setShowDropdown(true) : setShowDropdown(false);
-    // }, [])
+    useEffect(() => { }, [localStorage.getItem('permissions')])
 
     let Active = (path) => {
         return asPath === path ?
@@ -39,6 +37,14 @@ const Drawer = ({ isOpen, toggle, logout }) => {
         toggle();
     }
 
+    let CheckPermissions = (name) => {
+        let permissions = JSON.parse(localStorage.getItem('permissions'))
+        if (permissions) {
+            let result = permissions.filter(item => item.name === name && item.value === true);
+            return isEmpty(result) ? 'hidden' : ''
+        }
+    }
+
     return (
         <Sidebar
             sidebar={
@@ -55,25 +61,25 @@ const Drawer = ({ isOpen, toggle, logout }) => {
                         <>
                             <Link href='/dashboard/admin' className='p-4 font-sans nav-link nav-link-ltr'>
                                 <div onClick={toggle} className={`flex flex-row items-center py-2 px-3 rounded-lg w-52 font-medium sidebar-item cursor-pointer
-                                    ${Active('/dashboard/admin')}`}>
+                                    ${Active('/dashboard/admin')} ${CheckPermissions('admin')}`}>
                                     <FontAwesomeIcon icon={faNewspaper} /> &nbsp;Admin
                                 </div>
                             </Link>
                             <Link href='/dashboard/business-verification' className='p-4 font-sans nav-link nav-link-ltr'>
                                 <div onClick={toggle} className={`py-2 px-3 rounded-lg w-52 font-medium sidebar-item cursor-pointer
-                                    ${Active('/dashboard/business-verification')}`}>
+                                    ${Active('/dashboard/business-verification')} ${CheckPermissions('businessVerification')}`}>
                                     <FontAwesomeIcon icon={faUserCircle} />&nbsp;Business Verification
                                 </div>
                             </Link>
                             <Link href='/dashboard/manage-users' className='p-4 font-sans nav-link nav-link-ltr' >
                                 <div onClick={toggle} className={`py-2 px-3 rounded-lg w-52 font-medium sidebar-item cursor-pointer
-                                    ${Active("/dashboard/manage-users")}`}>
+                                    ${Active("/dashboard/manage-users")} ${CheckPermissions('manageUsers')}`}>
                                     <FontAwesomeIcon icon={faPlayCircle} />&nbsp;Manage Users
                                 </div>
                             </Link>
                             <Link href='/dashboard/content-management' className='p-4 font-sans nav-link nav-link-ltr' >
                                 <div onClick={toggle} className={`flex justify-between items-center py-2 px-3 rounded-lg w-52 font-medium sidebar-item cursor-pointer
-                                    ${Active("/dashboard/content-management")}`}>
+                                    ${Active("/dashboard/content-management")} ${CheckPermissions('contentManagement')}`}>
                                     <div>
                                         <FontAwesomeIcon icon={faComment} />&nbsp;Content Management
                                     </div>

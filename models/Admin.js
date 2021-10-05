@@ -1,4 +1,4 @@
-const { DataTypes } = require('sequelize');
+const { DataTypes, STRING } = require('sequelize');
 const sequelize = require('./db');
 const PermissionType = require('./PermissionType');
 
@@ -24,13 +24,28 @@ const Admin = sequelize.define('Admin', {
         type: DataTypes.STRING,
         allowNull: false
     },
+    permissions: {
+        type: DataTypes.JSON({
+            id: {
+                type: DataTypes.INTEGER,
+                primaryKey: true,
+                autoIncrement: true,
+            },
+            name: {
+                type: DataTypes.STRING
+            },
+            value: {
+                type: DataTypes.STRING
+            }
+        })
+    },
     isDelete: {
         type: DataTypes.BOOLEAN,
         defaultValue: false
     }
 });
 
-Admin.hasMany(PermissionType);
-PermissionType.belongsTo(Admin);
+// Admin.hasMany(PermissionType, { as: 'Permissions' });
+// PermissionType.belongsTo(Admin);
 
 module.exports = Admin;

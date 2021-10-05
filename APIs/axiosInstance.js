@@ -47,8 +47,8 @@ class AxiosInstance {
         return await axios.get(USER_API_BASE_URL + "api/admin", this.getAuthHeader());
     }
 
-    async setAdminRole(id, payload) {
-        console.log('In set Admin Role Api: ');
+    async setAdminAccess(id, payload) {
+        console.log('In set Admin Access Api: ');
         return await axios.put(USER_API_BASE_URL + `api/admin/${id}`, payload, this.getAuthHeader());
     }
 

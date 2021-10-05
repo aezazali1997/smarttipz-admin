@@ -1,3 +1,5 @@
+const PermissionType = require('../../../models/PermissionType');
+
 const Admin = require('../../../models/Admin');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
@@ -22,7 +24,6 @@ const handler = async (req, res) => {
 
         if (error) return res.status(400).json({ error: error.details[0].message });
 
-        let user;
 
         try {
             // user = await Admin.findOne({ where: { username } });
@@ -30,30 +31,56 @@ const handler = async (req, res) => {
             //     throw new Error('Username already exists');
             // }
 
-            user = await Admin.findOne({ where: { email } });
+            const user = await Admin.findOne({
+                where: { email }
+            });
             if (user) {
-                throw new Error('Email already in use');
+                return res.status(400).send({ error: true, data: {}, message: 'Email already in use' });
             }
-
-            console.log(user)
 
             const encPassword = await bcrypt.hash(password, 12);
 
 
-
-            await Admin.create({
+            const newUser = await Admin.create({
                 name,
                 // username,
                 role,
+                permissions: [{
+                    name: 'admin',
+                    value: true
+
+                },
+                {
+                    name: 'manageUsers',
+                    value: true
+
+                },
+                {
+                    name: 'businessVerification',
+                    value: true
+
+                },
+                {
+                    name: 'contentManagement',
+                    value: true
+
+                }],
                 email,
                 password: encPassword,
             });
 
+            // const { id } = newUser;
 
+            // const permissions = await PermissionType.create({
+            //     names: ['admin', 'businessVerification', 'manageUsers', 'contentMangement'],
+            //     AdminId: id
+            // });
+
+            // await newUser.setPermissions(permissions);
 
             res.status(201).json({ error: false, data: {}, message: 'User successfuly signed up.' });
         } catch (err) {
-            res.status(422).json({ error: true, message: err.message, data: [] });
+            res.status(500).json({ error: true, message: err.message, data: [] });
         }
     } else {
         res.status(404).end('Page Not Found');

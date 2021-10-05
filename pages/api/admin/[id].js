@@ -29,10 +29,10 @@ const handler = async (req, res) => {
         }
     }
     else if (req.method === 'PUT') {
-        const { body, body: { role }, headers: { authorization }, query: { id } } = req;
+        const { body, body: { permissions }, headers: { authorization }, query: { id } } = req;
         const validateSignup = (data) => {
             const schema = Joi.object({
-                role: Joi.string().required()
+                permissions: Joi.required()
             });
             return schema.validate(data);
         };
@@ -51,14 +51,15 @@ const handler = async (req, res) => {
                 process.env.SECRET_KEY
             );
 
-            console.log('ADMIN ID, role: ', id, role)
+            console.log('ADMIN ID, role: ', id, permissions)
 
-            const admin = await Admin.update({ role }, { where: { id } });
+            const admin = await Admin.update({ permissions }, { where: { id } });
 
-            res.status(200).json({ error: false, data: {}, message: 'Admin role updated successfuly.' });
+            res.status(200).send({ error: false, data: [], message: 'Admin Access updated successfuly.' });
 
-        } catch (err) {
-            res.status(422).json({ error: true, message: err.message, data: [] });
+        }
+        catch (err) {
+            res.status(500).send({ error: true, message: err.message, data: [] });
         }
     }
     else {

@@ -8,6 +8,7 @@ import axiosInstance from '../../APIs/axiosInstance';
 import { Button, Searchbar, Spinner, Modal, AdminForm } from '../../components';
 import { CreateAdminValidationSchema, OptionalAdminSchema } from 'utils/validation_shema';
 import { isEmpty } from 'lodash';
+import { faGrinSquintTears } from '@fortawesome/free-solid-svg-icons';
 
 
 const initials = {
@@ -25,9 +26,11 @@ const Dashboard = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [modalTitle, setModalTitle] = useState('Create Admin');
   const [initialValues, setInitialValues] = useState(initials);
-  const [selectedPermission, setSelectedPermission] = useState([]);
+  const [access, setAccess] = useState([]);
+  const [selected, setSelected] = useState('');
   // const [accessView, setAccessView] = useState('admin');
 
+  const Permissions = ['Admin', 'Manage Users', 'Business Verification', 'Content Management']
   useEffect(() => {
     enableLoading();
     axiosInstance.getAllAdmins().then(({ data: { data: { admins } } }) => {
@@ -65,61 +68,65 @@ const Dashboard = () => {
     setShowModal(!showModal);
   }
 
-
-  const ToggleAccessModal = (id, PermissionTypes) => {
-    console.log('role: ', PermissionTypes);
-    if (isEmpty(PermissionTypes)) {
-      setInitialValues({
-        id, permissions: {
-          admin: false, businessVerification: false,
-          manageUsers: false, controlManagement: false
-        }
-      })
-    }
-    // setInitialValues({ id, PermissionTypes });
+  const OpenAccessModal = (id, permissions, role) => {
+    console.log(`id: ${id}, permissions: ${JSON.stringify(permissions)}`);
+    setAccess(permissions);
+    setSelected(id);
     setModalTitle('Access View');
+    setShowModal(!showModal);
+  }
+  const _CloseAccessModal = () => {
     setShowModal(!showModal);
   }
 
 
   const handleAccessChange = (e) => {
-    // const { checked, name, value } = e.target;
-    // console.log(`${value}: ${checked}`)
-    // setInitialValues({ ...initialValues, permissions[name] : checked });
+    const { checked, name, value } = e.target;
+    let copyArray = [...access];
+    copyArray.forEach(permission => {
+      if (permission.name === value) {
+        permission.value = checked
+      };
+    })
+    console.log({ copyArray })
+    setInitialValues(copyArray);
   }
 
   const _OnAccess = () => {
-    console.log(initialValues);
+    console.log('permissions: ', access, selected);
     const payload = {
-      role: initialValues?.role
+      permissions: access
     }
-    // axiosInstance.setAdminRole(initialValues?.id, payload).then(({ data: { message } }) => {
-    //   Swal.fire({
-    //     text: message,
-    //     icon: 'success',
-    //     timer: 3000,
-    //     showCancelButton: false,
-    //     showConfirmButton: false
-    //   })
-    //   const copyArray = [...users];
-    //   const updatedUsers = copyArray.map(user => {
-    //     if (user.id !== initialValues?.id) return user;
-    //     else {
-    //       user.role = initialValues?.role
-    //       return user;
-    //     }
-    //   });
-    //   setUsers(updatedUsers);
-    //   ToggleAccessModal();
-    // }).catch(({ response: { data: { maessage } } }) => {
-    //   Swal.fire({
-    //     text: message,
-    //     icon: 'error',
-    //     timer: 3000,
-    //     showCancelButton: false,
-    //     showConfirmButton: false
-    //   })
-    // })
+    axiosInstance.setAdminAccess(selected, payload)
+      .then(({ data: { message } }) => {
+        Swal.fire({
+          text: message,
+          icon: 'success',
+          timer: 3000,
+          showCancelButton: false,
+          showConfirmButton: false
+        })
+        const copyArray = [...users];
+        const updatedUsers = copyArray.map(user => {
+          if (user.id !== selected) return user;
+          else {
+            user.permissions = access
+            return user;
+          }
+        });
+        localStorage.setItem('permissions', JSON.stringify(access));
+        setUsers(updatedUsers);
+        _CloseAccessModal();
+      })
+      .catch(({ response: { data: { message } } }) => {
+        Swal.fire({
+          text: message,
+          icon: 'error',
+          timer: 3000,
+          showCancelButton: false,
+          showConfirmButton: false
+        })
+      })
   }
 
 
@@ -367,7 +374,7 @@ const Dashboard = () => {
                   </thead>
                   <tbody className="divide-y-2">
                     {
-                      users.map(({ name, email, picture, id, role, PermissionTypes }, index) => (
+                      users.map(({ name, email, picture, id, role, permissions }, index) => (
                         <tr key={index}>
                           <td className="border-t-0 w-max space-x-3 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-wrap  p-4 text-left flex items-center">
                             <img
@@ -390,27 +397,32 @@ const Dashboard = () => {
                             <i className="fas fa-circle text-orange-500 mr-2"></i>
                             {'******'}
                           </td>
-                          <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 whitespace-nowrap p-4">
-                            <div onClick={() => ToggleAccessModal(id, PermissionTypes)} className="flex hover:underline hover:font-semibold text-md cursor-pointer text-purple-600">
-                              View
-                            </div>
-                          </td>
                           {
-                            role !== 'superadmin' &&
-                            <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                              <div className="flex justify-between w-full space-x-2">
-                                <p onClick={() => ToggleEditModal(id, name, email)} className="flex items-center cursor-pointer">
-                                  <svg className="w-5 h-5 icon" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z" /><path fillRule="evenodd" d="M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z" clipRule="evenodd" />
-                                  </svg>
-                                </p>
-                                <p onClick={() => _OnDelete(id)} className="flex items-center cursor-pointer">
-                                  <svg className="w-5 h-5 icon" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                                    <path fillRule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clipRule="evenodd" />
-                                  </svg>
-                                </p>
-                              </div>
-                            </td>
+                            ((localStorage.getItem('role') !== 'superadmin' && role !== 'superadmin') || (localStorage.getItem('role') === 'superadmin')) &&
+                            (
+                              <>
+                                <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 whitespace-nowrap p-4">
+                                  <div onClick={() => OpenAccessModal(id, permissions, role)} className="flex hover:underline hover:font-semibold text-md cursor-pointer text-purple-600">
+                                    View
+                                  </div>
+                                </td>
+                                <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+                                  <div className="flex justify-between w-full space-x-2">
+                                    <p onClick={() => ToggleEditModal(id, name, email)} className="flex items-center cursor-pointer">
+                                      <svg className="w-5 h-5 icon" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z" />
+                                        <path fillRule="evenodd" d="M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z" clipRule="evenodd" />
+                                      </svg>
+                                    </p>
+                                    <p onClick={() => _OnDelete(id)} className="flex items-center cursor-pointer">
+                                      <svg className="w-5 h-5 icon" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                        <path fillRule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clipRule="evenodd" />
+                                      </svg>
+                                    </p>
+                                  </div>
+                                </td>
+                              </>
+                            )
                           }
                           {/* <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-right">
                                 <TableDropdown />
@@ -427,17 +439,34 @@ const Dashboard = () => {
         showModal && (
           modalTitle === 'Access View' ?
             <Modal
-              _Toggle={ToggleAccessModal}
+              _Toggle={_CloseAccessModal}
               title={modalTitle}
               body={(
                 <div className="flex w-full justify-center items-center">
                   <div className="grid grid-cols-2 gap-6">
-                    <div>
+                    {
+                      access.map(({ name, value }, index) => (
+                        <div>
+                          <label className="inline-flex items-center">
+                            <input
+                              name={name}
+                              type="checkbox"
+                              checked={value}
+                              value={name}
+                              className="form-checkbox"
+                              onChange={(e) => handleAccessChange(e)}
+                            />
+                            <span className="ml-2">{Permissions[index]}</span>
+                          </label>
+                        </div>
+                      ))
+                    }
+                    {/* <div>
                       <label className="inline-flex items-center">
                         <input
                           name="admin"
                           type="checkbox"
-                          checked={initialValues?.admin}
+                          checked={initialValues?.permissions?.admin}
                           value="admin"
                           className="form-checkbox"
                           onChange={(e) => handleAccessChange(e)}
@@ -451,7 +480,7 @@ const Dashboard = () => {
                           name="businessVerification"
                           type="checkbox"
                           value="businessVerification"
-                          checked={initialValues?.businessVerification}
+                          checked={initialValues?.permissions?.businessVerification}
                           className="form-checkbox"
                           onChange={(e) => handleAccessChange(e)}
                         />
@@ -464,7 +493,7 @@ const Dashboard = () => {
                           name="manageUsers"
                           type="checkbox"
                           value="manageUsers"
-                          checked={initialValues?.manageUsers}
+                          checked={initialValues?.permissions?.manageUsers}
                           className="form-checkbox"
                           onChange={(e) => handleAccessChange(e)}
                         />
@@ -474,23 +503,23 @@ const Dashboard = () => {
                     <div>
                       <label className="inline-flex items-center">
                         <input
-                          name="controlManagement"
+                          name="contentManagement"
                           type="checkbox"
-                          value="controlManagement"
-                          checked={initialValues?.controlManagement}
+                          value="contentManagement"
+                          checked={initialValues?.permissions?.contentManagement}
                           className="form-checkbox"
                           onChange={(e) => handleAccessChange(e)}
                         />
-                        <span className="ml-2">Control Management</span>
+                        <span className="ml-2">Content Management</span>
                       </label>
-                    </div>
+                    </div>*/}
                   </div>
                 </div>
               )}
               footer={(
                 <>
                   <button
-                    onClick={ToggleAccessModal}
+                    onClick={_CloseAccessModal}
                     type="button"
                     className="mt-3 w-full inline-flex justify-center hover:underline  px-4 py-2 text-base font-medium text  sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"
                   >

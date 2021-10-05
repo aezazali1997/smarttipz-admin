@@ -46,7 +46,7 @@ const UseFetchLogin = () => {
             setTimeout(() => {
                 const data = { email, password }
                 axiosInstance.login(data)
-                    .then(({ data: { data: { username, token, id }, message } }) => {
+                    .then(({ data: { data: { username, token, id, role, permissions }, message } }) => {
                         disableLoading();
                         setError(false);
                         setStatus(message);
@@ -55,6 +55,8 @@ const UseFetchLogin = () => {
                         cookie.set('username', username);
                         // localStorage.setItem('image', image);
                         localStorage.setItem('id', id);
+                        localStorage.setItem('role', role);
+                        localStorage.setItem('permissions', JSON.stringify(permissions));
                         router.push('/dashboard/admin');
                     })
                     .catch((e) => {

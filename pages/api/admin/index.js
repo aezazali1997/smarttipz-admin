@@ -1,6 +1,6 @@
 import PermissionType from 'models/PermissionType';
 
-const { isEmpty } = require('lodash');
+const { isEmpty, forEach } = require('lodash');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const Joi = require('joi');
@@ -20,11 +20,7 @@ const handler = async (req, res) => {
             );
 
             const admins = await Admin.findAll({
-                include: [
-                    {
-                        model: PermissionType
-                    }
-                ],
+
                 where: {
                     isDelete: false,
                     // role: {
@@ -37,9 +33,6 @@ const handler = async (req, res) => {
                 return res.status(200).json({ error: false, data: { admins }, message: 'Admins fetched successfuly.' });
             }
 
-
-
-            // const permissions = await getPermissionTypes();
 
             res.status(200).json({ error: false, data: { admins }, message: 'Admins fetched successfuly.' });
         } catch (err) {
@@ -92,6 +85,26 @@ const handler = async (req, res) => {
                 name,
                 // username,
                 role: 'admin',
+                permissions: [{
+                    name: 'admin',
+                    value: true
+
+                },
+                {
+                    name: 'manageUsers',
+                    value: false
+
+                },
+                {
+                    name: 'businessVerification',
+                    value: false
+
+                },
+                {
+                    name: 'contentManagement',
+                    value: false
+
+                }],
                 email,
                 password: encPassword,
             });

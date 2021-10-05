@@ -33,7 +33,7 @@ const handler = async (req, res) => {
                 return res.status(403).json({ error: true, message: 'Validation failed', data: [] });
             }
 
-            const { id } = user;
+            const { id, role, permissions } = user;
 
             const match = await bcrypt.compare(password, user.password);
 
@@ -45,7 +45,7 @@ const handler = async (req, res) => {
 
             res
                 .status(200)
-                .json({ error: false, message: 'Login successful', data: { id: id, username: user.username, token } });
+                .json({ error: false, message: 'Login successful', data: { id: id, username: user.username, token, role, permissions } });
         } catch (err) {
             res.status(500).json({ error: true, message: err.message, data: [] });
         }

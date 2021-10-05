@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faNewspaper, faUserCircle, faCog, faPlayCircle, faSignOutAlt, faComment, faClipboardList } from '@fortawesome/free-solid-svg-icons'
 import { useRouter } from 'next/router';
+import { isEmpty } from 'lodash';
 // import Badge from 'components/Badge';
 
 const Sidebar = ({ logout }) => {
@@ -14,13 +15,11 @@ const Sidebar = ({ logout }) => {
     const { asPath } = router;
     const [dropdown, setShowDropdown] = useState(false);
 
-    // useEffect(() => {
-    //     asPath === '/privacy-policy' || asPath === '/terms-and-conditions' || asPath === '/copyrights'
-    //         || asPath === '/trademark-license'
-    //         ? setShowDropdown(true) : setShowDropdown(false);
-    // }, [])
+    useEffect(() => { }, [localStorage.getItem('permissions')])
 
     let Active = (path) => {
+
+
         return asPath === path ?
             'bg-white text' : 'sidebar-item'
     }
@@ -31,6 +30,15 @@ const Sidebar = ({ logout }) => {
 
     let ActiveDropdown = (path) => {
         return asPath === path ? 'text-white background' : 'sidebar-dropdown-item';
+    }
+
+    let CheckPermissions = (name) => {
+        let permissions = JSON.parse(localStorage.getItem('permissions'))
+        if (permissions) {
+            console.log('permissions: ', permissions);
+            let result = permissions.filter(item => item.name === name && item.value === true);
+            return isEmpty(result) ? 'hidden' : ''
+        }
     }
 
     return (
@@ -48,26 +56,26 @@ const Sidebar = ({ logout }) => {
                     <>
                         <Link href='/dashboard/admin' className='p-4  font-sans nav-link nav-link-ltr'>
                             <div className={`flex flex-row items-center py-2 px-3 rounded-lg w-52 font-medium cursor-pointer
-                            ${Active('/dashboard/admin')}`}>
+                            ${Active('/dashboard/admin')} ${CheckPermissions('admin')}`}>
 
                                 <FontAwesomeIcon icon={faNewspaper} /> &nbsp;Admin
                             </div>
                         </Link>
                         <Link href='/dashboard/business-verification' className='p-4 font-sans nav-link nav-link-ltr'>
                             <div className={`py-2 px-3 rounded-lg w-52 font-medium  cursor-pointer
-                              ${Active('/dashboard/business-verification')}`}>
+                              ${Active('/dashboard/business-verification')} ${CheckPermissions('businessVerification')}`}>
                                 <FontAwesomeIcon icon={faUserCircle} />&nbsp;Business Verification
                             </div>
                         </Link>
                         <Link href='/dashboard/manage-users' className='p-4 font-sans nav-link nav-link-ltr' >
                             <div className={`py-2 px-3 rounded-lg w-52 font-medium  cursor-pointer
-                            ${Active("/dashboard/manage-users")}`}>
+                            ${Active("/dashboard/manage-users")} ${CheckPermissions('manageUsers')}`}>
                                 <FontAwesomeIcon icon={faPlayCircle} />&nbsp;Manage Users
                             </div>
                         </Link>
                         <Link href='/dashboard/content-management' className='p-4 font-sans nav-link nav-link-ltr' >
                             <div className={`flex items-center justify-between py-2 px-3 rounded-lg w-52 font-medium  cursor-pointer
-                            ${Active("/dashboard/content-management")}`}>
+                            ${Active("/dashboard/content-management")} ${CheckPermissions('contentManagement')}`}>
                                 <div>
                                     <FontAwesomeIcon icon={faComment} />&nbsp;Content Management
                                 </div>
