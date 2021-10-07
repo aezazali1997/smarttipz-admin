@@ -44,6 +44,7 @@ const UseFetchLogin = () => {
         onSubmit: ({ email, password }, { setSubmitting, setStatus }) => {
             enableLoading();
             setTimeout(() => {
+                setSubmitting(true);
                 const data = { email, password }
                 axiosInstance.login(data)
                     .then(({ data: { data: { username, token, id, role, permissions }, message } }) => {
@@ -65,6 +66,7 @@ const UseFetchLogin = () => {
                         // setSubmitting(false);
                         setStatus(e.response.data.message);
                         setShowAlert(true);
+                        setSubmitting(false);
                         disableLoading();
 
                     });

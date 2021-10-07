@@ -141,7 +141,8 @@ const Login = () => {
 
                                 <Button
                                     type={"submit"}
-                                    classNames={"flex w-full mt-10 justify-center primary-btn text-white p-3 rounded-md"}
+                                    disable={loading}
+                                    classNames={`flex w-full mt-10 justify-center ${loading ? 'btn-disable' :'primary-btn'} text-white p-3 rounded-md`}
                                     childrens={'Login'}
                                     loading={loading}
                                 />
