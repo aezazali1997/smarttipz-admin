@@ -56,19 +56,19 @@ const ContentManagement = () => {
 	}
 
 	const _OnSubmit = async (values, setSubmitting, resetForm) => {
-		setSubmitting(true);
-		try {
-			const res = await axiosInstance.removeVideo(values)
-			console.log('res: ', res);
-			const updatedUser = users.filter(user => user.email !== values.email && user);
-			setUsers(updatedUser);
-			resetForm(initials);
-			setSubmitting(false);
-			ToggleModal();
-		}
-		catch (e) {
-			console.log('error: ', e);
-		}
+		// setSubmitting(true);
+		// try {
+		// 	const res = await axiosInstance.removeVideo(values)
+		// 	console.log('res: ', res);
+		// 	const updatedUser = users.filter(user => user.email !== values.email && user);
+		// 	setUsers(updatedUser);
+		// 	resetForm(initials);
+		// 	setSubmitting(false);
+		// 	ToggleModal();
+		// }
+		// catch (e) {
+		// 	console.log('error: ', e);
+		// }
 	}
 
 	const formik = useFormik({
