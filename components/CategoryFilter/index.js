@@ -5,11 +5,11 @@ const Index = ({ handleActiveTab, Active }) => {
     return (
         <div className="flex relative w-auto">
             <Button
-                onSubmit={() => handleActiveTab('unverified')}
+                onSubmit={() => handleActiveTab('Not verified')}
                 type="button"
-                childrens={'Unverified'}
-                classNames={`${Active('unverified')} absolute left-12 md:left-28 px-3 py-2 w-32 md:w-36 flex justify-center items-center 
-                border text-sm  border-purple-600 rounded-3xl active-btn`}
+                childrens={'Not verified'}
+                classNames={`${Active('Not verified')} absolute left-12 md:left-28 px-3 py-2 w-32 md:w-36 flex justify-center items-center 
+                border text-sm border-purple-600 rounded-3xl active-btn`}
             />
             <Button
                 onSubmit={() => handleActiveTab('verified')}

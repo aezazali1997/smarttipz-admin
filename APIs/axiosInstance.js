@@ -53,7 +53,7 @@ class AxiosInstance {
     }
 
     async createAdmin(payload) {
-        console.log('In createAdmin API')
+        console.log('In createAdmin API', payload)
         return await axios.post(USER_API_BASE_URL + "api/admin", payload, this.getAuthHeader());
     }
 
@@ -104,6 +104,16 @@ class AxiosInstance {
     async deletePersonalUser(id) {
         console.log('In delete Personal User Api: ');
         return await axios.delete(USER_API_BASE_URL + `api/user/personal/${id}`, this.getAuthHeader());
+    }
+
+    async getContentVideos() {
+        console.log('In Get User Media Content Api: ');
+        return await axios.get(USER_API_BASE_URL + `api/admin/content`, this.getAuthHeader());
+    }
+
+    async removeVideo(values) {
+        console.log('In remove Video Content Api: ');
+        return await axios.post(USER_API_BASE_URL + `api/admin/content`, values, this.getAuthHeader());
     }
 
 

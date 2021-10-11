@@ -28,6 +28,8 @@ const Dashboard = () => {
   const [initialValues, setInitialValues] = useState(initials);
   const [access, setAccess] = useState([]);
   const [selected, setSelected] = useState('');
+  const [selctedAccess, setSelectedAccess] = useState(false);
+
   // const [accessView, setAccessView] = useState('admin');
 
   const Permissions = ['Admin', 'Manage Users', 'Business Verification', 'Content Management']
@@ -53,7 +55,25 @@ const Dashboard = () => {
   }
 
   const ToggleCreateModal = () => {
+    console.log('in create modal')
     setInitialValues(initials);
+    setAccess([{
+      name: 'admin',
+      value: false
+    },
+    {
+      name: 'manageUsers',
+      value: false
+    },
+    {
+      name: 'businessVerification',
+      value: false
+
+    },
+    {
+      name: 'contentManagement',
+      value: false
+    }])
     setModalTitle('Create Admin');
     setShowPassword(false)
     setShowModal(!showModal);
@@ -83,13 +103,30 @@ const Dashboard = () => {
   const handleAccessChange = (e) => {
     const { checked, name, value } = e.target;
     let copyArray = [...access];
+    console.log('here');
     copyArray.forEach(permission => {
       if (permission.name === value) {
         permission.value = checked
       };
     })
+    console.log('here1');
+    copyArray.every(permission => {
+      if (permission.value === true) {
+        setSelectedAccess(true);
+        console.log('herer')
+        return false;
+      }
+      else {
+        console.log('herer1')
+        setSelectedAccess(false);
+        return true;
+      }
+    })
     console.log({ copyArray })
-    setInitialValues(copyArray);
+    modalTitle === 'Create Admin' ?
+      setAccess(copyArray)
+      :
+      setInitialValues(copyArray);
   }
 
   const _OnAccess = () => {
@@ -172,7 +209,8 @@ const Dashboard = () => {
 
 
   const _OnSubmit = (values, setSubmitting) => {
-    setSubmitting(true);
+    // setSubmitting(true);
+    values.permissions = access;
     console.log('values: ', values);
     axiosInstance.createAdmin(values).then(({ data: { message, data } }) => {
       Swal.fire({
@@ -241,14 +279,13 @@ const Dashboard = () => {
     validationSchema: (modalTitle === 'Create Admin' ? CreateAdminValidationSchema : OptionalAdminSchema),
     validateOnBlur: true,
     onSubmit: (values, { setSubmitting }) => {
-
+      console.log('before: ', values)
       {
         modalTitle === 'Create Admin' ?
           _OnSubmit(values, setSubmitting)
           :
           _OnEdit(values, setSubmitting)
       }
-
     },
 
 
@@ -256,7 +293,7 @@ const Dashboard = () => {
 
 
   return (
-    <div className="bg-white py-5 px-3 space-y-3">
+    <div className="bg-white py-5 px-3 space-y-3 h-screen">
       <div className="flex w-full">
         <Searchbar />
       </div>
@@ -274,15 +311,14 @@ const Dashboard = () => {
       </div>
       {
         loading ? (
-          <div className="flex w-full justify-center">
+          <div className="flex w-full h-2/3 justify-center items-center">
             <span className="flex flex-col items-center">
               <Spinner />
-              <p className="text-sm text-gray-400"> Fetching Admins</p>
+              {/* <p className="text-sm text-gray-400"> Fetching Admins</p> */}
             </span>
           </div>
         )
           :
-
           isEmpty(users) ? (
             <div className="flex w-full justify-center items-center">
               <p className="text-gray-500"> No Admins Yet</p>
@@ -461,58 +497,7 @@ const Dashboard = () => {
                         </div>
                       ))
                     }
-                    {/* <div>
-                      <label className="inline-flex items-center">
-                        <input
-                          name="admin"
-                          type="checkbox"
-                          checked={initialValues?.permissions?.admin}
-                          value="admin"
-                          className="form-checkbox"
-                          onChange={(e) => handleAccessChange(e)}
-                        />
-                        <span className="ml-2">Admin</span>
-                      </label>
-                    </div>
-                    <div>
-                      <label className="inline-flex items-center">
-                        <input
-                          name="businessVerification"
-                          type="checkbox"
-                          value="businessVerification"
-                          checked={initialValues?.permissions?.businessVerification}
-                          className="form-checkbox"
-                          onChange={(e) => handleAccessChange(e)}
-                        />
-                        <span className="ml-2">Business Verification</span>
-                      </label>
-                    </div>
-                    <div>
-                      <label className="inline-flex items-center">
-                        <input
-                          name="manageUsers"
-                          type="checkbox"
-                          value="manageUsers"
-                          checked={initialValues?.permissions?.manageUsers}
-                          className="form-checkbox"
-                          onChange={(e) => handleAccessChange(e)}
-                        />
-                        <span className="ml-2">Manage Users</span>
-                      </label>
-                    </div>
-                    <div>
-                      <label className="inline-flex items-center">
-                        <input
-                          name="contentManagement"
-                          type="checkbox"
-                          value="contentManagement"
-                          checked={initialValues?.permissions?.contentManagement}
-                          className="form-checkbox"
-                          onChange={(e) => handleAccessChange(e)}
-                        />
-                        <span className="ml-2">Content Management</span>
-                      </label>
-                    </div>*/}
+
                   </div>
                 </div>
               )}
@@ -542,13 +527,44 @@ const Dashboard = () => {
                 _Toggle={modalTitle === 'Create Admin' ? ToggleCreateModal : ToggleEditModal}
                 title={modalTitle}
                 body={(
-                  <>
+                  <div className="flex flex-col w-full">
                     <AdminForm
                       formik={formik}
                       showPassword={showPassword}
                       setShowPassword={setShowPassword}
                     />
-                  </>
+                    {
+                      modalTitle === 'Create Admin' &&
+                      <>
+                        <p className="text-md font-semibold mb-4">Access</p>
+                        <div className="flex w-full justify-center items-center">
+                          <div className="grid grid-cols-2 gap-6">
+                            {
+                              access.map(({ name, value }, index) => (
+                                <div>
+                                  <label className="inline-flex items-center">
+                                    <input
+                                      name={name}
+                                      type="checkbox"
+                                      checked={value}
+                                      value={name}
+                                      className="form-checkbox"
+                                      onChange={(e) => handleAccessChange(e)}
+                                    />
+                                    <span className="ml-2">{Permissions[index]}</span>
+                                  </label>
+                                </div>
+                              ))
+                            }
+                          </div>
+                        </div>
+                      </>
+                    }
+                    {
+                      !selctedAccess && modalTitle === 'Create Admin' &&
+                      <p className="text-danger text-sm font-normal mt-2 text-center">Select atleast one role</p>
+                    }
+                  </div>
                 )}
                 footer={(
                   <>
@@ -561,7 +577,10 @@ const Dashboard = () => {
                     </button>
                     <Button
                       type="submit"
-                      className="w-full inline-flex justify-center rounded-md border-none px-4 py-2 primary-btn text-base font-medium text-white focus:outline-none sm:ml-3 sm:w-auto sm:text-sm"
+                      disabled={!selctedAccess}
+                      className={`w-full inline-flex justify-center rounded-md border-none px-4 py-2
+                       ${selctedAccess ? 'primary-btn' : 'btn-disable'}
+                      text-base font-medium text-white focus:outline-none sm:ml-3 sm:w-auto sm:text-sm`}
                       childrens={modalTitle === 'Create Admin' ? 'Submit' : 'Save'}
                       loading={formik.isSubmitting}
 

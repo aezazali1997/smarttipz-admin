@@ -23,6 +23,7 @@ const Dashboard = () => {
 	const [modalTitle, setModalTitle] = useState('Create Admin');
 	const [initialValues, setInitialValues] = useState(initials);
 	const [activeCategory, setActiveCategory] = useState('All');
+	const [phone, setPhone] = useState('');
 
 	useEffect(() => {
 
@@ -56,10 +57,11 @@ const Dashboard = () => {
 		setIsLoading(false);
 	}
 
-	const ToggleEditModal = (id, name, email) => {
+	const ToggleEditModal = (id, name, email, phoneNumber) => {
 		setInitialValues({
 			id, name, email, password: ''
 		});
+		setPhone(phoneNumber);
 		setModalTitle('Edit Business User');
 		setShowPassword(false);
 		setShowModal(!showModal);
@@ -67,7 +69,7 @@ const Dashboard = () => {
 
 	let Active = (path) => {
 		return activeCategory === path ?
-			'background text-white' : 'text bg-white'
+			'background text-white z-20' : 'text bg-white'
 	}
 
 
@@ -175,6 +177,7 @@ const Dashboard = () => {
 
 	const _OnEditVerifiedUser = (values, setSubmitting) => {
 		setSubmitting(true);
+		values.phoneNumber = phone;
 		console.log('values: ', values);
 		axiosInstance.editVerifiedBusinessUser(values).then(({ data: { message, data } }) => {
 			Swal.fire({
@@ -190,6 +193,7 @@ const Dashboard = () => {
 				else {
 					user.name = values.name
 					user.email = values.email
+					user.phoneNumber = phone
 					return user;
 				}
 			})
@@ -227,7 +231,7 @@ const Dashboard = () => {
 			filtered = allUsers.filter(user => user.isApproved === true && user);
 			setUsers(filtered);
 		}
-		else if (category === 'unverified') {
+		else if (category === 'Not verified') {
 			filtered = allUsers.filter(user => user.isApproved === false && user)
 			setUsers(filtered);
 		}
@@ -237,18 +241,22 @@ const Dashboard = () => {
 		setActiveCategory(category);
 	}
 
+	const _OnPhoneNoChange = (value) => {
+		console.log(value);
+		setPhone(value);
+	}
 
 	return (
-		<div className="bg-white py-5 px-3 space-y-3">
+		<div className="bg-white py-5 px-3 space-y-3 h-screen">
 			<div className="flex w-full">
 				<Searchbar />
 			</div>
 			{
 				loading ? (
-					<div className="flex w-full justify-center">
+					<div className="flex w-full h-4/5 justify-center items-center">
 						<span className="flex flex-col items-center">
 							<Spinner />
-							<p className="text-sm text-gray-400"> Fetching Admins</p>
+							{/* <p className="text-sm text-gray-400"> Fetching Admins</p> */}
 						</span>
 					</div>
 				)
@@ -382,7 +390,7 @@ const Dashboard = () => {
 													{
 														isApproved ?
 															<div className="flex justify-around w-full space-x-2">
-																<p onClick={() => ToggleEditModal(id, name, email)} className="flex items-center cursor-pointer">
+																<p onClick={() => ToggleEditModal(id, name, email, phoneNumber)} className="flex items-center cursor-pointer">
 																	<svg className="w-5 h-5 icon" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
 																		<path d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z" /><path fillRule="evenodd" d="M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z" clipRule="evenodd" />
 																	</svg>
@@ -430,12 +438,15 @@ const Dashboard = () => {
 						<Modal
 							_Toggle={ToggleEditModal}
 							title={modalTitle}
+							businessUser={true}
 							body={(
 								<>
 									<AdminForm
 										formik={formik}
 										showPassword={showPassword}
 										setShowPassword={setShowPassword}
+										_OnPhoneNoChange={_OnPhoneNoChange}
+										phoneNumber={phone}
 									/>
 								</>
 							)}

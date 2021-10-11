@@ -1,3 +1,4 @@
+import Joi from "joi";
 import * as Yup from "yup";
 
 
@@ -43,4 +44,10 @@ export const OptionalAdminSchema = Yup.object().shape({
 
 export const ForgetPasswordSchema = Yup.object().shape({
     email: Email('Email is a required field'),
+});
+
+export const RemoveVideoSchema = Yup.object().shape({
+    message: Yup.string()
+        .min(3, 'Minimun 3 words are required')
+        .required('Message is a required field')
 });

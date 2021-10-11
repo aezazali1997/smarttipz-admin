@@ -33,7 +33,7 @@ const handler = async (req, res) => {
         }
     }
     else if (req.method === 'PUT') {
-        const { body, body: { name, email, password, id }, headers: { authorization } } = req;
+        const { body, body: { name, email, password, id, phoneNumber }, headers: { authorization } } = req;
         const validateSignup = (data) => {
             const schema = Joi.object({
                 name: Joi.string().required(),
@@ -62,11 +62,11 @@ const handler = async (req, res) => {
                 process.env.SECRET_KEY
             );
             if (!password) {
-                await User.update({ name, email }, { where: { id } });
+                await User.update({ name, email, phoneNumber }, { where: { id } });
             }
             else {
                 const encPassword = await bcrypt.hash(password, 12);
-                await User.update({ name, email, password: encPassword }, { where: { id } });
+                await User.update({ name, email, password: encPassword, phoneNumber }, { where: { id } });
             }
 
             res.status(201).json({ error: false, data: {}, message: 'User updated successfuly.' });

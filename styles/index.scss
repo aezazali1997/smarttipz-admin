@@ -7,6 +7,7 @@
 @import './table.scss';
 @import './videoplayer.scss';
 @import './card.scss';
+@import 'react-phone-input-2/lib/style.css';
 @import '../node_modules/video-react/dist/video-react.css';
 
 
@@ -29,4 +30,21 @@
 .disable-text {
     color: $btn-hover;
     pointer-events: none;
+}
+
+.react-tel-input .form-control {
+    position: relative;
+    font-size: 14px;
+    letter-spacing: .01rem;
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+    padding-left: 48px;
+    margin-left: 0;
+    background: #F9FAFB !important;
+    border: 1px solid #e7e6e6;
+    border-radius: 5px;
+    line-height: 25px;
+    height: 3rem !important;
+    width: 100% !important;
+    outline: none;
 }

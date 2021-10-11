@@ -1,15 +1,15 @@
 import React from 'react'
 import { Player, BigPlayButton } from 'video-react';
 
-const VideoPlayer = () => {
+const VideoPlayer = ({ poster, src, ...props }) => {
     return (
         <Player
-            className="w-full"
+            className="video"
             playsInline
-            poster="/assets/poster.png"
-            src="https://media.w3.org/2010/05/sintel/trailer_hd.mp4"
+            poster={poster}
+            src={src}
         >
-            <BigPlayButton position="center" />
+            <BigPlayButton position="center " />
         </Player>
     )
 }

@@ -40,13 +40,14 @@ const handler = async (req, res) => {
         }
     }
     else if (req.method === 'POST') {
-        const { body, body: { name, email, password }, headers: { authorization } } = req;
+        const { body, body: { name, email, password, permissions }, headers: { authorization } } = req;
         const validateSignup = (data) => {
             const schema = Joi.object({
                 name: Joi.string().required(),
                 // username: Joi.string().required(),
                 email: Joi.string().required().email(),
                 password: Joi.string().required(),
+                permissions: Joi.optional().allow(null),
                 role: Joi.string().optional().allow('').allow(null)
             });
             return schema.validate(data);
@@ -56,7 +57,7 @@ const handler = async (req, res) => {
 
         if (error) return res.status(400).json({ error: error.details[0].message });
 
-        let user;
+
 
         try {
             if (!authorization) {
@@ -72,7 +73,7 @@ const handler = async (req, res) => {
             //     throw new Error('Username already exists');
             // }
 
-            user = await Admin.findOne({ where: { email } });
+            const user = await Admin.findOne({ where: { email } });
             if (user) {
                 throw new Error('Email already in use');
             }
@@ -83,31 +84,12 @@ const handler = async (req, res) => {
 
             await Admin.create({
                 name,
-                // username,
-                role: 'admin',
-                permissions: [{
-                    name: 'admin',
-                    value: true
-
-                },
-                {
-                    name: 'manageUsers',
-                    value: false
-
-                },
-                {
-                    name: 'businessVerification',
-                    value: false
-
-                },
-                {
-                    name: 'contentManagement',
-                    value: false
-
-                }],
                 email,
                 password: encPassword,
-            });
+                // username,
+                role: 'admin',
+                permissions
+            })
 
             res.status(201).json({ error: false, data: {}, message: 'Admin created successfuly.' });
         } catch (err) {
