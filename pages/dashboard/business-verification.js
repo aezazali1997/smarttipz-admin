@@ -145,12 +145,13 @@ const Dashboard = () => {
 	}
 
 	const _HandleBlock = (id, isBlocked) => {
-		SwalDeleteModal("You won't be able to revert this!", isBlocked ? 'Unblock' : 'Block', () => _OnBlock(id, isBlocked))
-
+		SwalDeleteModal(
+			"You won't be able to revert this!", isBlocked ? 'Unblock' : 'Block',
+			() => _OnBlock(id, isBlocked))
 	}
 
 	const _Onverify = (id) => {
-		axiosInstance.verifyBusinessUser({ id }).then(({ data: { data: { message } } }) => {
+		axiosInstance.verifyBusinessUser({ id }).then(({ data: { message } }) => {
 			Swal.fire({
 				text: message,
 				icon: 'success',
@@ -172,7 +173,6 @@ const Dashboard = () => {
 
 	const _HandleVerify = (id) => {
 		SwalDeleteModal("You want to verify this user", "Verify", () => _Onverify(id))
-
 	}
 
 	const _OnEditVerifiedUser = (values, setSubmitting) => {
@@ -216,7 +216,7 @@ const Dashboard = () => {
 	const formik = useFormik({
 		enableReinitialize: true,
 		initialValues: initialValues,
-		validationSchema: (OptionalAdminSchema),
+		validationSchema: OptionalAdminSchema,
 		validateOnBlur: true,
 		onSubmit: (values, { setSubmitting }) => {
 			_OnEditVerifiedUser(values, setSubmitting)
@@ -231,7 +231,7 @@ const Dashboard = () => {
 			filtered = allUsers.filter(user => user.isApproved === true && user);
 			setUsers(filtered);
 		}
-		else if (category === 'Not verified') {
+		else if (category === 'Unverified') {
 			filtered = allUsers.filter(user => user.isApproved === false && user)
 			setUsers(filtered);
 		}
@@ -359,7 +359,7 @@ const Dashboard = () => {
 											<tr key={index} className={'admin-table'}>
 												<td className="space-x-2 border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
 													<Badge color={isBlocked ? 'bg-red-400' : isApproved ? 'bg-green-400' : 'bg-yellow-300'}
-														childrens={isBlocked ? 'Blocked' : isApproved ? 'Verified' : 'Not Verified'}
+														childrens={isBlocked ? 'Blocked' : isApproved ? 'Verified' : 'Unverified'}
 													/>
 												</td>
 												<td className="border-t-0 w-max space-x-3 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-wrap  p-4 text-left flex items-center">
@@ -438,11 +438,11 @@ const Dashboard = () => {
 						<Modal
 							_Toggle={ToggleEditModal}
 							title={modalTitle}
-							businessUser={true}
 							body={(
 								<>
 									<AdminForm
 										formik={formik}
+										businessUser={true}
 										showPassword={showPassword}
 										setShowPassword={setShowPassword}
 										_OnPhoneNoChange={_OnPhoneNoChange}

@@ -137,7 +137,7 @@ const ContentManagement = () => {
 											name="message"
 											className={
 												`${getInputClasses(formik, 'message')}
-												resize- none border overflow-y-auto bg-gray-50 text-sm
+												resize-none border overflow-y-auto bg-gray-50 text-sm
 												border-gray-200 focus:outline-none rounded-md
 												focus:shadow-sm w-full px-2 py-3`}
 											value={formik.values.message}
