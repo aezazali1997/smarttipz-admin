@@ -5,6 +5,7 @@ import React, { useEffect, useState } from 'react'
 import { getInputClasses } from 'utils/helpers';
 import { FormikProvider, useFormik } from 'formik';
 import { RemoveVideoSchema } from 'utils/validation_shema';
+import swal from 'sweetalert';
 
 const initials = {
 	email: '',
@@ -22,7 +23,6 @@ const ContentManagement = () => {
 		enableLoading(true);
 		try {
 			const { data: { data: { users } } } = await axiosInstance.getContentVideos();
-			console.log('response: ', users);
 			setUsers(users);
 			disableLoading(false);
 		}
@@ -46,8 +46,8 @@ const ContentManagement = () => {
 	};
 
 
-	const _OpenModal = (email) => {
-		setInitialValues({ ...initialValues, email })
+	const _OpenModal = (id, UserId, email) => {
+		setInitialValues({ ...initialValues, id, UserId, email })
 		setShowModal(!showModal);
 	}
 
@@ -56,19 +56,25 @@ const ContentManagement = () => {
 	}
 
 	const _OnSubmit = async (values, setSubmitting, resetForm) => {
-		// setSubmitting(true);
-		// try {
-		// 	const res = await axiosInstance.removeVideo(values)
-		// 	console.log('res: ', res);
-		// 	const updatedUser = users.filter(user => user.email !== values.email && user);
-		// 	setUsers(updatedUser);
-		// 	resetForm(initials);
-		// 	setSubmitting(false);
-		// 	ToggleModal();
-		// }
-		// catch (e) {
-		// 	console.log('error: ', e);
-		// }
+		setSubmitting(true);
+		try {
+			const { data: { message } } = await axiosInstance.removeVideo(values)
+			swal({
+				text: message,
+				buttons: false,
+				icon: 'success',
+				timer: 3000
+			})
+			fetchMedia();
+			// const updatedUser = users.filter(user => user.email !== values.email && user);
+			// setUsers(updatedUser);
+			resetForm(initials);
+			setSubmitting(false);
+			ToggleModal();
+		}
+		catch (e) {
+			console.log('error: ', e);
+		}
 	}
 
 	const formik = useFormik({
@@ -102,10 +108,10 @@ const ContentManagement = () => {
 						<div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-y-6 gap-x-6'>
 							{
 								users.map(({ username, picture, accountType, email, name, Videos }) => (
-									Videos.map(({ url, thumbnail }, index) => (
+									Videos.map(({ url, thumbnail, id, UserId }, index) => (
 										<div key={index}>
 											<Card
-												onClick={() => _OpenModal(email)}
+												onClick={() => _OpenModal(id, UserId, email)}
 												video={(<VideoPlayer src={url} poster={thumbnail} />)}
 												title={name}
 												description={accountType === 'Business' ? email : username}

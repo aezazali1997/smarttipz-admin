@@ -32,7 +32,7 @@ const handler = async (req, res) => {
             const users = await User.findAll({
                 include: [
                     {
-                        model: Video, where: { mediaType: 'video' }
+                        model: Video, where: { mediaType: 'video', isApproved: true }
                     }
                 ],
                 where: {
@@ -46,9 +46,9 @@ const handler = async (req, res) => {
         }
     }
     if (req.method === 'POST') {
-        const { body, body: { email, message }, headers: { authorization } } = req;
+        const { body, body: { email, message, id, UserId }, headers: { authorization } } = req;
 
-        console.log('email,message', email, message);
+        console.log('email,message', email, message, id, UserId);
 
         try {
             if (!authorization) {
@@ -60,15 +60,10 @@ const handler = async (req, res) => {
                 process.env.SECRET_KEY
             );
 
-            const user = await User.findOne({
-                where: {
-                    email
-                },
+            const video = await Video.update(
+                { isApproved: false }, {
+                where: { id },
             });
-
-            if (!user) {
-                return res.status(404).json({ error: true, data: {}, message: 'No use found.' });
-            }
 
             const msg = {
                 to: `${email}`, // Change to your recipient
@@ -76,8 +71,8 @@ const handler = async (req, res) => {
                     email: process.env.SENDER_EMAIL, // Change to your verified sender
                     name: 'Smart Tipz'
                 }, // Change to your verified sender
-                subject: 'Video Alert',
-                templateId: 'd-c85cb598abce4fcc8693605a007ca9e9',
+                subject: 'Video Removal Alert!',
+                templateId: 'd-a26d4bad11674eb5b720cd86cc6c189b',
                 dynamicTemplateData: {
                     message: message,
                 },
@@ -89,8 +84,6 @@ const handler = async (req, res) => {
                 .then((response) => {
                     console.log(response[0].statusCode)
                     console.log(response[0].headers)
-                    user.isApproved = false;
-                    user.save();
                     return res.send({
                         error: false,
                         data: {},
@@ -104,7 +97,6 @@ const handler = async (req, res) => {
                         .send({ error: true, message: 'Message not Sent, try again.' });
                 }
                 )
-
 
 
             res.status(200).json({ error: false, data: {}, message: 'Content removed successfuly.' });
