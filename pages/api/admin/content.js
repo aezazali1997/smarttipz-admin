@@ -32,7 +32,7 @@ const handler = async (req, res) => {
             const users = await User.findAll({
                 include: [
                     {
-                        model: Video, where: { mediaType: 'video', isApproved: true }
+                        model: Video, where: { isApproved: true }
                     }
                 ],
                 where: {

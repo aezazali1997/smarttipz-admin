@@ -1,8 +1,10 @@
 const jwt = require('jsonwebtoken');
 
+const Business = require('../../../../models/Business');
 const User = require('../../../../models/User');
 const Joi = require('joi');
 const bcrypt = require('bcryptjs');
+
 const handler = async (req, res) => {
     if (req.method === 'GET') {
         const { headers } = req;
@@ -18,6 +20,11 @@ const handler = async (req, res) => {
             );
 
             const users = await User.findAll({
+                include: [
+                    {
+                        model: Business, attribute: ['link']
+                    }
+                ],
                 where: { accountType: 'Business', isDeleted: false },
                 order: [["createdAt", "DESC"]]
             });
@@ -33,11 +40,12 @@ const handler = async (req, res) => {
         }
     }
     else if (req.method === 'PUT') {
-        const { body, body: { name, email, password, id, phoneNumber }, headers: { authorization } } = req;
+        const { body, body: { name, email, password, id, phoneNumber, website }, headers: { authorization } } = req;
         const validateSignup = (data) => {
             const schema = Joi.object({
                 name: Joi.string().required(),
                 email: Joi.string().required().email(),
+                website: Joi.string().uri().required()
                 // username: Joi.string().required(),
                 // password: Joi.string().optional().allow('').allow(null),
                 // id: Joi.string().optional().allow('').allow(null),
@@ -46,7 +54,7 @@ const handler = async (req, res) => {
         };
 
         const data = {
-            name, email
+            name, email, website
         }
         const { error } = validateSignup(data);
 
@@ -68,6 +76,8 @@ const handler = async (req, res) => {
                 const encPassword = await bcrypt.hash(password, 12);
                 await User.update({ name, email, password: encPassword, phoneNumber }, { where: { id } });
             }
+
+            await Business.update({ link: website }, { where: { UserId: id } })
 
             res.status(201).json({ error: false, data: {}, message: 'User updated successfuly.' });
         } catch (err) {

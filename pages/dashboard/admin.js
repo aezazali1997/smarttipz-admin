@@ -103,21 +103,17 @@ const Dashboard = () => {
   const handleAccessChange = (e) => {
     const { checked, name, value } = e.target;
     let copyArray = [...access];
-    console.log('here');
     copyArray.forEach(permission => {
       if (permission.name === value) {
         permission.value = checked
       };
     })
-    console.log('here1');
     copyArray.every(permission => {
       if (permission.value === true) {
         setSelectedAccess(true);
-        console.log('herer')
         return false;
       }
       else {
-        console.log('herer1')
         setSelectedAccess(false);
         return true;
       }
@@ -413,11 +409,11 @@ const Dashboard = () => {
                       users.map(({ name, email, picture, id, role, permissions }, index) => (
                         <tr key={index}>
                           <td className="border-t-0 w-max space-x-3 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-wrap  p-4 text-left flex items-center">
-                            <img
+                            {/* <img
                               src={picture || 'https://thumbs.dreamstime.com/b/solid-purple-gradient-user-icon-web-mobile-design-interface-ui-ux-developer-app-137467998.jpg'}
                               className="h-12 w-12 bg-white rounded-full border"
                               alt="..."
-                            />
+                            /> */}
                             <span
                               className={
                                 "font-bold text-blueGray-600"

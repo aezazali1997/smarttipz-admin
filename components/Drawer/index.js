@@ -86,6 +86,15 @@ const Drawer = ({ isOpen, toggle, logout }) => {
                                     {/* <Badge /> */}
                                 </div>
                             </Link>
+                            <Link href='/dashboard/setting' className='p-4 font-sans nav-link nav-link-ltr' >
+                                <div onClick={toggle} className={`flex justify-between items-center py-2 px-3 rounded-lg w-52 font-medium sidebar-item cursor-pointer
+                                    ${Active("/dashboard/setting")}`} >
+                                    <div>
+                                        <FontAwesomeIcon icon={faCog} />&nbsp;Settings
+                                    </div>
+                                    {/* <Badge /> */}
+                                </div>
+                            </Link>
                         </>
                     </div>
                     <div className="flex items-center">

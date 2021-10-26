@@ -40,6 +40,7 @@ export const OptionalAdminSchema = Yup.object().shape({
         .min(3, "Minimum 3 characters")
         .max(50, "Maximum 50 characters")
         .optional(),
+    website: Yup.string().url().required("Business Website address is a required field"),
 });
 
 export const ForgetPasswordSchema = Yup.object().shape({
@@ -50,4 +51,15 @@ export const RemoveVideoSchema = Yup.object().shape({
     message: Yup.string()
         .min(3, 'Minimun 3 words are required')
         .required('Message is a required field')
+});
+
+
+export const AccountInfoValidationSchema = Yup.object().shape({
+    old: Yup.string()
+        .required("This is a required field "),
+    new: Yup.string()
+        .required("This is a required field "),
+    confirm: Yup.string()
+        .oneOf([Yup.ref("new")], "Confirm password must match with new password")
+        .required("This is a required field"),
 });

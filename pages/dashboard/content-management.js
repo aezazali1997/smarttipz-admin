@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import axiosInstance from 'APIs/axiosInstance';
 import { Button, Card, Modal, Spinner, VideoPlayer } from 'components';
 import { initial, isEmpty } from 'lodash';
@@ -107,12 +108,16 @@ const ContentManagement = () => {
 						:
 						<div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-y-6 gap-x-6'>
 							{
-								users.map(({ username, picture, accountType, email, name, Videos }) => (
-									Videos.map(({ url, thumbnail, id, UserId }, index) => (
+								users.map(({ username, picture, accountType, email, name, Videos, }) => (
+									Videos.map(({ url, thumbnail, id, UserId, mediaType }, index) => (
 										<div key={index}>
 											<Card
 												onClick={() => _OpenModal(id, UserId, email)}
-												video={(<VideoPlayer src={url} poster={thumbnail} />)}
+												video={
+													mediaType === 'video' ? (<VideoPlayer src={url} poster={thumbnail} />) :
+														(<img className="w-full rounded-lg object-cover"
+															src={url} alt="Sunset in the mountains" style={{ height: '200px' }} />)
+												}
 												title={name}
 												description={accountType === 'Business' ? email : username}
 												picture={picture}
@@ -152,10 +157,18 @@ const ContentManagement = () => {
 											placeholder="Type your message here ..."
 											autoComplete="off"
 										/>
-										{formik.touched.message && formik.errors.message &&
-											<div className="text-red-700 text-sm mb-4" >{formik.errors.message}</div>
-										}
+										<div className="flex justify-between w-full">
+											{
+												formik.values.message.length === 700 ?
+													<div className="text-red-700 text-sm mb-4" >Maximum limit reached</div>
+													:
+													formik.touched.message && formik.errors.message &&
+													<div className="text-red-700 text-sm mb-4" >{formik.errors.message}</div>}
+											<p className=" text-md text-gray-500">{formik.values.message.length}/700</p>
+										</div>
+
 									</div>
+
 								</div>
 							</div>
 						)}

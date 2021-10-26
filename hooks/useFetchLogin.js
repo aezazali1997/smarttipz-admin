@@ -47,13 +47,13 @@ const UseFetchLogin = () => {
                 setSubmitting(true);
                 const data = { email, password }
                 axiosInstance.login(data)
-                    .then(({ data: { data: { username, token, id, role, permissions }, message } }) => {
+                    .then(({ data: { data: { token, id, role, permissions }, message } }) => {
                         disableLoading();
                         setError(false);
                         setStatus(message);
                         setShowAlert(true);
                         cookie.set('token', token);
-                        cookie.set('username', username);
+                        // cookie.set('email', email);
                         // localStorage.setItem('image', image);
                         localStorage.setItem('id', id);
                         localStorage.setItem('role', role);

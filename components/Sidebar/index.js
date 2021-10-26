@@ -4,7 +4,7 @@ import logo from '../../public/logo.png';
 import Image from 'next/image';
 import Link from 'next/link';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faNewspaper, faUserCircle, faCog, faPlayCircle, faSignOutAlt, faComment, faClipboardList } from '@fortawesome/free-solid-svg-icons'
+import { faNewspaper, faUserCircle, faCog, faPlayCircle, faSignOutAlt, faComment, faClipboardList, faCogs } from '@fortawesome/free-solid-svg-icons'
 import { useRouter } from 'next/router';
 import { isEmpty } from 'lodash';
 // import Badge from 'components/Badge';
@@ -85,6 +85,17 @@ const Sidebar = ({ logout }) => {
                             ${Active("/dashboard/content-management")} ${CheckPermissions('contentManagement')}`}>
                                     <div>
                                         <FontAwesomeIcon icon={faComment} />&nbsp;Content Management
+                                    </div>
+                                    {/* <Badge /> */}
+                                </div>
+                            </a>
+                        </Link>
+                        <Link href='/dashboard/setting' className='p-4 font-sans nav-link nav-link-ltr' >
+                            <a>
+                                <div className={`flex items-center justify-between py-2 px-3 rounded-lg w-52 font-medium  cursor-pointer
+                            ${Active("/dashboard/setting")}`}>
+                                    <div>
+                                        <FontAwesomeIcon icon={faCog} />&nbsp;Settings
                                     </div>
                                     {/* <Badge /> */}
                                 </div>

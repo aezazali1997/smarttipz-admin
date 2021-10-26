@@ -116,7 +116,10 @@ class AxiosInstance {
         return await axios.post(USER_API_BASE_URL + `api/admin/content`, values, this.getAuthHeader());
     }
 
-
+    async changePassword(values) {
+        console.log('In Change Password Api: ');
+        return await axios.put(USER_API_BASE_URL + `api/user/change-password`, values, this.getAuthHeader());
+    }
 
 }
 
