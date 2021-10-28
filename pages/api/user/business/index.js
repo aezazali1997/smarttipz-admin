@@ -1,13 +1,16 @@
+import { getUsers } from 'utils/consts';
+
 const jwt = require('jsonwebtoken');
 
 const Business = require('../../../../models/Business');
 const User = require('../../../../models/User');
 const Joi = require('joi');
 const bcrypt = require('bcryptjs');
+const Sequelize = require('sequelize');
 
 const handler = async (req, res) => {
     if (req.method === 'GET') {
-        const { headers } = req;
+        const { headers, query: { search } } = req;
 
         try {
             if (!headers.authorization) {
@@ -22,10 +25,11 @@ const handler = async (req, res) => {
             const users = await User.findAll({
                 include: [
                     {
-                        model: Business, attribute: ['link']
+                        model: Business,
+                        attribute: ['link']
                     }
                 ],
-                where: { accountType: 'Business', isDeleted: false },
+                where: getUsers(search),
                 order: [["createdAt", "DESC"]]
             });
             console.log(users);

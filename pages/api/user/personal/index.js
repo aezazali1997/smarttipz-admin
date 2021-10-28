@@ -1,3 +1,5 @@
+import { FilterPersonalUsers } from 'utils/consts';
+
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const User = require('../../../../models/User');
@@ -5,7 +7,7 @@ const Joi = require('joi');
 
 const handler = async (req, res) => {
     if (req.method === 'GET') {
-        const { headers } = req;
+        const { headers, query: { search } } = req;
 
         try {
             if (!headers.authorization) {
@@ -18,7 +20,7 @@ const handler = async (req, res) => {
             );
 
             const users = await User.findAll({
-                where: { accountType: 'Personal', isDeleted: false },
+                where: FilterPersonalUsers(search),
                 order: [["createdAt", "DESC"]]
             });
             console.log(users);

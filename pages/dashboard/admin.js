@@ -3,13 +3,12 @@
 import React, { useEffect, useState } from 'react'
 import Swal from 'sweetalert2';
 import { useFormik } from 'formik';
+import { isEmpty } from 'lodash';
 import { Plus } from 'assets/SVGs';
 import axiosInstance from '../../APIs/axiosInstance';
 import { Button, Searchbar, Spinner, Modal, AdminForm } from '../../components';
 import { CreateAdminValidationSchema, OptionalAdminSchema } from 'utils/validation_shema';
-import { isEmpty } from 'lodash';
-import { faGrinSquintTears } from '@fortawesome/free-solid-svg-icons';
-
+import useDebounce from 'utils/Debounce';
 
 const initials = {
   name: '',
@@ -29,22 +28,38 @@ const Dashboard = () => {
   const [access, setAccess] = useState([]);
   const [selected, setSelected] = useState('');
   const [selctedAccess, setSelectedAccess] = useState(false);
-
+  const [search, setSearch] = useState('');
   // const [accessView, setAccessView] = useState('admin');
 
+  const debouncedSearchTerm = useDebounce(search, 1000);
+
   const Permissions = ['Admin', 'Manage Users', 'Business Verification', 'Content Management']
-  useEffect(() => {
+
+  const FetchAllAdmins = async () => {
     enableLoading();
-    axiosInstance.getAllAdmins().then(({ data: { data: { admins } } }) => {
+    try {
+      const { data: { data: { admins } } } = await axiosInstance.getAllAdmins(search)
+      console.log(admins);
       setUsers(admins);
       disableLoading();
-    }).catch((e) => {
+    }
+    catch (e) {
       console.log('API Error: ', e);
       disableLoading();
-    })
+    }
+  }
+
+  useEffect(() => {
+    FetchAllAdmins(search)
   }, [])
 
   useEffect(() => { }, [users, initialValues]);
+
+  useEffect(() => {
+    // if (debouncedSearchTerm) {
+    FetchAllAdmins(debouncedSearchTerm);
+    // }
+  }, [debouncedSearchTerm])
 
 
   const enableLoading = () => {
@@ -167,7 +182,7 @@ const Dashboard = () => {
     console.log('ID to delete: ', id);
     Swal.fire({
       title: 'Are you sure?',
-      text: "You won't be able to revert this!",
+      html: `<p class='text-red-600'>You won't be able to revert this!</p>`,
       icon: 'question',
       showCancelButton: true,
       confirmButtonText: 'Delete',
@@ -291,7 +306,7 @@ const Dashboard = () => {
   return (
     <div className="bg-white py-5 px-3 space-y-3 h-screen">
       <div className="flex w-full">
-        <Searchbar />
+        <Searchbar search={search} onChange={setSearch} />
       </div>
       <div className="flex w-full justify-end">
         <Button

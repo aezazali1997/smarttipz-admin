@@ -7,7 +7,7 @@ import { Plus } from 'assets/SVGs';
 import axiosInstance from '../../APIs/axiosInstance';
 import { Button, Searchbar, Spinner, Modal, AdminForm } from '../../components';
 import { CreateAdminValidationSchema, OptionalAdminSchema } from 'utils/validation_shema';
-
+import useDebounce from 'utils/Debounce';
 
 const initials = {
     name: '',
@@ -24,17 +24,32 @@ const Dashboard = () => {
     const [showPassword, setShowPassword] = useState(false);
     const [modalTitle, setModalTitle] = useState('Create Admin');
     const [initialValues, setInitialValues] = useState(initials);
+    const [search, setSearch] = useState('');
+    const debouncedSearchTerm = useDebounce(search, 1000);
 
-    useEffect(() => {
+    const FetchPersonalUsers = async (search) => {
         enableLoading();
-        axiosInstance.getAllPersonalUsers().then(({ data: { data: { users } } }) => {
+        try {
+            const { data: { data: { users } } } = await axiosInstance.getAllPersonalUsers(search)
             setUsers(users);
             disableLoading();
-        }).catch((e) => {
+        }
+        catch (e) {
             console.log('API Error: ', e);
             disableLoading();
-        })
+        }
+    }
+
+
+    useEffect(() => {
+        FetchPersonalUsers(search);
     }, [])
+
+    useEffect(() => {
+        // if (debouncedSearchTerm) {
+        FetchPersonalUsers(debouncedSearchTerm);
+        // }
+    }, [debouncedSearchTerm])
 
     useEffect(() => { }, [users, initialValues]);
 
@@ -45,7 +60,6 @@ const Dashboard = () => {
     const disableLoading = () => {
         setIsLoading(false);
     }
-
 
     const ToggleEditModal = (id, name, email) => {
         setInitialValues({
@@ -159,7 +173,7 @@ const Dashboard = () => {
     return (
         <div className="bg-white py-5 px-3 space-y-3 h-screen">
             <div className="flex w-full">
-                <Searchbar />
+                <Searchbar search={search} onChange={setSearch} />
             </div>
             {
                 loading ? (

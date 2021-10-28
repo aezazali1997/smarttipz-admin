@@ -1,4 +1,5 @@
 import PermissionType from 'models/PermissionType';
+const { getFilterAdmins } = require('utils/consts');
 
 const { isEmpty, forEach } = require('lodash');
 const bcrypt = require('bcryptjs');
@@ -8,7 +9,7 @@ const Admin = require('../../../models/Admin');
 
 const handler = async (req, res) => {
     if (req.method === 'GET') {
-        const { headers: { authorization } } = req;
+        const { headers: { authorization }, query: { search } } = req;
         try {
             if (!authorization) {
                 return res.status(401).send({ error: true, data: [], message: 'Please Login' })
@@ -20,15 +21,17 @@ const handler = async (req, res) => {
             );
 
             const admins = await Admin.findAll({
-
-                where: {
-                    isDelete: false,
-                    // role: {
-                    //     [sequelize.Op.not]: 'superadmin'
-                    // }
-                },
-                // order: [["createdAt", "DESC"]]
+                where: getFilterAdmins(search)
+                // where: {
+                //     isDelete: false,
+                //     // role: {
+                //     //     [sequelize.Op.not]: 'superadmin'
+                //     // }
+                // },
+                // // order: [["createdAt", "DESC"]]
             });
+
+            console.log('admins: ', admins);
             if (isEmpty(admins)) {
                 return res.status(200).json({ error: false, data: { admins }, message: 'Admins fetched successfuly.' });
             }

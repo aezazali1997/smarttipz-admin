@@ -6,6 +6,7 @@ import { useFormik } from 'formik';
 import axiosInstance from 'APIs/axiosInstance';
 import { Button, Searchbar, Spinner, Modal, AdminForm, CategoryFilter, Badge } from 'components';
 import { CreateAdminValidationSchema, OptionalAdminSchema } from 'utils/validation_shema';
+import useDebounce from 'utils/Debounce';
 
 const initials = {
 	name: '',
@@ -25,31 +26,42 @@ const Dashboard = () => {
 	const [activeCategory, setActiveCategory] = useState('All');
 	const [phone, setPhone] = useState('');
 	const [website, setWebsite] = useState('');
+	const [search, setSearch] = useState('');
+	const debouncedSearchTerm = useDebounce(search, 1000);
 
-	useEffect(() => {
-
+	const FetchBusinessVerificationUsers = async (search) => {
 		enableLoading();
-		axiosInstance.getAllBusinessUsers().then(({ data: { data: { users } } }) => {
+		try {
+			const { data: { data: { users } } } = await axiosInstance.getAllBusinessUsers(search)
 			console.log(users);
 			setAllUsers(users)
 			setUsers(users);
 			disableLoading();
-		}).catch((e) => {
-			console.log('API Error: ', e.response.data.message);
+		}
+		catch (e) {
+			console.log('API Error: ', e);
 			Swal.fire({
-				text: "Something went wrong with server, refresh page",
+				text: e,
 				icon: 'info',
 				showCancelButton: false,
 				showConfirmButton: false,
 				timer: 4000
 			});
 			disableLoading();
-		})
+		}
+	}
 
+	useEffect(() => {
+		FetchBusinessVerificationUsers(search);
 	}, [])
 
-	useEffect(() => { }, [users, initialValues, activeCategory]);
+	useEffect(() => {
+		// if (debouncedSearchTerm) {
+		FetchBusinessVerificationUsers(debouncedSearchTerm);
+		// }
+	}, [debouncedSearchTerm])
 
+	useEffect(() => { }, [users, initialValues, activeCategory]);
 
 	const enableLoading = () => {
 		setIsLoading(true);
@@ -80,12 +92,13 @@ const Dashboard = () => {
 	const SwalDeleteModal = (text, confirmBtnText, onConfirmAction) => {
 		Swal.fire({
 			title: 'Are you sure?',
-			text: text,
 			icon: 'question',
+			html: `<p class='text-red-600'>${text}</p>`,
 			showCancelButton: true,
 			confirmButtonText: confirmBtnText,
 			buttonsStyling: false,
 			customClass: {
+
 				confirmButton: 'w-full inline-flex justify-center rounded-md border-none px-4 py-2 primary-btn text-base font-medium text-white focus:outline-none sm:ml-3 sm:w-auto sm:text-sm',
 				cancelButton: 'mt-3 w-full inline-flex justify-center hover:underline  px-4 py-2 text-base font-medium text  sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm',
 			}
@@ -149,7 +162,7 @@ const Dashboard = () => {
 
 	const _HandleBlock = (id, isBlocked) => {
 		SwalDeleteModal(
-			"You won't be able to revert this!", isBlocked ? 'Unblock' : 'Block',
+			"", isBlocked ? 'Unblock' : 'Block',
 			() => _OnBlock(id, isBlocked))
 	}
 
@@ -253,7 +266,7 @@ const Dashboard = () => {
 	return (
 		<div className="bg-white py-5 px-3 space-y-3 h-screen">
 			<div className="flex w-full">
-				<Searchbar />
+				<Searchbar search={search} onChange={setSearch} />
 			</div>
 			{
 				loading ? (

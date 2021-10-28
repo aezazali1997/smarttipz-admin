@@ -42,9 +42,9 @@ class AxiosInstance {
     }
 
 
-    async getAllAdmins() {
+    async getAllAdmins(search) {
         console.log('In request GetAllAdmin Api: ');
-        return await axios.get(USER_API_BASE_URL + "api/admin", this.getAuthHeader());
+        return await axios.get(USER_API_BASE_URL + `api/admin?search=${search}`, this.getAuthHeader());
     }
 
     async setAdminAccess(id, payload) {
@@ -67,9 +67,9 @@ class AxiosInstance {
         return await axios.delete(USER_API_BASE_URL + `api/admin/${id}`, this.getAuthHeader());
     }
 
-    async getAllBusinessUsers() {
+    async getAllBusinessUsers(search) {
         console.log('In request GetAllBusinessUsers Api: ');
-        return await axios.get(USER_API_BASE_URL + "api/user/business", this.getAuthHeader());
+        return await axios.get(USER_API_BASE_URL + `api/user/business?search=${search}`, this.getAuthHeader());
     }
 
     async verifyBusinessUser(id) {
@@ -92,9 +92,9 @@ class AxiosInstance {
         return await axios.delete(USER_API_BASE_URL + `api/user/business/${id}`, this.getAuthHeader());
     }
 
-    async getAllPersonalUsers() {
+    async getAllPersonalUsers(search) {
         console.log('In request Get All Personal Users Api: ');
-        return await axios.get(USER_API_BASE_URL + "api/user/personal", this.getAuthHeader());
+        return await axios.get(USER_API_BASE_URL + `api/user/personal?search=${search}`, this.getAuthHeader());
     }
     async editPersonalUser(payload) {
         console.log('In edit Personal User API: ');
