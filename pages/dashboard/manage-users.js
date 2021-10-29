@@ -72,7 +72,7 @@ const Dashboard = () => {
     const SwalDeleteModal = (text, confirmBtnText, onConfirmAction) => {
         Swal.fire({
             title: 'Are you sure?',
-            text: text,
+            html: `<p class="text-red-600">${text}</p>`,
             icon: 'question',
             showCancelButton: true,
             confirmButtonText: confirmBtnText,
