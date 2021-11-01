@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import cookie from 'js-cookie';
 import { useFormik } from 'formik';
 import { useRouter } from 'next/router';
-import swal from 'sweetalert';
+// import swal from 'sweetalert';
 import axiosInstance from '../APIs/axiosInstance';
 import { LoginSchema } from 'utils/validation_shema';
 
@@ -68,7 +68,6 @@ const UseFetchLogin = () => {
                         setShowAlert(true);
                         setSubmitting(false);
                         disableLoading();
-
                     });
             }, 1000);
 

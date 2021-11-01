@@ -9,6 +9,7 @@ import axiosInstance from '../../APIs/axiosInstance';
 import { Button, Searchbar, Spinner, Modal, AdminForm } from '../../components';
 import { CreateAdminValidationSchema, OptionalAdminSchema } from 'utils/validation_shema';
 import useDebounce from 'utils/Debounce';
+import { OpenEye } from 'assets/SVGs';
 
 const initials = {
   name: '',
@@ -29,7 +30,6 @@ const Dashboard = () => {
   const [selected, setSelected] = useState('');
   const [selctedAccess, setSelectedAccess] = useState(false);
   const [search, setSearch] = useState('');
-  // const [accessView, setAccessView] = useState('admin');
 
   const debouncedSearchTerm = useDebounce(search, 1000);
 
@@ -232,7 +232,7 @@ const Dashboard = () => {
         showCancelButton: false
       })
       const copyOriginalArray = [...users];
-      setUsers([values, ...copyOriginalArray]);
+      setUsers([...copyOriginalArray, values]);
       setSubmitting(false);
       setInitialValues(initials)
       ToggleCreateModal();
@@ -588,9 +588,9 @@ const Dashboard = () => {
                     </button>
                     <Button
                       type="submit"
-                      disabled={!selctedAccess}
+                      disabled={modalTitle === 'Create Admin' ? !selctedAccess : false}
                       className={`w-full inline-flex justify-center rounded-md border-none px-4 py-2
-                       ${selctedAccess ? 'primary-btn' : 'btn-disable'}
+                       ${modalTitle === 'Create Admin' ? selctedAccess ? 'primary-btn' : 'btn-disable' : 'primary-btn'}
                       text-base font-medium text-white focus:outline-none sm:ml-3 sm:w-auto sm:text-sm`}
                       childrens={modalTitle === 'Create Admin' ? 'Submit' : 'Save'}
                       loading={formik.isSubmitting}

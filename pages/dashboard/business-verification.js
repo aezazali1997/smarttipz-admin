@@ -5,8 +5,10 @@ import Swal from 'sweetalert2';
 import { useFormik } from 'formik';
 import axiosInstance from 'APIs/axiosInstance';
 import { Button, Searchbar, Spinner, Modal, AdminForm, CategoryFilter, Badge } from 'components';
-import { CreateAdminValidationSchema, OptionalAdminSchema } from 'utils/validation_shema';
+import { CreateAdminValidationSchema, OptionalBusinessVerificationSchema } from 'utils/validation_shema';
 import useDebounce from 'utils/Debounce';
+import { PreviewEye } from 'assets/SVGs';
+import Profile from './profile';
 
 const initials = {
 	name: '',
@@ -26,6 +28,8 @@ const Dashboard = () => {
 	const [activeCategory, setActiveCategory] = useState('All');
 	const [phone, setPhone] = useState('');
 	const [website, setWebsite] = useState('');
+	const [selectedUser, setSelectedUser] = useState('');
+
 	const [search, setSearch] = useState('');
 	const debouncedSearchTerm = useDebounce(search, 1000);
 
@@ -33,7 +37,7 @@ const Dashboard = () => {
 		enableLoading();
 		try {
 			const { data: { data: { users } } } = await axiosInstance.getAllBusinessUsers(search)
-			console.log(users);
+			// console.log(users);
 			setAllUsers(users)
 			setUsers(users);
 			disableLoading();
@@ -86,7 +90,6 @@ const Dashboard = () => {
 		return activeCategory === path ?
 			'background text-white z-20' : 'text bg-white'
 	}
-
 
 
 	const SwalDeleteModal = (text, confirmBtnText, onConfirmAction) => {
@@ -194,7 +197,7 @@ const Dashboard = () => {
 	const _OnEditVerifiedUser = (values, setSubmitting) => {
 		setSubmitting(true);
 		values.phoneNumber = phone;
-		console.log('values: ', values);
+		// console.log('values: ', values);
 		axiosInstance.editVerifiedBusinessUser(values).then(({ data: { message, data } }) => {
 			Swal.fire({
 				text: message,
@@ -233,7 +236,7 @@ const Dashboard = () => {
 	const formik = useFormik({
 		enableReinitialize: true,
 		initialValues: initialValues,
-		validationSchema: OptionalAdminSchema,
+		validationSchema: OptionalBusinessVerificationSchema,
 		validateOnBlur: true,
 		onSubmit: (values, { setSubmitting }) => {
 			_OnEditVerifiedUser(values, setSubmitting)
@@ -242,7 +245,7 @@ const Dashboard = () => {
 
 
 	const handleActiveTab = (category) => {
-		console.log('category: ', category);
+		// console.log('category: ', category);
 		let filtered = [];
 		if (category === 'verified') {
 			filtered = allUsers.filter(user => user.isApproved === true && user);
@@ -259,30 +262,44 @@ const Dashboard = () => {
 	}
 
 	const _OnPhoneNoChange = (value) => {
-		console.log(value);
 		setPhone(value);
 	}
 
+	const _PreviewProfile = async (username) => {
+		try {
+			const { data: { data } } = await axiosInstance.getUserProfile(username);
+			console.log('response: ', data);
+			setSelectedUser(data);
+		} catch (e) {
+			console.log('error: ', e);
+		}
+	}
+
+	const _GoBack = () => {
+		setSelectedUser('');
+	}
+
 	return (
-		<div className="bg-white py-5 px-3 space-y-3 h-screen">
-			<div className="flex w-full">
-				<Searchbar search={search} onChange={setSearch} />
-			</div>
-			{
-				loading ? (
-					<div className="flex w-full h-4/5 justify-center items-center">
-						<span className="flex flex-col items-center">
-							<Spinner />
-							{/* <p className="text-sm text-gray-400"> Fetching Admins</p> */}
-						</span>
-					</div>
-				)
-					:
-					<div
-						className={
-							"relative flex flex-col min-w-0 break-words w-full admin-table rounded-lg"}
-					>
-						{/* <div className="flex rounded-t px-4 py-3 border-0 mb-10 justify-center">
+		!selectedUser ?
+			<div className={`bg-white py-5 px-3 space-y-3 h-screen`}>
+				<div className="flex w-full">
+					<Searchbar search={search} onChange={setSearch} />
+				</div>
+				{
+					loading ? (
+						<div className="flex w-full h-4/5 justify-center items-center">
+							<span className="flex flex-col items-center">
+								<Spinner />
+								{/* <p className="text-sm text-gray-400"> Fetching Admins</p> */}
+							</span>
+						</div>
+					)
+						:
+						<div
+							className={
+								"relative flex flex-col min-w-0 break-words w-full admin-table rounded-lg"}
+						>
+							{/* <div className="flex rounded-t px-4 py-3 border-0 mb-10 justify-center">
                             <div className="flex items-center w-full">
                                 <div className="relative w-full px-4 max-w-full flex-grow flex-1">
                             <h3
@@ -296,206 +313,230 @@ const Dashboard = () => {
                         </div>
                             </div>
                         </div> */}
-						<div className="flex w-full justify-center items-center mb-5 py-3 px-3">
-							<CategoryFilter
-								Active={Active}
-								handleActiveTab={handleActiveTab}
-							/>
-						</div>
-						<div className="block w-full overflow-x-auto">
-							{/* Projects table */}
-							<table className="items-center w-full bg-transparent border-collapse">
-								<thead>
-									<tr>
-										<th
-											className={
-												"px-6 align-middle border border-solid py-3 text-xs uppercase border-t-0 border-l-0 border-r-0 whitespace-nowrap font-semibold text-left " +
-												(color === "light"
-													? "bg-blueGray-50 text-blueGray-500 border-blueGray-100"
-													: "bg-blueGray-600 text-blueGray-200 border-blueGray-500")
-											}
-										>
-											Status
-										</th>
-										<th
-											className={
-												"px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 border-t-0 whitespace-nowrap font-semibold text-left " +
-												(color === "light"
-													? "bg-blueGray-50 text-blueGray-500 border-blueGray-100"
-													: "bg-blueGray-600 text-blueGray-200 border-blueGray-500")
-											}
-										>
-											Business Name
-										</th>
-										<th
-											className={
-												"px-6 align-middle border border-solid py-3 text-xs uppercase border-t-0 border-l-0 border-r-0 whitespace-nowrap font-semibold text-left " +
-												(color === "light"
-													? "bg-blueGray-50 text-blueGray-500 border-blueGray-100"
-													: "bg-blueGray-600 text-blueGray-200 border-blueGray-500")
-											}
-										>
-											Business Number
-										</th>
-										<th
-											className={
-												"px-6 align-middle border border-solid py-3 text-xs uppercase border-t-0 border-l-0 border-r-0 whitespace-nowrap font-semibold text-left " +
-												(color === "light"
-													? "bg-blueGray-50 text-blueGray-500 border-blueGray-100"
-													: "bg-blueGray-600 text-blueGray-200 border-blueGray-500")
-											}
-										>
-											Business Website
-										</th>
+							<div className="flex w-full justify-center items-center mb-5 py-3 px-3">
+								<CategoryFilter
+									Active={Active}
+									handleActiveTab={handleActiveTab}
+								/>
+							</div>
+							<div className="block w-full overflow-x-auto">
+								{/* Projects table */}
+								<table className="items-center w-full bg-transparent border-collapse">
+									<thead>
+										<tr>
+											<th
+												className={
+													"px-6 align-middle border border-solid py-3 text-xs uppercase border-t-0 border-l-0 border-r-0 whitespace-nowrap font-semibold text-left " +
+													(color === "light"
+														? "bg-blueGray-50 text-blueGray-500 border-blueGray-100"
+														: "bg-blueGray-600 text-blueGray-200 border-blueGray-500")
+												}
+											>
+												Status
+											</th>
+											<th
+												className={
+													"px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 border-t-0 whitespace-nowrap font-semibold text-left " +
+													(color === "light"
+														? "bg-blueGray-50 text-blueGray-500 border-blueGray-100"
+														: "bg-blueGray-600 text-blueGray-200 border-blueGray-500")
+												}
+											>
+												Business Name
+											</th>
+											<th
+												className={
+													"px-6 align-middle border border-solid py-3 text-xs uppercase border-t-0 border-l-0 border-r-0 whitespace-nowrap font-semibold text-left " +
+													(color === "light"
+														? "bg-blueGray-50 text-blueGray-500 border-blueGray-100"
+														: "bg-blueGray-600 text-blueGray-200 border-blueGray-500")
+												}
+											>
+												Business Number
+											</th>
+											<th
+												className={
+													"px-6 align-middle border border-solid py-3 text-xs uppercase border-t-0 border-l-0 border-r-0 whitespace-nowrap font-semibold text-left " +
+													(color === "light"
+														? "bg-blueGray-50 text-blueGray-500 border-blueGray-100"
+														: "bg-blueGray-600 text-blueGray-200 border-blueGray-500")
+												}
+											>
+												Business Website
+											</th>
 
-										<th
-											className={
-												"px-6 align-middle border border-solid py-3 text-xs uppercase border-t-0 border-l-0 border-r-0 whitespace-nowrap font-semibold text-left " +
-												(color === "light"
-													? "bg-blueGray-50 text-blueGray-500 border-blueGray-100"
-													: "bg-blueGray-600 text-blueGray-200 border-blueGray-500")
-											}
-										>
-											Business Email
-										</th>
-										<th
-											className={
-												" px-8 align-middle border border-solid py-3 text-xs uppercase border-t-0 border-l-0 border-r-0 whitespace-nowrap font-semibold text-left " +
-												(color === "light"
-													? "bg-blueGray-50 text-blueGray-500 border-blueGray-100"
-													: "bg-blueGray-600 text-blueGray-200 border-blueGray-500")
-											}
-										>
-											Actions
-										</th>
-									</tr>
-								</thead>
-								<tbody className="divide-y-2">
-									{
-										users.map(({ name, email, isApproved, id, phoneNumber, isBlocked, Business }, index) => (
-											<tr key={index} className={'admin-table'}>
-												<td className="space-x-2 border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-													<Badge color={isBlocked ? 'bg-red-400' : isApproved ? 'bg-green-400' : 'bg-yellow-300'}
-														childrens={isBlocked ? 'Blocked' : isApproved ? 'Verified' : 'Unverified'}
-													/>
-												</td>
-												<td className="border-t-0 w-max space-x-3 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-wrap  p-4 text-left flex items-center">
-													{/* <img
+											<th
+												className={
+													"px-6 align-middle border border-solid py-3 text-xs uppercase border-t-0 border-l-0 border-r-0 whitespace-nowrap font-semibold text-left " +
+													(color === "light"
+														? "bg-blueGray-50 text-blueGray-500 border-blueGray-100"
+														: "bg-blueGray-600 text-blueGray-200 border-blueGray-500")
+												}
+											>
+												Business Email
+											</th>
+											<th
+												className={
+													" px-8 align-middle border border-solid py-3 text-xs uppercase border-t-0 border-l-0 border-r-0 whitespace-nowrap font-semibold text-left " +
+													(color === "light"
+														? "bg-blueGray-50 text-blueGray-500 border-blueGray-100"
+														: "bg-blueGray-600 text-blueGray-200 border-blueGray-500")
+												}
+											>
+												Actions
+											</th>
+										</tr>
+									</thead>
+									<tbody className="divide-y-2">
+										{
+											users.map(({ name, email, isApproved, id, phoneNumber, isBlocked, Business, username }, index) => (
+												<tr key={index} className={'admin-table'}>
+													<td className="space-x-2 border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+														<Badge color={isBlocked ? 'bg-red-400' : isApproved ? 'bg-green-400' : 'bg-yellow-300'}
+															childrens={isBlocked ? 'Blocked' : isApproved ? 'Verified' : 'Unverified'}
+														/>
+													</td>
+													<td className="border-t-0 w-max space-x-3 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-wrap  p-4 text-left flex items-center">
+														{/* <img
                                                         src={picture}
                                                         className="h-12 w-12 bg-white rounded-full border"
                                                         alt="..."
                                                     /> */}
-													<span
-														className={
-															"font-bold text-blueGray-600"
-														}
-													>
-														{name}
-													</span>
-												</td>
-												<td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-													{phoneNumber}
-												</td>
-												<td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-													<i className="fas fa-circle text-orange-500 mr-2"></i>
-													{Business?.link}
-												</td>
-												<td className="border-t-0 px-6 align-middle border-l-0 border-r-0 whitespace-nowrap p-4">
-													{email}
-												</td>
-												<td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap">
-													{
-														isApproved ?
-															<div className="flex justify-around w-full space-x-2">
-																<p onClick={() => ToggleEditModal(id, name, email, phoneNumber, Business?.link, Business?.id)} className="flex items-center cursor-pointer">
-																	<svg className="w-5 h-5 icon" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-																		<path d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z" /><path fillRule="evenodd" d="M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z" clipRule="evenodd" />
-																	</svg>
-																</p>
-																<p onClick={() => _HandleDelete(id)} className="flex items-center cursor-pointer">
-																	<svg className="w-5 h-5 icon" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-																		<path fillRule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clipRule="evenodd" />
-																	</svg>
-																</p>
-																<Button
-																	onSubmit={() => _HandleBlock(id, isBlocked)}
-																	type="button"
-																	childrens={isBlocked ? 'Unblock' : 'Block'}
-																	classNames={"px-1 py-1 w-20 flex justify-center items-center hover:underline cursor-pointer text-sm text-danger rounded-md"}
-																/>
-															</div>
-															:
-															<div className="flex justify-around w-full space-x-3">
+														<span
+															className={
+																"font-bold text-blueGray-600"
+															}
+														>
+															{name}
+														</span>
+													</td>
+													<td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+														{phoneNumber}
+													</td>
+													<td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+														<i className="fas fa-circle text-orange-500 mr-2"></i>
+														{Business?.link}
+													</td>
+													<td className="border-t-0 px-6 align-middle border-l-0 border-r-0 whitespace-nowrap p-4">
+														{email}
+													</td>
+													<td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap">
+														{
+															isApproved ?
+																<div className="flex justify-around w-full space-x-2">
+																	<span className="flex items-center cursor-pointer"
+																		onClick={() => _PreviewProfile(username)}>
+																		<PreviewEye classNames={'text w-5 h-5'} />
+																	</span>
 
-																<Button
-																	onSubmit={() => _HandleVerify(id)}
-																	type="button"
-																	disable={isBlocked}
-																	childrens={'Verify'}
-																	classNames={`px-1 py-1 flex w-20 justify-center items-center hover:underline cursor-pointer text-sm 
+																	<p onClick={() => ToggleEditModal(id, name, email, phoneNumber, Business?.link, Business?.id)} className="flex items-center cursor-pointer">
+																		<svg className="w-5 h-5 icon" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+																			<path d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z" /><path fillRule="evenodd" d="M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z" clipRule="evenodd" />
+																		</svg>
+																	</p>
+																	<p onClick={() => _HandleDelete(id)} className="flex items-center cursor-pointer">
+																		<svg className="w-5 h-5 icon" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+																			<path fillRule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clipRule="evenodd" />
+																		</svg>
+																	</p>
+																	<Button
+																		onSubmit={() => _HandleBlock(id, isBlocked)}
+																		type="button"
+																		childrens={isBlocked ? 'Unblock' : 'Block'}
+																		classNames={"px-1 py-1 w-20 flex justify-center items-center hover:underline cursor-pointer text-sm text-danger rounded-md"}
+																	/>
+																</div>
+																:
+																<div className="flex justify-around w-full space-x-3">
+																	<span className="flex items-center cursor-pointer"
+																		onClick={() => _PreviewProfile(username)}>
+																		<PreviewEye classNames={'text w-5 h-5'} />
+																	</span>
+
+																	<Button
+																		onSubmit={() => _HandleVerify(id)}
+																		type="button"
+																		disable={isBlocked}
+																		childrens={'Verify'}
+																		classNames={`px-1 py-1 flex w-20 justify-center items-center hover:underline cursor-pointer text-sm 
 																	${isBlocked ? 'disable-text' : 'text'}  rounded-md`}
-																/>
+																	/>
 
-																<Button
-																	onSubmit={() => _HandleBlock(id, isBlocked)}
-																	type="button"
-																	childrens={isBlocked ? 'Unblock' : 'Block'}
-																	classNames={"px-1 py-1 w-20 flex justify-center items-center hover:underline cursor-pointer text-sm text-danger rounded-md"}
-																/>
-															</div>
-													}
-												</td>
+																	<Button
+																		onSubmit={() => _HandleBlock(id, isBlocked)}
+																		type="button"
+																		childrens={isBlocked ? 'Unblock' : 'Block'}
+																		classNames={"px-1 py-1 w-20 flex justify-center items-center hover:underline cursor-pointer text-sm text-danger rounded-md"}
+																	/>
 
-											</tr>
-										))
-									}
-								</tbody>
-							</table>
+																</div>
+														}
+
+													</td>
+
+												</tr>
+											))
+										}
+									</tbody>
+								</table>
+							</div>
 						</div>
-					</div>
-			}
-			{
-				showModal && (
+				}
 
-					<form onSubmit={formik.handleSubmit}>
-						<Modal
-							_Toggle={ToggleEditModal}
-							title={modalTitle}
-							body={(
-								<>
-									<AdminForm
-										formik={formik}
-										businessUser={true}
-										showPassword={showPassword}
-										setShowPassword={setShowPassword}
-										_OnPhoneNoChange={_OnPhoneNoChange}
-										phoneNumber={phone}
-									/>
-								</>
-							)}
-							footer={(
-								<>
-									<button
-										onClick={ToggleEditModal}
-										type="button"
-										className="mt-3 w-full inline-flex justify-center hover:underline  px-4 py-2 text-base font-medium text  sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"
-									>
-										Cancel
-									</button>
-									<Button
-										type="submit"
-										className="w-full inline-flex justify-center rounded-md border-none px-4 py-2 primary-btn text-base font-medium text-white focus:outline-none sm:ml-3 sm:w-auto sm:text-sm"
-										childrens={'Save'}
-										loading={formik.isSubmitting}
+				{
+					showModal && (
 
-									/>
-								</>
-							)}
-						/>
-					</form>
-				)
-			}
-		</div>
+						<form onSubmit={formik.handleSubmit}>
+							<Modal
+								_Toggle={ToggleEditModal}
+								title={modalTitle}
+								body={(
+									<>
+										<AdminForm
+											formik={formik}
+											businessUser={true}
+											showPassword={showPassword}
+											setShowPassword={setShowPassword}
+											_OnPhoneNoChange={_OnPhoneNoChange}
+											phoneNumber={phone}
+										/>
+									</>
+								)}
+								footer={(
+									<>
+										<button
+											onClick={ToggleEditModal}
+											type="button"
+											className="mt-3 w-full inline-flex justify-center hover:underline  px-4 py-2 text-base font-medium text  sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"
+										>
+											Cancel
+										</button>
+										<Button
+											type="submit"
+											className="w-full inline-flex justify-center rounded-md border-none px-4 py-2 primary-btn text-base font-medium text-white focus:outline-none sm:ml-3 sm:w-auto sm:text-sm"
+											childrens={'Save'}
+											loading={formik.isSubmitting}
+										/>
+									</>
+								)}
+							/>
+						</form>
+					)
+				}
+			</div >
+			:
+
+			<div className="flex flex-col w-full">
+				<div className='flex items-center bg-white space-x-10 p-5 w-full py-3 shadow-md'>
+					<span onClick={_GoBack} className="flex border rounded-full hover:shadow-md p-1 cursor-pointer">
+						<svg className="w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+							<path fillRule="evenodd" d="M15.707 15.707a1 1 0 01-1.414 0l-5-5a1 1 0 010-1.414l5-5a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 010 1.414zm-6 0a1 1 0 01-1.414 0l-5-5a1 1 0 010-1.414l5-5a1 1 0 011.414 1.414L5.414 10l4.293 4.293a1 1 0 010 1.414z" clipRule="evenodd" />
+						</svg>
+					</span>
+				</div>
+				<Profile profile={selectedUser} />
+			</div>
+
 	)
 }
 

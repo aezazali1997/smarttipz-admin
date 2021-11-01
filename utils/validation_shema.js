@@ -40,6 +40,19 @@ export const OptionalAdminSchema = Yup.object().shape({
         .min(3, "Minimum 3 characters")
         .max(50, "Maximum 50 characters")
         .optional(),
+    // website: Yup.string().url().required("Business Website address is a required field"),
+});
+export const OptionalBusinessVerificationSchema = Yup.object().shape({
+    name: Yup.string().optional(),
+    email: Yup.string()
+        .email("Wrong email format")
+        .min(3, "Minimum 3 characters")
+        .max(50, "Maximum 50 characters")
+        .optional(),
+    password: Yup.string()
+        .min(3, "Minimum 3 characters")
+        .max(50, "Maximum 50 characters")
+        .optional(),
     website: Yup.string().url().required("Business Website address is a required field"),
 });
 

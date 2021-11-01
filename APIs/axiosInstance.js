@@ -121,6 +121,30 @@ class AxiosInstance {
         return await axios.put(USER_API_BASE_URL + `api/user/change-password`, values, this.getAuthHeader());
     }
 
+    async getUserProfile(username) {
+        console.log('In Get user profile Api: ');
+        return await axios.get(USER_API_BASE_URL + `api/user/profile?username=${username}`, this.getAuthHeader());
+    }
+
+    async getVideos(username) {
+        return await axios.get(USER_API_BASE_URL + `api/user/profile/videos?username=${username}`, this.getAuthHeader());
+    }
+
+    async getCatalogues(username) {
+        return await axios.get(USER_API_BASE_URL + `api/user/profile/catalogue?username=${username}`, this.getAuthHeader());
+    }
+
+    async getBusinessCard(username) {
+        return await axios.get(USER_API_BASE_URL + `api/user/profile/businesscard?username=${username}`, this.getAuthHeader());
+    }
+
+    async getTestimonial(username) {
+        return await axios.get(USER_API_BASE_URL + `api/user/profile/testimonial?username=${username}`, this.getAuthHeader());
+    }
+    async getFollow(username) {
+        return await axios.get(USER_API_BASE_URL + `api/user/profile/follow?username=${username}`, this.getAuthHeader());
+    }
+
 }
 
 export default new AxiosInstance;
