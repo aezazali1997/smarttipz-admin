@@ -108,20 +108,22 @@ const ContentManagement = () => {
 						:
 						<div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-y-6 gap-x-6'>
 							{
-								users.map(({ username, picture, accountType, email, name, Videos, }, index) => (
-									<div key={index}>
-										<Card
-											onClick={() => _OpenModal(id, UserId, email)}
-											// video={
-											// 	mediaType === 'video' ? (<VideoPlayer src={url} poster={thumbnail} />) :
-											// 		(<img className="w-full rounded-lg object-cover"
-											// 			src={url} alt="Sunset in the mountains" style={{ height: '200px' }} />)
-											// }
-											title={name}
-											description={accountType === 'Business' ? email : username}
-											picture={picture}
-										/>
-									</div>
+								users.map(({ username, picture, accountType, email, name, Videos, }) => (
+									Videos && Videos.map(({ url, thumbnail, id, UserId, mediaType }, index) => (
+										<div key={index}>
+											<Card
+												onClick={() => _OpenModal(id, UserId, email)}
+												video={
+													mediaType === 'video' ? (<VideoPlayer src={url} poster={thumbnail} />) :
+														(<img className="w-full rounded-lg object-cover"
+															src={url} alt="Sunset in the mountains" style={{ height: '200px' }} />)
+												}
+												title={name}
+												description={accountType === 'Business' ? email : username}
+												picture={picture}
+											/>
+										</div>
+									))
 								))
 							}
 						</div>

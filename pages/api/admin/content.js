@@ -22,11 +22,11 @@ const handler = async (req, res) => {
             );
 
             const users = await User.findAll({
-                // include: [
-                //     {
-                //         model: Video, where: { isApproved: true }
-                //     }
-                // ],
+                include: [
+                    {
+                        model: Video, where: { isApproved: true }
+                    }
+                ],
                 where: {
                     isDeleted: false,
                 },
@@ -34,7 +34,7 @@ const handler = async (req, res) => {
 
             res.status(200).json({ error: false, data: { users }, message: 'Admins fetched successfuly.' });
         } catch (err) {
-            res.status(500).json({ error: true, message: err.message, data: [] });
+            res.status(500).json({ error: true, message: err, data: [] });
         }
     }
     else if (req.method === 'POST') {
