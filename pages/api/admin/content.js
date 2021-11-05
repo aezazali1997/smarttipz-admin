@@ -1,8 +1,8 @@
 
 const jwt = require('jsonwebtoken');
 
-const User = require('models/User');
-const Video = require('models/Video');
+const User = require('../../../models/User');
+const Video = require('../../../models/Video');
 
 const sgMail = require('@sendgrid/mail')
 sgMail.setApiKey(process.env.SENDGRID_API_KEY)
@@ -16,17 +16,17 @@ const handler = async (req, res) => {
                 return res.status(401).send({ error: true, data: [], message: 'Please Login' })
             };
 
-            const result = jwt.verify(
+            const response = jwt.verify(
                 authorization.split(' ')[1],
                 process.env.SECRET_KEY
             );
 
             const users = await User.findAll({
-                include: [
-                    {
-                        model: Video, where: { isApproved: true }
-                    }
-                ],
+                // include: [
+                //     {
+                //         model: Video, where: { isApproved: true }
+                //     }
+                // ],
                 where: {
                     isDeleted: false,
                 },
@@ -37,7 +37,7 @@ const handler = async (req, res) => {
             res.status(500).json({ error: true, message: err.message, data: [] });
         }
     }
-    if (req.method === 'POST') {
+    else if (req.method === 'POST') {
         const { body, body: { email, message, id, UserId }, headers: { authorization } } = req;
 
         console.log('email,message', email, message, id, UserId);
