@@ -1,41 +1,68 @@
 /* eslint-disable @next/next/no-img-element */
 /* eslint-disable jsx-a11y/alt-text */
 import React, { useEffect, useState } from 'react'
-import Carousel from 'nuka-carousel';
+import ItemsCarousel from 'react-items-carousel';
 
 const Index = ({ children }) => {
 
-    const [renderItems, setRenderItems] = useState(5)
+    const [renderItems, setRenderItems] = useState(4);
+    const [renderArrow, setRenderArrow] = useState(false);
+    const [activeItemIndex, setActiveItemIndex] = useState(0);
+    const chevronWidth = 40;
 
     const handleResize = () => {
-        window.innerWidth > 3000 && window.innerWidth < 4000 ? setRenderItems(5) :
-            window.innerWidth > 1024 && window.innerWidth < 3000 ? setRenderItems(4) :
-                window.innerWidth > 464 && window.innerWidth < 1024 ? setRenderItems(2) :
-                    window.innerWidth > 0 && window.innerWidth < 464 ? setRenderItems(1) : ''
+        if (window.innerWidth > 1024 && window.innerWidth < 3000) {
+            setRenderItems(4)
+            setRenderArrow(false);
+        }
+        else if (window.innerWidth > 464 && window.innerWidth < 1024) {
+            setRenderItems(2);
+            setRenderArrow(true);
+        }
+        else if (window.innerWidth > 0 && window.innerWidth < 464) {
+            setRenderItems(1);
+            setRenderArrow(true);
+        }
+        else {
+            setRenderItems(5)
+            setRenderArrow(false);
+        }
     }
 
-    // create an event listener
     useEffect(() => {
+        handleResize()
+    }, [])
+
+    useEffect(() => {
+        // create an event listener
         window.addEventListener("resize", handleResize)
     })
 
+
+
     return (
-        <Carousel
-            slidesToShow={renderItems}
+        <ItemsCarousel
+            requestToChangeActive={setActiveItemIndex}
+            activeItemIndex={activeItemIndex}
+            numberOfCards={renderItems}
             slidesToScroll={renderItems}
-            dragging={false}
-            cellSpacing={10}
-            defaultControlsConfig={{
-                nextButtonText: '>',
-                prevButtonText: '<',
-                prevButtonClassName: 'mb-16 text-2xl font-bold ',
-                nextButtonClassName: 'mb-16 text-2xl font-bold ',
-                pagingDotsContainerClassName: 'hidden',
-                pagingDotsClassName: 'hidden'
-            }}
+            gutter={10}
+            alwaysShowChevrons={renderArrow}
+            leftChevron={
+                <div className={"CarouselLeftIcon"} >
+                    <span className="iconin">&lt;</span>
+                </div>
+            }
+            rightChevron={
+                <div className={"CarouselRightIcon"} >
+                    <span className="iconin">&gt;</span>
+                </div>
+            }
+            outsideChevron={false}
+            chevronWidth={chevronWidth}
         >
             {children}
-        </Carousel>
+        </ItemsCarousel>
     )
 }
 

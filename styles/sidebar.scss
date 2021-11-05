@@ -16,6 +16,7 @@
   margin-left: 250px;
   height: 100%;
   width: 100%;
+  overflow-x: auto;
 }
 
 .icons:hover {
@@ -25,8 +26,9 @@
 
 .sidebar-item {
   color: white;
-  
+
 }
+
 .sidebar-item:hover {
   color: $primary-color;
   background: white;
@@ -38,6 +40,7 @@
   color: $primary-color;
 
 }
+
 .sidebar-dropdown-item:hover {
   color: white;
   background: $primary-color;

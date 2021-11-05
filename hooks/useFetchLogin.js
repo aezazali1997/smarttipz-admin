@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react'
 import cookie from 'js-cookie';
 import { useFormik } from 'formik';
 import { useRouter } from 'next/router';
-// import swal from 'sweetalert';
 import axiosInstance from '../APIs/axiosInstance';
 import { LoginSchema } from 'utils/validation_shema';
 
@@ -36,41 +35,42 @@ const UseFetchLogin = () => {
         checked: false
     }
 
+
+    const _OnSubmit = async (email, password, setSubmitting, setStatus) => {
+        enableLoading();
+        setSubmitting(true);
+        const data = { email, password }
+        try {
+            const { data: { data: { token, id, role, permissions }, message } } = await axiosInstance.login(data);
+            disableLoading();
+            setError(false);
+            setStatus(message);
+            setShowAlert(true);
+            cookie.set('token', token);
+            localStorage.setItem('id', id);
+            localStorage.setItem('role', role);
+            localStorage.setItem('permissions', JSON.stringify(permissions));
+            router.push('/dashboard/admin');
+        }
+        catch (e) {
+            console.log(e.response.status);
+            setError(true)
+            setStatus(e.response.data.message);
+            setShowAlert(true);
+            setSubmitting(false);
+            disableLoading();
+        }
+
+    }
+
+
     const formik = useFormik({
         enableReinitialize: true,
         initialValues,
         validationSchema: LoginSchema,
         validateOnBlur: true,
         onSubmit: ({ email, password }, { setSubmitting, setStatus }) => {
-            enableLoading();
-            setTimeout(() => {
-                setSubmitting(true);
-                const data = { email, password }
-                axiosInstance.login(data)
-                    .then(({ data: { data: { token, id, role, permissions }, message } }) => {
-                        disableLoading();
-                        setError(false);
-                        setStatus(message);
-                        setShowAlert(true);
-                        cookie.set('token', token);
-                        // cookie.set('email', email);
-                        // localStorage.setItem('image', image);
-                        localStorage.setItem('id', id);
-                        localStorage.setItem('role', role);
-                        localStorage.setItem('permissions', JSON.stringify(permissions));
-                        router.push('/dashboard/admin');
-                    })
-                    .catch((e) => {
-                        console.log(e.response.status);
-                        setError(true)
-                        // setSubmitting(false);
-                        setStatus(e.response.data.message);
-                        setShowAlert(true);
-                        setSubmitting(false);
-                        disableLoading();
-                    });
-            }, 1000);
-
+            _OnSubmit(email, password, setSubmitting, setStatus)
         },
 
     });
@@ -78,5 +78,4 @@ const UseFetchLogin = () => {
 
     return { toggleAlert, showPassword, setShowPassword, showAlert, formik, loading, error };
 }
-
 export default UseFetchLogin;

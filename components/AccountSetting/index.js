@@ -1,3 +1,4 @@
+import { Key } from 'assets/SVGs';
 import React from 'react'
 import { InputField } from '..';
 import Button from '../Button';
@@ -14,7 +15,7 @@ const AccountSetting = ({ formik, accountLoading, getInputClasses }) => {
                     onBlur={formik.handleBlur}
                     error={formik.touched.old && formik.errors.old}
                     svg={(
-                        <svg className="w-6 h-6 text-gray-500" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M18 8a6 6 0 01-7.743 5.743L10 14l-1 1-1 1H6v2H2v-4l4.257-4.257A6 6 0 1118 8zm-6-4a1 1 0 100 2 2 2 0 012 2 1 1 0 102 0 4 4 0 00-4-4z" clipRule="evenodd" /></svg>
+                        <Key classNames={"w-6 h-6 text-gray-500"} />
                     )}
                     inputClass={`${getInputClasses(
                         formik, "old"
@@ -32,8 +33,7 @@ const AccountSetting = ({ formik, accountLoading, getInputClasses }) => {
                     onBlur={formik.handleBlur}
                     error={formik.touched.new && formik.errors.new}
                     svg={(
-                        <svg className="w-6 h-6 text-gray-500" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M18 8a6 6 0 01-7.743 5.743L10 14l-1 1-1 1H6v2H2v-4l4.257-4.257A6 6 0 1118 8zm-6-4a1 1 0 100 2 2 2 0 012 2 1 1 0 102 0 4 4 0 00-4-4z" clipRule="evenodd" /></svg>
-
+                        <Key classNames={"w-6 h-6 text-gray-500"} />
                     )}
                     inputClass={` ${getInputClasses(
                         formik, "new"
@@ -50,7 +50,7 @@ const AccountSetting = ({ formik, accountLoading, getInputClasses }) => {
                     onBlur={formik.handleBlur}
                     error={formik.touched.confirm && formik.errors.confirm}
                     svg={(
-                        <svg className="w-6 h-6 text-gray-500" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M18 8a6 6 0 01-7.743 5.743L10 14l-1 1-1 1H6v2H2v-4l4.257-4.257A6 6 0 1118 8zm-6-4a1 1 0 100 2 2 2 0 012 2 1 1 0 102 0 4 4 0 00-4-4z" clipRule="evenodd" /></svg>
+                        <Key classNames={"w-6 h-6 text-gray-500"} />
                     )}
                     inputClass={`${getInputClasses(
                         formik, "confirm"

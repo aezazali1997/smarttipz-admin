@@ -21,11 +21,10 @@ import InfiniteScroll from 'react-infinite-scroll-component';
 const Profile = ({ profile }) => {
 
     const { showBusinessCard, followed, followers, businessCard, formik, loading, showModal,
-        modalTitle, loadingTestimonial, handleShowBusinessCard, _DeleteImg,
-        _AddTestimonial, _EditTestimonial, showRequestTestimonial,
+        modalTitle, loadingTestimonial, handleShowBusinessCard, _DeleteImg, _EditTestimonial, showRequestTestimonial,
         filteredTestimonial, fetchMoreData, hasMore, _OnRemoveThumbnail, onChangeThumbnail, MediaType, thumbnailRef,
         agree, thumbnailUrl, urls, setUrls, setMediaType, ChangeAgreement, _OnThumbnailClick, _CloseUploadModal,
-        _OpenUploadModal, fetchingCatalogues, catalogues, myVideos, fetchingMyVideos, uploadingThumbnail
+        fetchingCatalogues, catalogues, myVideos, fetchingMyVideos, uploadingThumbnail
     } = UseFetchProfile(profile);
     const { name, about, rating, views, picture, phone, email, accountType, username, showUsername, showName
     } = profile;
@@ -55,7 +54,6 @@ const Profile = ({ profile }) => {
             </div>
             <div className="hidden md:flex flex-row w-full h-auto">
                 <div className="flex w-1/6 px-2 py-1">
-                    {/* <div className="rounded-2xl w-28 h-36 relative px-2 py-1"> */}
                     {picture ?
                         <img src={picture} alt="profile" className="rounded-2xl w-30 h-40" layout="fill" />
                         :
@@ -64,7 +62,6 @@ const Profile = ({ profile }) => {
                             className="rounded-full"
                         />
                     }
-                    {/* </div> */}
                 </div>
                 <div className="flex flex-col w-4/6 md:w-5/6 ">
                     {/* section starts here */}
@@ -88,7 +85,7 @@ const Profile = ({ profile }) => {
                             </div>
                             <div className="flex w-full mt-2 px-2">
                                 {about ?
-                                    <p className="text-sm text-justify break-words md:max-w-xs">
+                                    <p className="text-sm break-words md:max-w-xs">
                                         {about}
                                     </p> :
                                     <p className="text-sm text-gray-400"> {accountType === 'Business' ? 'Intro' : 'About'}</p>
@@ -122,16 +119,6 @@ const Profile = ({ profile }) => {
                             </p>
                         </div>
                     )}
-                    {/* <div className="flex w-full mt-3 items-center px-2 space-x-6">
-                        <button className="followingBtn">
-                            Following
-                        </button>
-
-                        {showMessages ? <button onClick={gotoMessaging} className="messageBtn">
-                            Message
-                        </button> : ''
-                        }
-                    </div> */}
                 </div>
             </div>
             {/* section ends here */}
@@ -139,14 +126,14 @@ const Profile = ({ profile }) => {
             {
                 accountType === 'Business' && (
                     <>
-                        {/* <div className="flex w-full justify-end items-center px-2 mt-8">
+                        <div className="flex w-full justify-end items-center px-2 mt-8">
                             <Button
-                                onSubmit={_OpenUploadModal}
+                                // onSubmit={_OpenUploadModal}
                                 type="button"
                                 childrens={'Upload Photo/Video'}
-                                classNames={"px-3 py-2 flex justify-center items-center text-white text-sm btn rounded-md "}
+                                classNames={"px-3 py-2 flex justify-center items-center text-white text-sm primary-btn rounded-md "}
                             />
-                        </div> */}
+                        </div>
                         <div className="flex flex-col w-full px-2 mt-4">
                             <h1 className="text-md font-medium">My Catalogue</h1>
                             {
@@ -166,7 +153,6 @@ const Profile = ({ profile }) => {
                                     )
                                         :
                                         <div className=" w-auto mt-6 relative">
-                                            {/* <div className="flex flex-col w-full sm:grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-3"> */}
                                             <Carousel>
                                                 {
                                                     catalogues.map(({ title, url, mediaType, thumbnail }, index) => (
@@ -184,7 +170,6 @@ const Profile = ({ profile }) => {
 
                                             </Carousel>
                                         </div>
-                                //</div>
                             }
                         </div>
                     </>
@@ -210,7 +195,6 @@ const Profile = ({ profile }) => {
                         )
                             :
                             <div className="w-full mt-6 justify-center lg:justify-start" >
-                                {/* <div className="flex flex-col w-full sm:grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-3"> */}
                                 <Carousel>
                                     {
                                         myVideos.map(({ title, url, mediaType, thumbnail, like, comment, share }, index) => (
@@ -231,7 +215,6 @@ const Profile = ({ profile }) => {
                                         ))
                                     }
                                 </Carousel>
-                                {/* </div> */}
                             </div>}
             </div>
             {/* section ends here */}
@@ -241,14 +224,14 @@ const Profile = ({ profile }) => {
                     <div className="flex flex-col w-full px-2  mt-8">
                         <h1 className="text-md font-medium">Customer Testimonials</h1>
                         <div className="flex flex-col w-full mt-6 justify-center lg:justify-start space-y-4">
-                            {/* <div className="flex w-full justify-center">
+                            <div className="flex w-full justify-center">
                                 <Button
-                                    onSubmit={_AddTestimonial}
+                                    // onSubmit={_AddTestimonial}
                                     type="button"
                                     childrens={'Request Testimonial'}
-                                    classNames={"px-3 py-2 flex justify-center items-center text-white text-sm btn rounded-md "}
+                                    classNames={"px-3 py-2 flex justify-center items-center text-white text-sm primary-btn rounded-md "}
                                 />
-                            </div> */}
+                            </div>
                             {
                                 showRequestTestimonial && (
                                     <form onSubmit={formik.handleSubmit}>
@@ -342,15 +325,16 @@ const Profile = ({ profile }) => {
             }
             {
                 showBusinessCard && (
-                    <PopupBusinessCard
-                        _ShowCard={handleShowBusinessCard}
-                        name={name}
-                        image={picture}
-                        website={website || ''}
-                        email={email}
-                        phone={phone}
-
-                    />
+                    <div className="hidden md:flex">
+                        <PopupBusinessCard
+                            _ShowCard={handleShowBusinessCard}
+                            name={name}
+                            image={picture}
+                            website={website || ''}
+                            email={email}
+                            phone={phone}
+                        />
+                    </div>
                 )
             }
 

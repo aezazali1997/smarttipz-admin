@@ -7,6 +7,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faNewspaper, faUserCircle, faCog, faPlayCircle, faSignOutAlt, faComment, faClipboardList, faCogs } from '@fortawesome/free-solid-svg-icons'
 import { useRouter } from 'next/router';
 import { isEmpty } from 'lodash';
+import { Routes } from 'routes';
 // import Badge from 'components/Badge';
 
 const Sidebar = ({ logout }) => {
@@ -47,61 +48,36 @@ const Sidebar = ({ logout }) => {
                 className='flex flex-col w-full h-full py-5 px-5 text-white justify-between relative navbar'
                 role='navigation'
             >
-                <div className="py-5 flex items-center flex-col ">
-                    <Link href='/dashboard/admin'><a>
-                        <Image src={logo} alt="brand" /></a>
+                <div className="py-5 flex items-center flex-col relative">
+                    <Link href='/dashboard/admin'>
+                        <Image src='https://smart-tipz-data-bucket.s3.ap-southeast-1.amazonaws.com/public/ST-2-W.png' objectFit="contain" alt="brand" layout="fill" />
                     </Link>
                 </div>
-                <div className='lg:flex h-full flex-col space-y-2 overflow-y-auto'>
-                    <>
-                        <Link href='/dashboard/admin' className='p-4  font-sans nav-link nav-link-ltr'>
-                            <a>
-                                <div className={`flex flex-row items-center py-2 px-3 rounded-lg w-52 font-medium cursor-pointer
-                            ${Active('/dashboard/admin')} ${CheckPermissions('admin')}`}>
-
-                                    <FontAwesomeIcon icon={faNewspaper} /> &nbsp;Admin
-                                </div>
-                            </a>
-                        </Link>
-                        <Link href='/dashboard/business-verification' className='p-4 font-sans nav-link nav-link-ltr'>
-                            <a>
-                                <div className={`py-2 px-3 rounded-lg w-52 font-medium  cursor-pointer
-                              ${Active('/dashboard/business-verification')} ${CheckPermissions('businessVerification')}`}>
-                                    <FontAwesomeIcon icon={faUserCircle} />&nbsp;Business Verification
-                                </div>
-                            </a>
-                        </Link>
-                        <Link href='/dashboard/manage-users' className='p-4 font-sans nav-link nav-link-ltr' >
-                            <a>
-                                <div className={`py-2 px-3 rounded-lg w-52 font-medium  cursor-pointer
-                            ${Active("/dashboard/manage-users")} ${CheckPermissions('manageUsers')}`}>
-                                    <FontAwesomeIcon icon={faPlayCircle} />&nbsp;Manage Users
-                                </div>
-                            </a>
-                        </Link>
-                        <Link href='/dashboard/content-management' className='p-4 font-sans nav-link nav-link-ltr' >
-                            <a>
-                                <div className={`flex items-center justify-between py-2 px-3 rounded-lg w-52 font-medium  cursor-pointer
-                            ${Active("/dashboard/content-management")} ${CheckPermissions('contentManagement')}`}>
-                                    <div>
-                                        <FontAwesomeIcon icon={faComment} />&nbsp;Content Management
+                <div className='lg:flex h-full flex-col space-y-2 overflow-y-auto pt-4'>
+                    {
+                        Routes && Routes.map(({ name, path, icon, permission }, index) => (
+                            <>
+                                <Link href={path} key={index} className='p-4 font-sans nav-link nav-link-ltr'>
+                                    <div
+                                        className={`flex flex-row items-center py-2 px-3 rounded-lg w-52 font-medium
+                                            sidebar-item cursor-pointer ${Active(path)} ${CheckPermissions(permission)}`}
+                                    >
+                                        {icon}&nbsp;{name}
                                     </div>
-                                    {/* <Badge /> */}
-                                </div>
-                            </a>
-                        </Link>
-                        <Link href='/dashboard/setting' className='p-4 font-sans nav-link nav-link-ltr' >
-                            <a>
-                                <div className={`flex items-center justify-between py-2 px-3 rounded-lg w-52 font-medium  cursor-pointer
+                                </Link>
+                            </>
+                        ))
+                    }
+                    <Link href='/dashboard/setting' className='p-4 font-sans nav-link nav-link-ltr' >
+                        <a>
+                            <div className={`flex items-center justify-between py-2 px-3 rounded-lg w-52 font-medium  cursor-pointer
                             ${Active("/dashboard/setting")}`}>
-                                    <div>
-                                        <FontAwesomeIcon icon={faCog} />&nbsp;Settings
-                                    </div>
-                                    {/* <Badge /> */}
+                                <div>
+                                    <FontAwesomeIcon icon={faCog} />&nbsp;Settings
                                 </div>
-                            </a>
-                        </Link>
-                    </>
+                            </div>
+                        </a>
+                    </Link>
                 </div>
                 <div className="flex items-center">
                     <button onClick={() => logout()}
