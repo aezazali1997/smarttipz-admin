@@ -3,8 +3,8 @@ import { isEmpty } from 'lodash';
 const Joi = require('joi');
 const jwt = require('jsonwebtoken');
 
-const User = require('../../../../models/User');
-const Testimonial = require('../../../../models/Testimonial');
+const User = require('models/User');
+const Testimonial = require('models/Testimonial');
 
 const sgMail = require('@sendgrid/mail')
 sgMail.setApiKey(process.env.SENDGRID_API_KEY)

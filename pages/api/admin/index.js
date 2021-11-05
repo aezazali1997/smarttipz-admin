@@ -5,7 +5,7 @@ const { isEmpty, forEach } = require('lodash');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const Joi = require('joi');
-const Admin = require('../../../models/Admin');
+const Admin = require('models/Admin');
 
 const handler = async (req, res) => {
     if (req.method === 'GET') {

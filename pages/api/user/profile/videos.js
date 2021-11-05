@@ -1,5 +1,5 @@
-const User = require('../../../../models/User');
-const Video = require('../../../../models/Video');
+const User = require('models/User');
+const Video = require('models/Video');
 const jwt = require('jsonwebtoken');
 const sequelize = require('sequelize');
 

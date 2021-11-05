@@ -3,8 +3,8 @@ import { isEmpty } from 'lodash';
 const Joi = require('joi');
 const jwt = require('jsonwebtoken');
 
-const User = require('../../../../../models/User');
-const Testimonial = require('../../../../../models/Testimonial');
+const User = require('models/User');
+const Testimonial = require('models/Testimonial');
 
 const handler = async (req, res) => {
   if (req.method === 'GET') {

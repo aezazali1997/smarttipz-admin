@@ -1,4 +1,4 @@
-const Admin = require('../../../models/Admin');
+const Admin = require('models/Admin');
 const bcrypt = require('bcryptjs');
 const Joi = require('joi');
 const randomString = require('../../../utils/random');

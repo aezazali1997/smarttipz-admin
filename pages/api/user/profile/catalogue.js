@@ -1,6 +1,6 @@
 const Video = require('models/Video');
 
-const User = require('../../../../models/User');
+const User = require('models/User');
 const jwt = require('jsonwebtoken');
 
 const handler = async (req, res) => {

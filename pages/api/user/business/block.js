@@ -1,7 +1,7 @@
 
 const jwt = require('jsonwebtoken');
 
-const User = require('../../../../models/User');
+const User = require('models/User');
 
 const handler = async (req, res) => {
     if (req.method === 'POST') {

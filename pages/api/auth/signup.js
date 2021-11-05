@@ -1,6 +1,6 @@
-const PermissionType = require('../../../models/PermissionType');
+const PermissionType = require('models/PermissionType');
 
-const Admin = require('../../../models/Admin');
+const Admin = require('models/Admin');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 

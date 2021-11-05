@@ -2,7 +2,7 @@ import { isEmpty } from 'lodash';
 const Admin = require('models/Admin');
 
 const jwt = require('jsonwebtoken');
-const User = require('../../../models/User');
+const User = require('models/User');
 const bcrypt = require('bcryptjs');
 
 const handler = async (req, res) => {

@@ -2,8 +2,8 @@ import { getUsers } from 'utils/consts';
 
 const jwt = require('jsonwebtoken');
 
-const Business = require('../../../../models/Business');
-const User = require('../../../../models/User');
+const Business = require('models/Business');
+const User = require('models/User');
 const Joi = require('joi');
 const bcrypt = require('bcryptjs');
 const Sequelize = require('sequelize');
