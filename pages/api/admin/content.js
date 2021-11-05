@@ -1,16 +1,8 @@
-import { useEffect } from 'react';
+
+const jwt = require('jsonwebtoken');
 
 const User = require('models/User');
-
 const Video = require('models/Video');
-// const Admin = require('models/Admin');
-
-const { isEmpty } = require('lodash');
-const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
-const Joi = require('joi');
-const sequelize = require('sequelize');
-
 
 const sgMail = require('@sendgrid/mail')
 sgMail.setApiKey(process.env.SENDGRID_API_KEY)

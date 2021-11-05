@@ -447,7 +447,7 @@ const Dashboard = () => {
 																	/>
 																</div>
 																:
-																<div className="flex justify-around w-full space-x-3">
+																<div className="flex justify-around w-full space-x-2">
 																	<span className="flex items-center cursor-pointer"
 																		onClick={() => _PreviewProfile(username)}>
 																		<PreviewEye classNames={'text w-5 h-5'} />
