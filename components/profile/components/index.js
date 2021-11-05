@@ -8,3 +8,5 @@ export { default as TestimonialCard } from './TestimonialCard';
 export { default as BusinessCard } from './BusinessCard';
 export { default as TestimonialForm } from './TestimonialForm';
 export { default as PopupBusinessCard } from './PopupBusinessCard';
+export { default as InputField } from './InputField';
+export { default as CustomLoader } from './customLoader';

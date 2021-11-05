@@ -10,7 +10,7 @@ import { UseFetchProfile } from 'hooks';
 // import videos from 'utils/VdeoSchema.json';
 import { Button, Spinner } from 'components';
 import {
-    Card, Carousel, CustomLoader, InputField, MediaUploadForm,
+    Card, Carousel, CustomLoader, InputField,
     PopupBusinessCard, ProfileCard, Rating, TestimonialCard
 } from 'components/profile/components';
 
@@ -26,8 +26,9 @@ const Profile = ({ profile }) => {
         agree, thumbnailUrl, urls, setUrls, setMediaType, ChangeAgreement, _OnThumbnailClick, _CloseUploadModal,
         fetchingCatalogues, catalogues, myVideos, fetchingMyVideos, uploadingThumbnail
     } = UseFetchProfile(profile);
-    const { name, about, rating, views, picture, phone, email, accountType, username, showUsername, showName
-    } = profile;
+
+    const { name = '', about = '', rating = '', views = '', picture = '', phone = '', email = '', accountType = '', username = '', showUsername = '', showName = ''
+    } = profile || {};
     const { website } = businessCard;
 
     useEffect(() => {
@@ -339,7 +340,7 @@ const Profile = ({ profile }) => {
             }
 
 
-            {
+            {/* {
                 showModal && (
                     <MediaUploadForm
                         title={modalTitle}
@@ -363,7 +364,7 @@ const Profile = ({ profile }) => {
 
                     />
                 )
-            }
+            } */}
 
         </div>
     )
