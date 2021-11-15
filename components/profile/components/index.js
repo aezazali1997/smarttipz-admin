@@ -10,3 +10,4 @@ export { default as TestimonialForm } from './TestimonialForm';
 export { default as PopupBusinessCard } from './PopupBusinessCard';
 export { default as InputField } from './InputField';
 export { default as CustomLoader } from './customLoader';
+export { default as NewsfeedCard } from './NewsFeedCard';

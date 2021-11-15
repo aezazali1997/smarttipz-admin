@@ -26,6 +26,10 @@ const handler = async (req, res) => {
             const { id } = user;
 
             const videos = await Video.findAll({
+                include: [
+                    {
+                        model: User, attributes: ['name']
+                    }],
                 where: {
                     UserId: id,
                     isApproved: true,

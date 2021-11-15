@@ -21,6 +21,7 @@ const handler = async (req, res) => {
                 attributes: ['id'],
                 where: { username }
             });
+
             if (!user) {
                 return res.status(404).send({ error: true, data: [], message: 'User Not Found' })
             }
@@ -29,7 +30,8 @@ const handler = async (req, res) => {
             const { id } = user;
 
             const videos = await Video.findAll({
-                where: { UserId: id, category: 'catalogue', isApproved: true },
+                include: [{ model: User, attributes: ['name'] }],
+                where: { UserId: id, catalogue: true, isApproved: true },
                 order: [["createdAt", "DESC"]]
             })
 

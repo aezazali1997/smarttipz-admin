@@ -1,22 +1,17 @@
 /* eslint-disable @next/next/no-img-element */
 /* eslint-disable react/jsx-key */
 import React, { useEffect } from 'react'
-import axios from 'axios';
 import { Helmet } from 'react-helmet';
 import cookie from 'js-cookie';
-// import { parseCookies } from 'nookies';
 import { isEmpty } from 'lodash';
+import InfiniteScroll from 'react-infinite-scroll-component';
 import { UseFetchProfile } from 'hooks';
-// import videos from 'utils/VdeoSchema.json';
 import { Button, Spinner } from 'components';
 import {
     Card, Carousel, CustomLoader, InputField,
-    PopupBusinessCard, ProfileCard, Rating, TestimonialCard
+    PopupBusinessCard, ProfileCard, Rating, TestimonialCard, NewsfeedCard
 } from 'components/profile/components';
 
-// import { AddTestimonialModal, EditTestimonialModal } from 'components/Modals';
-// import { getInputClasses } from 'helpers';
-import InfiniteScroll from 'react-infinite-scroll-component';
 
 const Profile = ({ profile }) => {
 
@@ -156,13 +151,21 @@ const Profile = ({ profile }) => {
                                         <div className=" w-auto mt-6 relative">
                                             <Carousel>
                                                 {
-                                                    catalogues.map(({ title, url, mediaType, thumbnail }, index) => (
-                                                        <div key={index}>
-                                                            <Card
-                                                                image={url}
-                                                                title={title}
+                                                    catalogues.map(({ id, User, UserId, catalogue, description, title, url, mediaType, thumbnail }, index) => (
+                                                        <div key={index} className="my-2 px-5">
+                                                            <NewsfeedCard
+                                                                id={id}
+                                                                UserId={UserId}
+                                                                index={index}
+                                                                catalogue={catalogue}
+                                                                url={url}
+                                                                User={User}
                                                                 views={200}
+                                                                rating={2.5}
                                                                 mediaType={mediaType}
+                                                                description={description}
+                                                                title={title}
+                                                                width={'max-w-xs'}
                                                                 thumbnail={thumbnail}
                                                             />
                                                         </div>
@@ -178,7 +181,7 @@ const Profile = ({ profile }) => {
             {/* section ends here */}
             {/* section starts here */}
             <div className="flex flex-col w-full px-2  mt-8">
-                <h1 className="text-md font-medium">My Videos</h1>
+                <h1 className="text-md font-medium">Videos</h1>
                 {
                     fetchingMyVideos ? (
                         <div className="flex w-full justify-center">
@@ -198,19 +201,23 @@ const Profile = ({ profile }) => {
                             <div className="w-full mt-6 justify-center lg:justify-start" >
                                 <Carousel>
                                     {
-                                        myVideos.map(({ title, url, mediaType, thumbnail, like, comment, share }, index) => (
-                                            <div key={index}>
-                                                <Card
-                                                    image={url}
-                                                    title={title}
-                                                    thumbnail={thumbnail}
-                                                    mediaType={mediaType}
-                                                    comment={comment}
-                                                    like={like}
-                                                    share={share}
+                                        myVideos.map(({ id, UserId, User, title, url, mediaType, thumbnail, like, comment, share, catalogue, description, }, index) => (
+                                            <div key={index} className="my-2 px-5">
+                                                <NewsfeedCard
+                                                    id={id}
+                                                    UserId={UserId}
+                                                    index={index}
+                                                    catalogue={catalogue}
+                                                    url={url}
+                                                    User={User}
                                                     views={200}
-                                                    rating={3.5}
-                                                    disclaimer={true}
+                                                    rating={2.5}
+                                                    mediaType={mediaType}
+                                                    description={description}
+                                                    title={title}
+                                                    isPost={true}
+                                                    width={'max-w-xs'}
+                                                    thumbnail={thumbnail}
                                                 />
                                             </div>
                                         ))
