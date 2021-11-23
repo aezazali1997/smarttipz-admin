@@ -1,6 +1,23 @@
 
 const sequelize = require('sequelize');
 
+
+export const getPagination = (page, size) => {
+    const limit = size ? +size : 10;
+    const offset = page ? page * limit : 0;
+
+    return { limit, offset };
+};
+
+export const getPagingData = (data, page, limit, name) => {
+    const { count: totalVideos, rows: videos } = data;
+    const currentPage = page ? + page : 0;
+    const totalPages = Math.ceil(totalVideos / limit);
+
+    return { totalVideos, videos, totalPages, currentPage };
+};
+
+
 export const getFilterAdmins = (search) => {
     console.log("searched >>", search);
     return {
@@ -98,6 +115,36 @@ export const FilterPersonalUsers = (search) => {
         },
         {
             phoneNumber: {
+                [sequelize.Op.iLike]: `%${search}%`,
+            }
+        },
+        {
+            username: {
+                [sequelize.Op.iLike]: `%${search}%`,
+            }
+        }
+        ]
+
+    }
+}
+
+export const FilterContent = (search) => {
+    console.log("searched >>", search);
+    return {
+        [sequelize.Op.and]: [
+            {
+                isDeleted: {
+                    [sequelize.Op.eq]: false
+                },
+            },
+        ],
+        [sequelize.Op.or]: [{
+            name: {
+                [sequelize.Op.iLike]: `%${search}%`,
+            }
+        },
+        {
+            email: {
                 [sequelize.Op.iLike]: `%${search}%`,
             }
         },

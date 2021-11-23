@@ -11,7 +11,10 @@ import {
     Card, Carousel, CustomLoader, InputField,
     PopupBusinessCard, ProfileCard, Rating, TestimonialCard, NewsfeedCard
 } from 'components/profile/components';
-
+import axiosInstance from 'APIs/axiosInstance';
+import axios from 'axios';
+import { parseCookies } from 'nookies';
+import { useRouter } from 'next/router';
 
 const Profile = ({ profile }) => {
 
@@ -30,13 +33,36 @@ const Profile = ({ profile }) => {
         cookie.set('name', name);
     }, [])
 
+    const router = useRouter();
+
+
     return (
-        <div className="flex flex-col h-full w-full p-3 sm:p-5">
+        <div className="flex flex-col h-full w-full px-3 sm:px-5 ">
             {/*SEO Support*/}
             <Helmet>
                 <title>Profile | Smart Tipz</title>
             </Helmet>
             {/*SEO Support End */}
+
+
+            {/* section starts here*/}
+            <div className='flex items-center bg-white space-x-10 p-5 w-full py-3'>
+                <Button
+                    onSubmit={() => router.back()}
+                    type="button"
+                    childrens={(
+                        <>
+                            <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                <path fillRule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clipRule="evenodd" />
+                            </svg>
+                            <span className="pr-2">Back</span>
+                        </>
+                    )}
+                    classNames={"px-3 cursor-pointer py-2 flex justify-center items-center text-white text-md font-semibold primary-btn rounded-full"}
+                />
+            </div>
+            <hr />
+            {/* section ends here*/}
             {/* section starts here*/}
             <div className="md:hidden flex flex-col w-full">
                 <ProfileCard
@@ -122,14 +148,14 @@ const Profile = ({ profile }) => {
             {
                 accountType === 'Business' && (
                     <>
-                        <div className="flex w-full justify-end items-center px-2 mt-8">
+                        {/* <div className="flex w-full justify-end items-center px-2 mt-8">
                             <Button
                                 // onSubmit={_OpenUploadModal}
                                 type="button"
                                 childrens={'Upload Photo/Video'}
                                 classNames={"px-3 py-2 flex justify-center items-center text-white text-sm primary-btn rounded-md "}
                             />
-                        </div>
+                        </div> */}
                         <div className="flex flex-col w-full px-2 mt-4">
                             <h1 className="text-md font-medium">My Catalogue</h1>
                             {
@@ -236,8 +262,9 @@ const Profile = ({ profile }) => {
                                 <Button
                                     // onSubmit={_AddTestimonial}
                                     type="button"
+                                    disable={true}
                                     childrens={'Request Testimonial'}
-                                    classNames={"px-3 py-2 flex justify-center items-center text-white text-sm primary-btn rounded-md "}
+                                    classNames={"px-3 py-2 flex justify-center items-center text-white text-sm btn-disable rounded-md "}
                                 />
                             </div>
                             {
@@ -375,6 +402,29 @@ const Profile = ({ profile }) => {
 
         </div>
     )
+}
+
+
+export const getServerSideProps = async (context) => {
+    const { query: { username } } = context;
+    const { token } = parseCookies(context);
+    if (!token)
+        return {
+            redirect: {
+                permanent: false,
+                destination: "/auth/login",
+            },
+            props: {},
+        };
+    else {
+        const res = await axios.get(`${process.env.BASE_URL}api/user/profile?username=${username}`, { headers: { Authorization: "Bearer " + token } })
+        const { data } = res.data;
+        return {
+            props: {
+                profile: data
+            }
+        }
+    }
 }
 
 export default Profile;

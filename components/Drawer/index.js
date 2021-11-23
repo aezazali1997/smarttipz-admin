@@ -53,9 +53,10 @@ const Drawer = ({ isOpen, toggle, logout }) => {
                     className='flex flex-col w-auto h-full py-5 px-5 text-white justify-between relative navbar'
                     role='navigation'
                 >
-                    <div className="py-5 flex items-center flex-col relative">
+                    <div className="py-7 flex items-center flex-col relative">
                         <Link href='/dashboard/admin'>
-                            <Image src='https://smart-tipz-data-bucket.s3.ap-southeast-1.amazonaws.com/public/ST-2-W.png' objectFit="contain" alt="brand" layout="fill" />
+                            <Image src='https://smart-tipz-data-bucket.s3.ap-southeast-1.amazonaws.com/public/logo.svg'
+                                objectFit="cover" alt="brand" layout="fill" />
 
                         </Link>
                     </div>
@@ -144,7 +145,7 @@ const Drawer = ({ isOpen, toggle, logout }) => {
                 <div className='px-3'>
                     <Hamburger toggled={isOpen} onToggle={toggle} color='#714de1' direction="right" duration={0.5} size={28} />
                 </div>
-                <h1 className="text-2xl font-bold font-sans">
+                <h1 className="text-xl text-center font-bold font-sans">
                     {asPath === '/dashboard/setting' ? 'Settings' :
                         asPath === '/dashboard/admin' ? 'Admin' :
                             asPath === '/dashboard/business-verification' ? 'Business Verification' :

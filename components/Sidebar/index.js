@@ -48,9 +48,10 @@ const Sidebar = ({ logout }) => {
                 className='flex flex-col w-full h-full py-5 px-5 text-white justify-between relative navbar'
                 role='navigation'
             >
-                <div className="py-5 flex items-center flex-col relative">
+                <div className="py-7 flex items-center flex-col relative">
                     <Link href='/dashboard/admin'>
-                        <Image src='https://smart-tipz-data-bucket.s3.ap-southeast-1.amazonaws.com/public/ST-2-W.png' objectFit="contain" alt="brand" layout="fill" />
+                        <Image src='https://smart-tipz-data-bucket.s3.ap-southeast-1.amazonaws.com/public/logo.svg'
+                            objectFit="cover" alt="brand" layout="fill" />
                     </Link>
                 </div>
                 <div className='lg:flex h-full flex-col space-y-2 overflow-y-auto pt-4'>

@@ -26,9 +26,4 @@ export const Routes = [
         permission: 'contentManagement',
         icon: (<FontAwesomeIcon icon={faComment} />)
     },
-    {
-        name: 'Settings',
-        path: '/dashboard/setting',
-        icon: (<FontAwesomeIcon icon={faCog} />)
-    }
 ]

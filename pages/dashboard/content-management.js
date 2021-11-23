@@ -1,13 +1,14 @@
 /* eslint-disable @next/next/no-img-element */
 import axiosInstance from 'APIs/axiosInstance';
-import { Button, Card, Modal, Spinner, VideoPlayer } from 'components';
+import { Button, Card, Modal, Searchbar, Spinner, VideoPlayer } from 'components';
 import { initial, isEmpty } from 'lodash';
 import React, { useEffect, useState } from 'react'
 import { getInputClasses } from 'utils/helpers';
 import { FormikProvider, useFormik } from 'formik';
 import { RemoveVideoSchema } from 'utils/validation_shema';
 import swal from 'sweetalert';
-
+import useDebounce from 'utils/Debounce';
+import { InView } from 'react-intersection-observer';
 const initials = {
 	email: '',
 	message: ''
@@ -15,16 +16,26 @@ const initials = {
 
 const ContentManagement = () => {
 
-	const [users, setUsers] = useState([]);
+	const [videos, setVideos] = useState([]);
 	const [showModal, setShowModal] = useState(false);
 	const [loading, setLoading] = useState(true);
 	const [initialValues, setInitialValues] = useState(initials);
+	const [search, setSearch] = useState('');
+	const [page, setPage] = useState(0);
+	const [totalVideosCount, setTotalVideosCount] = useState(0);
+	const [hasMore, setHasMore] = useState(true);
+	const [inView, setInView] = useState(false);
 
-	const fetchMedia = async () => {
+	const debouncedSearchTerm = useDebounce(search, 1000);
+
+	const fetchMedia = async (search) => {
 		enableLoading(true);
 		try {
-			const { data: { data: { users } } } = await axiosInstance.getContentVideos();
-			setUsers(users);
+			const { data: { data: { videos } } } =
+				await axiosInstance.getContentVideos(search, page);
+			// setTotalVideosCount(totalVideos);
+			// setPage(currentPage)
+			setVideos(videos);
 			disableLoading(false);
 		}
 		catch (e) {
@@ -34,8 +45,12 @@ const ContentManagement = () => {
 	}
 
 	useEffect(() => {
-		fetchMedia();
+		fetchMedia(search);
 	}, [])
+
+	useEffect(() => {
+		fetchMedia(debouncedSearchTerm);
+	}, [debouncedSearchTerm])
 
 
 	const enableLoading = () => {
@@ -67,8 +82,6 @@ const ContentManagement = () => {
 				timer: 3000
 			})
 			fetchMedia();
-			// const updatedUser = users.filter(user => user.email !== values.email && user);
-			// setUsers(updatedUser);
 			resetForm(initials);
 			setSubmitting(false);
 			ToggleModal();
@@ -88,8 +101,27 @@ const ContentManagement = () => {
 		}
 	});
 
+
+	const _FetchMoreData = async () => {
+		console.log('here');
+		if (videos.length >= totalVideosCount) {
+			setHasMore(false);
+		}
+		else {
+			try {
+				const { data: { data: { videos: newVideos, totalVideos, currentPage } } } = await axiosInstance.getContentVideos(search, page + 1);
+				// setVideos([...videos, [...newVideos]])
+				// setTotalVideosCount(totalVideos);
+				// setPage(currentPage);
+			}
+			catch (e) {
+				console.log('error: ', e);
+			}
+		}
+	};
+
 	return (
-		<div className="bg-white py-5 px-3 space-y-3 h-screen w-full">
+		<div className="bg-white space-y-3 h-screen w-full">
 			{
 
 				loading ? (
@@ -101,15 +133,21 @@ const ContentManagement = () => {
 					</div>
 				)
 					:
-					isEmpty(users) ?
+					isEmpty(videos) ?
 						<p className="flex h-screen w-full justify-center items-center">
 							No Content Available
 						</p>
 						:
-						<div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-y-6 gap-x-6'>
-							{
-								users.map(({ username, picture, accountType, email, name, Videos, }) => (
-									Videos && Videos.map(({ url, thumbnail, id, UserId, mediaType }, index) => (
+						<>
+							<div className="py-2 px-3 sticky top-0 z-30 bg-white">
+								<Searchbar search={search} onChange={setSearch} />
+							</div>
+
+							<div className='pb-3 px-3 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-y-6 gap-x-6'>
+								{
+									videos.map(({ url, thumbnail, id, UserId, mediaType,
+										User: { username, picture, accountType, email, name } }, index) => (
+
 										<div key={index}>
 											<Card
 												onClick={() => _OpenModal(id, UserId, email)}
@@ -124,9 +162,20 @@ const ContentManagement = () => {
 											/>
 										</div>
 									))
-								))
-							}
-						</div>
+								}
+							</div>
+							{/* <InView>
+								{({ inView, ref, entry , onChange}) => (
+									<div ref={ref}>
+										{inView ? _FetchMoreData() : ''}
+										<h2>{`Header inside viewport ${inView}.`}</h2>
+									</div>
+								)}
+							</InView> */}
+							{/* <InView as="div" onChange={(inView) => { if (inView) _FetchMoreData() }}>
+								<h2>Plain children are always rendered. Use onChange to monitor state.</h2>
+							</InView> */}
+						</>
 			}
 			{
 				showModal &&
@@ -196,6 +245,7 @@ const ContentManagement = () => {
 					/>
 				</form>
 			}
+
 		</div>
 	)
 }

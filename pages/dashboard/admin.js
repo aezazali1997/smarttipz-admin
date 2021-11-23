@@ -304,8 +304,8 @@ const Dashboard = () => {
 
 
   return (
-    <div className="bg-white py-5 px-3 space-y-3 h-screen">
-      <div className="flex w-full">
+    <div className="bg-white py-5 px-3 space-y-3 h-screen relative">
+      <div className="flex w-full bg-white sticky top-0 z-10">
         <Searchbar search={search} onChange={setSearch} />
       </div>
       <div className="flex w-full justify-end">

@@ -1,3 +1,4 @@
+import { FilterContent, getPagination, getPagingData } from 'utils/consts';
 
 const jwt = require('jsonwebtoken');
 
@@ -10,29 +11,34 @@ sgMail.setApiKey(process.env.SENDGRID_API_KEY)
 
 const handler = async (req, res) => {
     if (req.method === 'GET') {
-        const { headers: { authorization } } = req;
+        const { headers: { authorization }, query: { search, page } } = req;
         try {
             if (!authorization) {
                 return res.status(401).send({ error: true, data: [], message: 'Please Login' })
             };
 
-            const response = jwt.verify(
+            const result = jwt.verify(
                 authorization.split(' ')[1],
                 process.env.SECRET_KEY
             );
 
-            const users = await User.findAll({
+            // const { limit, offset } = getPagination(page, 10);
+
+            const videos = await Video.findAll({
                 include: [
                     {
-                        model: Video, where: { isApproved: true }
+                        model: User, where: FilterContent(search),
                     }
                 ],
-                where: {
-                    isDeleted: false,
-                },
+                // limit: limit,
+                // offset: offset,
+                where: { isApproved: true },
+                order: [['createdAt', 'DESC']],
             });
 
-            res.status(200).json({ error: false, data: { users }, message: 'Admins fetched successfuly.' });
+            // const response = getPagingData(videos, page, limit);
+
+            res.status(200).json({ error: false, data: { videos }, message: 'Content fetched successfuly.' });
         } catch (err) {
             res.status(500).json({ error: true, message: err, data: [] });
         }

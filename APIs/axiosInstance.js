@@ -106,9 +106,9 @@ class AxiosInstance {
         return await axios.delete(USER_API_BASE_URL + `api/user/personal/${id}`, this.getAuthHeader());
     }
 
-    async getContentVideos() {
+    async getContentVideos(search, page) {
         console.log('In Get User Media Content Api: ');
-        return await axios.get(USER_API_BASE_URL + `api/admin/content`, this.getAuthHeader());
+        return await axios.get(USER_API_BASE_URL + `api/admin/content?search=${search}&&page=${page}`, this.getAuthHeader());
     }
 
     async removeVideo(values) {

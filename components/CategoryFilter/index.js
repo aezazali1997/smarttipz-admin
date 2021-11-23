@@ -10,7 +10,7 @@ const Index = ({ handleActiveTab, Active }) => {
                 childrens={'Unverified'}
                 classNames={`${Active('Unverified')}
                 absolute left-12 md:left-28 px-3 py-2 w-32 md:w-36 flex justify-center items-center
-                border text-sm border-purple-600 rounded-3xl active-btn`}
+                border text-sm border-purple-600 rounded-lg active-btn`}
             />
             <Button
                 onSubmit={() => handleActiveTab('verified')}
@@ -18,7 +18,7 @@ const Index = ({ handleActiveTab, Active }) => {
                 childrens={'Verified'}
                 classNames={`${Active('verified')} 
                 border z-10 border-purple-600 px-3 py-2 w-20 md:w-36 flex justify-center 
-                items-center text-sm rounded-3xl active-btn`}
+                items-center text-sm rounded-lg active-btn`}
             />
             <Button
                 onSubmit={() => handleActiveTab('All')}
@@ -26,7 +26,7 @@ const Index = ({ handleActiveTab, Active }) => {
                 childrens={'All'}
                 classNames={`${Active('All')}
                 border border-purple-600 absolute right-12 md:right-28 px-3 py-2 w-32 md:w-36 flex justify-center items-center
-                text-sm rounded-3xl active-btn`}
+                text-sm rounded-lg active-btn`}
             />
         </div>
     )
