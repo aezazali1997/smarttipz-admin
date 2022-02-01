@@ -176,28 +176,62 @@ const Profile = ({ profile }) => {
                                         :
                                         <div className=" w-auto mt-6 relative">
                                             <Carousel>
-                                                {
-                                                    catalogues.map(({ id, User, UserId, catalogue, description, title, url, mediaType, thumbnail }, index) => (
+                                                {catalogues.map((item, index) => {
+                                                    const {
+                                                        id: postId,
+                                                        isLiked,
+                                                        likeCount,
+                                                        shareCount,
+                                                        commentCount,
+                                                        avgRating,
+                                                        totalRaters,
+                                                        Video: {
+                                                            id,
+                                                            UserId,
+                                                            title,
+                                                            url,
+                                                            mediaType,
+                                                            thumbnail,
+                                                            catalogue,
+                                                            description,
+                                                            User,
+                                                            videoType,
+                                                            videoCost,
+                                                            Shares,
+                                                            productLink
+                                                        },
+                                                    } = item;
+                                                    return (
                                                         <div key={index} className="my-2 px-5">
                                                             <NewsfeedCard
-                                                                id={id}
+                                                                id={postId}
+                                                                videoId={id}
                                                                 UserId={UserId}
                                                                 index={index}
                                                                 catalogue={catalogue}
                                                                 url={url}
                                                                 User={User}
+                                                                Shares={Shares}
                                                                 views={200}
                                                                 rating={2.5}
+                                                                posts={catalogues}
+                                                                isLiked={isLiked}
+                                                                likeCount={likeCount}
+                                                                shareCount={shareCount}
+                                                                commentCount={commentCount}
                                                                 mediaType={mediaType}
+                                                                avgRating={avgRating}
+                                                                videoType={videoType}
+                                                                videoCost={videoCost}
                                                                 description={description}
                                                                 title={title}
+                                                                productLink={productLink}
                                                                 width={'max-w-xs'}
                                                                 thumbnail={thumbnail}
                                                             />
                                                         </div>
-                                                    ))
-                                                }
-
+                                                    )
+                                                })}
                                             </Carousel>
                                         </div>
                             }
@@ -226,28 +260,63 @@ const Profile = ({ profile }) => {
                             :
                             <div className="w-full mt-6 justify-center lg:justify-start" >
                                 <Carousel>
-                                    {
-                                        myVideos.map(({ id, UserId, User, title, url, mediaType, thumbnail, like, comment, share, catalogue, description, }, index) => (
+                                    {myVideos.map((item, index) => {
+                                        const {
+                                            id: postId,
+                                            isLiked,
+                                            likeCount,
+                                            shareCount,
+                                            commentCount,
+                                            avgRating,
+                                            totalRaters,
+                                            Video: {
+                                                id,
+                                                UserId,
+                                                title,
+                                                url,
+                                                mediaType,
+                                                thumbnail,
+                                                catalogue,
+                                                description,
+                                                User,
+                                                videoType,
+                                                videoCost,
+                                                Shares,
+                                                productLink
+                                            },
+                                        } = item;
+                                        return (
                                             <div key={index} className="my-2 px-5">
                                                 <NewsfeedCard
-                                                    id={id}
+                                                    id={postId}
+                                                    videoId={id}
                                                     UserId={UserId}
                                                     index={index}
                                                     catalogue={catalogue}
                                                     url={url}
                                                     User={User}
+                                                    Shares={Shares}
                                                     views={200}
                                                     rating={2.5}
                                                     mediaType={mediaType}
+                                                    videoCost={videoCost}
+                                                    videoType={videoType}
                                                     description={description}
+                                                    isLiked={isLiked}
+                                                    avgRating={avgRating}
+                                                    likeCount={likeCount}
+                                                    commentCount={commentCount}
+                                                    shareCount={shareCount}
                                                     title={title}
                                                     isPost={true}
                                                     width={'max-w-xs'}
+                                                    productLink={productLink}
                                                     thumbnail={thumbnail}
+
                                                 />
                                             </div>
-                                        ))
-                                    }
+                                        )
+                                    })}
                                 </Carousel>
                             </div>}
             </div>

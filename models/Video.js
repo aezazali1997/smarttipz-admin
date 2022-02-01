@@ -1,5 +1,8 @@
 const { DataTypes } = require("sequelize");
+const AllPosts = require("./AllPost");
 const sequelize = require("./db");
+const Favourite = require("./Favourite");
+const Share = require("./Share");
 
 const Video = sequelize.define("Video", {
   title: {
@@ -34,6 +37,18 @@ const Video = sequelize.define("Video", {
   mediaType: {
     type: DataTypes.STRING,
   },
+  videoType: {
+    type: DataTypes.STRING
+  },
+  videoCost: {
+    type: DataTypes.STRING
+  },
+  productLink: {
+    type: DataTypes.STRING
+  },
+  cost: {
+    type: DataTypes.INTEGER,
+  },
   isApproved: {
     type: DataTypes.BOOLEAN,
     defaultValue: true
@@ -44,6 +59,10 @@ const Video = sequelize.define("Video", {
   tip: {
     type: DataTypes.INTEGER,
   },
+  isShowOnNewsfeed: {
+    type: DataTypes.BOOLEAN,
+    defaultValue: true
+  },
   comment: {
     type: DataTypes.INTEGER,
   },
@@ -51,5 +70,18 @@ const Video = sequelize.define("Video", {
     type: DataTypes.INTEGER,
   },
 });
+
+Video.hasMany(Favourite);
+Favourite.belongsTo(Video);
+
+Video.hasMany(AllPosts);
+AllPosts.belongsTo(Video);
+
+Video.hasMany(Share);
+Share.belongsTo(Video);
+
+
+
+
 
 module.exports = Video;

@@ -1,3 +1,9 @@
+import { isEmpty } from 'lodash';
+import AllPosts from 'models/AllPost';
+import Comments from 'models/Comments';
+import PostLikee from 'models/Like';
+import Share from 'models/Share';
+import db from 'models/db';
 const User = require('models/User');
 const Video = require('models/Video');
 const jwt = require('jsonwebtoken');
@@ -23,22 +29,93 @@ const handler = async (req, res) => {
             if (!user) {
                 return res.status(404).send({ error: true, data: [], message: 'User Not Found' })
             }
-            const { id } = user;
+            const { id: userId } = user;
 
-            const videos = await Video.findAll({
+            const videos = await AllPosts.findAll({
                 include: [
                     {
-                        model: User, attributes: ['name']
-                    }],
-                where: {
-                    UserId: id,
-                    isApproved: true,
-                    category: {
-                        [sequelize.Op.not]: 'catalogue'
+                        model: Video,
+                        include: [
+                            {
+                                model: User, attributes: ['name', 'username', 'picture']
+                            },
+                        ],
                     },
+                    {
+                        model: Share, attributes: ['id', 'caption']
+                    }
+                ],
+                where: {
+                    [sequelize.Op.and]: [
+                        {
+                            '$Video.isApproved$': {
+                                [sequelize.Op.eq]: true
+                            },
+                        },
+                        {
+                            '$Video.UserId$': {
+                                [sequelize.Op.eq]: userId
+                            },
+                        },
+                        {
+                            '$Video.category$': {
+                                [sequelize.Op.not]: 'catalogue'
+                            }
+                        },
+                        {
+                            'isShared': {
+                                [sequelize.Op.eq]: false
+                            },
+                        }
+                    ]
                 },
+                group: [
+                    'AllPost.id',
+                    'Video.id',
+                    'Share.id',
+                    'Video->User.id',
+                    'Video->User.name',
+                    'Video->User.username',
+                    'Video->User.picture',
+                ],
                 order: [["createdAt", "DESC"]]
             });
+
+            for (let i = 0; i < videos.length; i++) {
+                const item = videos[i];
+                const { id, VideoId, Video, Share: Shares, isShared, } = item;
+                const likeCount = await PostLikee.count({
+                    where: {
+                        AllPostId: id
+                    }
+                });
+                const isLiked = await PostLikee.find({
+                    where: {
+                        AllPostId: id,
+                        reviewerId: userId
+                    }
+                });
+                const commentCount = await Comments.count({
+                    where: {
+                        AllPostId: id,
+                    }
+                });
+                const shareCount = await Share.count({
+                    where: {
+                        VideoId
+                    }
+                });
+                const ratings = await db.query(`select avg(r."rating") as "avgRating", count(r."AllPostId") as "totalRaters" from "AllPosts" p
+						left join "Ratings" as r on p.id=r."AllPostId"
+						where (p.id=${id} and r."AllPostId"=${id})
+						group by p.id`)
+
+
+                const avgRating = isEmpty(ratings[0]) ? 0 : ratings[0][0].avgRating;
+                const totalRaters = isEmpty(ratings[0]) ? 0 : ratings[0][0].totalRaters;
+
+                videos[i] = { id, totalRaters, avgRating, VideoId, isShared, Video, Share: Shares, likeCount, shareCount, commentCount, isLiked: isLiked ? true : false }
+            };
 
             res.status(200).json({
                 message: 'success',

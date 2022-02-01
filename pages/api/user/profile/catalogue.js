@@ -1,5 +1,11 @@
+import { isEmpty } from 'lodash';
+import AllPosts from 'models/AllPost';
+import Share from 'models/Share';
+import db from 'models/db';
+import sequelize from 'sequelize';
 const Video = require('models/Video');
-
+const Comments = require('models/Comments');
+const PostLikee = require('models/Like');
 const User = require('models/User');
 const jwt = require('jsonwebtoken');
 
@@ -26,24 +32,100 @@ const handler = async (req, res) => {
                 return res.status(404).send({ error: true, data: [], message: 'User Not Found' })
             }
 
-            console.log('user: ', user);
-            const { id } = user;
+            const { id: userId } = user;
 
-            const videos = await Video.findAll({
-                include: [{ model: User, attributes: ['name'] }],
-                where: { UserId: id, catalogue: true, isApproved: true },
+            const catalogues = await AllPosts.findAll({
+                include: [
+                    {
+                        model: Video,
+                        include: [
+                            {
+                                model: User, attributes: ['name', 'username', 'picture', 'tip']
+                            },
+                        ],
+                    },
+                    {
+                        model: Share, attributes: ['id', 'caption']
+                    }
+                ],
+                where: {
+                    [sequelize.Op.and]: [
+                        {
+                            '$Video.isApproved$': {
+                                [sequelize.Op.eq]: true
+                            },
+                        },
+                        {
+                            '$Video.UserId$': {
+                                [sequelize.Op.eq]: userId
+                            },
+                        },
+                        {
+                            '$Video.catalogue$': {
+                                [sequelize.Op.eq]: true
+                            },
+                        },
+                        {
+                            'isShared': {
+                                [sequelize.Op.eq]: false
+                            },
+                        }
+                    ]
+                },
+                group: [
+                    'AllPost.id',
+                    'Share.id',
+                    'Video.id',
+                    'Video->User.id',
+                    'Video->User.name',
+                    'Video->User.username',
+                    'Video->User.picture',
+                ],
                 order: [["createdAt", "DESC"]]
-            })
+            });
 
-            console.log('videos: ', videos);
+            for (let i = 0; i < catalogues.length; i++) {
+                const item = catalogues[i];
+                const { id, VideoId, Video, Share: Shares, isShared, } = item;
+                const likeCount = await PostLikee.count({
+                    where: {
+                        AllPostId: id
+                    }
+                });
+                const isLiked = await PostLikee.find({
+                    where: {
+                        AllPostId: id,
+                        reviewerId: userId
+                    }
+                });
+                const commentCount = await Comments.count({
+                    where: {
+                        AllPostId: id,
+                    }
+                });
+                const shareCount = await Share.count({
+                    where: {
+                        VideoId
+                    }
+                });
 
-            // const { name, email, avgRating, totalViews, about, picture, phoneNumber, showPhone, accessible,
-            //     accountType, showUsername, showName, isApproved, tip } = user;
+                const ratings = await db.query(`select avg(r."rating") as "avgRating", count(r."AllPostId") as "totalRaters" from "AllPosts" p
+						left join "Ratings" as r on p.id=r."AllPostId"
+						where (p.id=${id} and r."AllPostId"=${id})
+						group by p.id`)
+
+
+                const avgRating = isEmpty(ratings[0]) ? 0 : ratings[0][0].avgRating;
+                const totalRaters = isEmpty(ratings[0]) ? 0 : ratings[0][0].totalRaters;
+
+                catalogues[i] = { id, avgRating, totalRaters, VideoId, isShared, Video, Share: Shares, likeCount, shareCount, commentCount, isLiked: isLiked ? true : false }
+            };
+
 
             res.status(200).json({
                 error: false,
                 message: 'Data fetched successfully',
-                data: { catalogues: videos }
+                data: { catalogues: catalogues }
             });
         } catch (err) {
             res.status(500).send({ error: true, data: [], message: err.message });
