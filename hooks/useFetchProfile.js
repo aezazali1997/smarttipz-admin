@@ -5,6 +5,7 @@ import Swal from 'sweetalert2';
 import swal from 'sweetalert';
 import axiosInstance from 'APIs/axiosInstance';
 // import { RequestTestimonialFormSchema, UploadPhotoVideoSchema } from 'utils/validation_shema';
+import {calProfileRating} from '../utils/rating'
 
 const initial = {
     email: ''
@@ -45,6 +46,7 @@ const UseFetchProfile = (profile) => {
     const [myVideos, setMyVideos] = useState([]);
     const [fetchingMyVideos, setFetchMyVideos] = useState(true);
     const [uploadingThumbnail, setUploadingThumbnail] = useState(false);
+    const [profileRating,setProfileRating]=useState(-1);
 
     // let { FileInput, openFileDialog, uploadToS3 } = useS3Upload();
     let thumbnailRef = useRef();
@@ -101,7 +103,8 @@ const UseFetchProfile = (profile) => {
         try {
             const { data: { data: { videos } } } = await axiosInstance.getVideos(username);
             setMyVideos(videos);
-            console.log('videos: ', videos);
+            setProfileRating(calProfileRating(videos)); 
+            
             disableFetchMyVideos();
         }
         catch ({ response: { data: { message } } }) {
@@ -385,7 +388,8 @@ const UseFetchProfile = (profile) => {
         handleShowModal, _DeleteTestimonial, showRequestTestimonial, fetchMoreData, filteredTestimonial,
         hasMore, _OnRemoveThumbnail, onChangeThumbnail, MediaType, thumbnailRef, modalTitle,
         agree, thumbnailUrl, urls, setUrls, setMediaType, ChangeAgreement, _OnThumbnailClick, uploadingThumbnail,
-        _CloseUploadModal, _OpenUploadModal, catalogues, setCatalogues, fetchingCatalogues, myVideos, fetchingMyVideos
+        _CloseUploadModal, _OpenUploadModal, catalogues, setCatalogues, fetchingCatalogues, myVideos, fetchingMyVideos,
+        profileRating
     }
 }
 

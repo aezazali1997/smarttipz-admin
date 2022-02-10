@@ -45,7 +45,7 @@
     "sequelize": "^4.23.0",
     "sweetalert": "^2.1.2",
     "sweetalert2": "^11.1.7",
-    "video-react": "^0.14.1",
+    "video-react": "^0.15.0",
     "yup": "^0.32.9"
   },
   "devDependencies": {

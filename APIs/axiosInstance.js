@@ -21,6 +21,7 @@ class AxiosInstance {
     }
 
     async login(credentials) {
+        console.log("trying to loogin");
         console.log(USER_API_BASE_URL, process.env.BASE_URL)
         return await axios.post(USER_API_BASE_URL + "api/auth/signin", credentials);
     }

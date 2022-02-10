@@ -6,7 +6,6 @@ import Image from 'next/image';
 import Link from 'next/link';
 import HandIcon from 'public/purple-hand.svg';
 import React from 'react';
-import ReactTooltip from 'react-tooltip';
 import { Rating, VideoPlayer } from '..';
 import { PostActionDropdown } from '../Dropdown';
 
@@ -51,44 +50,41 @@ const NewsfeedCard = ({
 							<div className="flex flex-col w-full">
 								<p
 									// onClick={() => _HandleGotoUserProfile(UserId, User?.username)}
-									className="text-sm font-bold font-sans hover:underline cursor-pointer">
+									className="text-sm font-bold font-sans cursor-default">
 									{User?.name}
 								</p>
 								<p className="text-xs text-gray-500">19h</p>
 							</div>
 						</div>
 						<div className="flex space-x-2">
-							{videoCost === "Paid" &&
+							
 								<>
 									<span
 										// onClick={ToggleTipModal}
-										data-tip
-										data-for={`tip${title}`}
-										className="inline-flex h-8 w-14 cursor-pointer tip-hand">
+										className="inline-flex h-8 w-14 cursor-default tip-hand">
 										<Image src={HandIcon} alt="banner" objectFit='contain' />
 									</span>
-									<ReactTooltip
-										id={`tip${title}`}
-										place="top"
-										effect="solid"
-										border={false}
-										borderColor="white"
-										clickable={false}>
-										Give a Tip
-									</ReactTooltip>
 								</>
-							}
-							<span
-							// onClick={() => HandleFavouritePost(id)}
-							>
-								<svg
-									className="w-6 h-6 text-gray-500 hover:text-purple-600 cursor-pointer"
-									fill="currentColor"
-									viewBox="0 0 20 20"
+							
+						<span>
+                {/* <svg
 									xmlns="http://www.w3.org/2000/svg">
 									<path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-								</svg>
-							</span>
+								</svg> */}
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="w-6 h-6 text-gray-500 cursor-default"
+                  fill="currentColor"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor">
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
+                  />
+                </svg>
+              </span>
 							<div className="flex items-start justify-start">
 								<PostActionDropdown
 									// _HandleCatalogue={() => _HandleCatalogue(id, catalogue)}
@@ -102,7 +98,7 @@ const NewsfeedCard = ({
 					</div>
 					<p
 						// onClick={() => _HandleGotoVideoDetails(id)}
-						className="px-5 text-sm max-w-md hover:underline whitespace-nowrap overflow-ellipsis overflow-hidden cursor-pointer"
+						className="px-5 text-sm max-w-md whitespace-nowrap overflow-ellipsis overflow-hidden"
 					>
 						{title}
 					</p>
@@ -135,7 +131,6 @@ const NewsfeedCard = ({
 				<div className="flex justify-between w-full px-3">
 					<span className="flex items-center z-0">
 						<Rating value={avgRating || 0} isHalf={true} edit={false} />
-						&nbsp; <p className="text-xs text-gray-500"> Rating</p>
 					</span>
 
 					<span className="flex items-center">
@@ -183,40 +178,25 @@ const NewsfeedCard = ({
 						</div>
 						<div>
 							<p
-								data-tip
-								data-for={`disclaimer${title}`}
-								className="text flex justify-end font-sans hover:underline cursor-pointer">
+								className="text flex justify-end font-sans">
 								{' '}
 								Disclaimer
 							</p>
-							<ReactTooltip
-								className="md:max-w-sm mx-w-md break-words z-50"
-								id={`disclaimer${title}`}
-								place="top"
-								effect="solid"
-								border={false}
-								borderColor="white"
-								clickable={false}>
-								Although the information contained in these videos has been produced and processed
-								from sources believed to be reliable, no warranty, expressed or implied, is made
-								regarding accuracy, adequacy, completeness, legality, reliability or usefulness of
-								the information. Any reliance you place on such information is therefore strictly at
-								your own risk
-							</ReactTooltip>
+	
 						</div>
 						{/* </div> */}
 					</div>
 					<div className="flex justify-evenly py-1 px-2 space-x-2 divide-x">
 						<div
 							// onClick={HandleLikePost}
-							className="flex relative justify-center group items-center py-1 px-3 w-full  cursor-pointer">
+							className="flex relative justify-center group items-center py-1 px-3 w-full  cursor-default">
 							<div className="flex flex-col items-center">
 								<FontAwesomeIcon icon={faThumbsUp} className={`w-6 h-6 
-                                ${isLiked == null || isLiked == false ? 'text-gray-600' : 'text-purple-600'} group-hover:text-purple-600`}
+                                ${isLiked == null || isLiked == false ? 'text-gray-600' : 'text-purple-600'} `}
 								/>
 								<p
-									className={`cursor-pointer w-full text-xs text-center 
-                                    ${isLiked == null || isLiked == false ? 'text-gray-600' : 'text-purple-600'} group-hover:text-purple-600`}
+									className={`cursor-default w-full text-xs text-center 
+                                    ${isLiked == null || isLiked == false ? 'text-gray-600' : 'text-purple-600'} `}
 								>
 									{likeCount}
 								</p>
@@ -224,21 +204,21 @@ const NewsfeedCard = ({
 						</div>
 						<div
 							// onClick={() => _HandleCommentSection()}
-							className="flex space-x-2 justify-center relative group py-1 px-3 w-full  cursor-pointer">
+							className="flex space-x-2 justify-center relative group py-1 px-3 w-full  cursor-default">
 							<div className="flex flex-col items-center">
-								<FontAwesomeIcon icon={faCommentAlt} className="w-6 h-6 text-gray-600 group-hover:text-purple-600" />
-								<p className="cursor-pointer w-full text-xs text-center text-gray-600 group-hover:text-purple-600">
+								<FontAwesomeIcon icon={faCommentAlt} className="w-6 h-6 text-gray-600 " />
+								<p className="cursor-defualt w-full text-xs text-center text-gray-600 ">
 									{commentCount}
 								</p>
 							</div>
 						</div>
 						<div
 							// onClick={() => _OpenShareModal(videoId, thumbnail, url, User?.picture, User?.name, title)}
-							className="flex relative group justify-center items-center py-1 px-3 w-full cursor-pointer"
+							className="flex relative group justify-center items-center py-1 px-3 w-full cursor-default"
 						>
 							<div className="flex flex-col items-center" >
-								<FontAwesomeIcon icon={faShareAlt} className="w-6 h-6 text-gray-600 group-hover:text-purple-600" />
-								<p className=" cursor-pointer text-xs w-full text-center text-gray-600 group-hover:text-purple-600">
+								<FontAwesomeIcon icon={faShareAlt} className="w-6 h-6 text-gray-600 " />
+								<p className=" cursor-default text-xs w-full text-center text-gray-600 ">
 									{shareCount}
 								</p>
 							</div>
