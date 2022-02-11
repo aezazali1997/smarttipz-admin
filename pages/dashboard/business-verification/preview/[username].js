@@ -15,6 +15,7 @@ import {
   PopupBusinessCard,
   ProfileCard,
   Rating,
+  CustomStar,
   TestimonialCard,
   NewsfeedCard,
 } from "components/profile/components";
@@ -127,6 +128,8 @@ const Profile = ({ profile }) => {
           website={website || ""}
           handleShowBusinessCard={handleShowBusinessCard}
           showBusinessCard={showBusinessCard}
+          _fetching={fetchingMyVideos}
+          _rating={profileRating}
         />
       </div>
       <div className="hidden md:flex flex-row w-full h-auto">
@@ -181,10 +184,14 @@ const Profile = ({ profile }) => {
                   &nbsp;<p className="text-xs">{views} Views</p>
                 </span>
                 <span className="flex w-full items-center">
-                  {profileRating > -1 ? <>
-                  <Rating value={profileRating} /> &nbsp;
-                  <p className="text-xs"> Rating </p>
-                  </> : <Spinner />}
+                 {!fetchingMyVideos ? (
+                    <>
+                      <CustomStar value={profileRating} isHalf={true} /> &nbsp;
+                      <p className="text-xs"> Rating </p>
+                    </>
+                  ) : (
+                    <Spinner />
+                  )}
                   
                 </span>
               </div>

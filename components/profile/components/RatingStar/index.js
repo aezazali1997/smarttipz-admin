@@ -1,12 +1,13 @@
 import React from 'react'
 import ReactStars from 'react-rating-stars-component'
+import {decimalSplitter} from '../../../../utils/rating'
 
 const RatingComponent = ({ value, edit, isHalf, onChange, size, classNames }) => {
-
+    value=decimalSplitter(value);
     return (
         <ReactStars
             count={5}
-            value={value || 0}
+            value={value}
             size={size || 16}
             edit={false}
             isHalf={isHalf}

@@ -46,7 +46,7 @@ const UseFetchProfile = (profile) => {
     const [myVideos, setMyVideos] = useState([]);
     const [fetchingMyVideos, setFetchMyVideos] = useState(true);
     const [uploadingThumbnail, setUploadingThumbnail] = useState(false);
-    const [profileRating,setProfileRating]=useState(-1);
+    const [profileRating,setProfileRating]=useState(0);
 
     // let { FileInput, openFileDialog, uploadToS3 } = useS3Upload();
     let thumbnailRef = useRef();
