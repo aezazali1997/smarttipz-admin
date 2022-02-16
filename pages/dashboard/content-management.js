@@ -81,7 +81,7 @@ const ContentManagement = () => {
 				icon: 'success',
 				timer: 3000
 			})
-			fetchMedia();
+			fetchMedia(search);
 			resetForm(initials);
 			setSubmitting(false);
 			ToggleModal();
