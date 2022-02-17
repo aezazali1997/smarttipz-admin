@@ -57,9 +57,10 @@ const UseFetchProfile = (profile) => {
         // localStorage.setItem('isApproved', isApproved);
         // localStorage.setItem('username', username);
         // localStorage.setItem('accountType', accountType);
-        axiosInstance.getFollow(username).then(({ data: { data: { followers, followed } } }) => {
+        axiosInstance.getFollow(username).then(({ data: { data: { followers, followed,avgProfileRating } } }) => {
             setFollowed(followed);
             setFollowers(followers);
+            setProfileRating(avgProfileRating);
         }).catch(({ response: { data: { message } } }) => {
             console.log(message);
         })

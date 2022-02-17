@@ -2,6 +2,7 @@
 /* eslint-disable @next/next/no-img-element */
 import { faCommentAlt, faShareAlt, faThumbsUp } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import moment from 'moment';
 import Image from 'next/image';
 import Link from 'next/link';
 import HandIcon from 'public/purple-hand.svg';
@@ -29,6 +30,7 @@ const NewsfeedCard = ({
 	shareCount,
 	avgRating,
 	videoCost,
+	createdAt,
 	videoType,
 	productLink,
 	restrictPaidVideo
@@ -53,7 +55,13 @@ const NewsfeedCard = ({
 									className="text-sm font-bold font-sans cursor-default">
 									{User?.name}
 								</p>
-								<p className="text-xs text-gray-500">19h</p>
+								<p className="text-xs text-gray-500">{
+									moment(createdAt).format('D MMM YYYY')	
+								}, 
+								{
+									moment(createdAt).format('H:mm')
+								}
+								</p>
 							</div>
 						</div>
 						<div className="flex space-x-2">

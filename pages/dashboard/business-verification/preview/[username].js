@@ -128,7 +128,6 @@ const Profile = ({ profile }) => {
           website={website || ""}
           handleShowBusinessCard={handleShowBusinessCard}
           showBusinessCard={showBusinessCard}
-          _fetching={fetchingMyVideos}
           _rating={profileRating}
         />
       </div>
@@ -184,14 +183,9 @@ const Profile = ({ profile }) => {
                   &nbsp;<p className="text-xs">{views} Views</p>
                 </span>
                 <span className="flex w-full items-center">
-                 {!fetchingMyVideos ? (
-                    <>
-                      <CustomStar value={profileRating} isHalf={true} /> &nbsp;
+                 
+                      <CustomStar value={profileRating || 0} isHalf={true} /> &nbsp;
                       <p className="text-xs"> Rating </p>
-                    </>
-                  ) : (
-                    <Spinner />
-                  )}
                   
                 </span>
               </div>
@@ -290,6 +284,7 @@ const Profile = ({ profile }) => {
                         videoCost,
                         Shares,
                         productLink,
+                        createdAt
                       },
                     } = item;
                     return (
@@ -304,7 +299,7 @@ const Profile = ({ profile }) => {
                           User={User}
                           Shares={Shares}
                           views={200}
-                          rating={2.5}
+                          createdAt={createdAt}
                           posts={catalogues}
                           isLiked={isLiked}
                           likeCount={likeCount}

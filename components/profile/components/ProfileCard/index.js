@@ -8,7 +8,7 @@ import { CustomStar, } from '..';
 import Spinner from '../../../Spinner'
 
 const ProfileCard = ({ data, otherUser, handleShowBusinessCard, showBusinessCard, followed, followers, website,
-    _Follow, gotoMessaging, isFollowing, canMessage,_rating,_fetching }) => {
+    _Follow, gotoMessaging, isFollowing, canMessage,_rating }) => {
 
 
     const { id = '', name = '', about = '', rating = '', email = '', views = '', picture = '',
@@ -50,16 +50,8 @@ const ProfileCard = ({ data, otherUser, handleShowBusinessCard, showBusinessCard
                         <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M10 12a2 2 0 100-4 2 2 0 000 4z" />
                             <path fillRule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clipRule="evenodd" /></svg>
                         &nbsp;<p className="text-sm">{views} Views</p></span>
-                    <span className="flex w-full items-center justify-center">
-                        {!_fetching ? ( <>
-                      <CustomStar value={_rating} isHalf={true} />
-                    </>
-                  ) : (
-                    <Spinner />
-                  )
-
-                        }
-                        {/* &nbsp; <p className="text-xs" > Rating</p> */}
+                    <span className="flex w-full items-center justify-center">  
+                      <CustomStar value={_rating || 0} isHalf={true} />
                     </span>
                 </div>
             </div>
