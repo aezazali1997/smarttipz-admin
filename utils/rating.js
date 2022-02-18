@@ -4,6 +4,7 @@ export const calProfileRating = (videos)=>{
   }
   if(Array.isArray(videos) && videos.length>0){
     let sum=0;
+    videos= vidoes.filter(video=video.avgRating!==0)
     const TOTAL=videos.length;
     for(let i=0; i<TOTAL; i++){
       sum+=Number(videos[i].avgRating);

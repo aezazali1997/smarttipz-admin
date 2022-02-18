@@ -365,6 +365,7 @@ const Profile = ({ profile }) => {
                     videoCost,
                     Shares,
                     productLink,
+                    createdAt
                   },
                 } = item;
                 return (
@@ -379,7 +380,8 @@ const Profile = ({ profile }) => {
                       User={User}
                       Shares={Shares}
                       views={200}
-                      rating={2.5}
+                      createdAt={createdAt}
+                      // rating={2.5}
                       mediaType={mediaType}
                       videoCost={videoCost}
                       videoType={videoType}
