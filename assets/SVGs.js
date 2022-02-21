@@ -1,3 +1,8 @@
+import Image from 'next/image';
+import EmptyImg from '../public/Empty.svg';
+import HalfImg from '../public/HalfStar.svg';
+import FilledImg from '../public/FullStar.svg';
+
 export const Plus = () => {
     return (
         <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
@@ -67,3 +72,22 @@ export const SearchSVG = ({ classNames }) => {
         </svg>
     )
 }
+
+export const EmptyStar = () => (
+    <span className="flex relative w-3 h-3">
+        <Image src={EmptyImg}
+            layout="fill" objectFit="cover" alt="brand logo" priority={true} />
+    </span>
+);
+export const FilledStar = () => (
+    <span className="flex relative w-3 h-3">
+        <Image src={FilledImg}
+            layout="fill" objectFit="cover" alt="brand logo" priority={true} />
+    </span>
+);
+export const HalfStar = () => (
+    <span className="flex relative w-3 h-3">
+        <Image src={HalfImg}
+            layout="fill" objectFit="cover" alt="brand logo" priority={true} />
+    </span>
+);
