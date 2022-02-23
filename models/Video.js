@@ -69,6 +69,10 @@ const Video = sequelize.define("Video", {
   approvedBy: {
     type: DataTypes.INTEGER,
   },
+   views:{
+      type:DataTypes.INTEGER,
+      defaultValue:0
+    }
 });
 
 Video.hasMany(Favourite);

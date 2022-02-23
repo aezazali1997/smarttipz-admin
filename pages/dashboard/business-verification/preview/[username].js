@@ -284,7 +284,8 @@ const Profile = ({ profile }) => {
                         videoCost,
                         Shares,
                         productLink,
-                        createdAt
+                        createdAt,
+                        views
                       },
                     } = item;
                     return (
@@ -298,7 +299,7 @@ const Profile = ({ profile }) => {
                           url={url}
                           User={User}
                           Shares={Shares}
-                          views={200}
+                          views={views}
                           createdAt={createdAt}
                           posts={catalogues}
                           isLiked={isLiked}
@@ -365,7 +366,8 @@ const Profile = ({ profile }) => {
                     videoCost,
                     Shares,
                     productLink,
-                    createdAt
+                    createdAt,
+                    views
                   },
                 } = item;
                 return (
@@ -379,7 +381,7 @@ const Profile = ({ profile }) => {
                       url={url}
                       User={User}
                       Shares={Shares}
-                      views={200}
+                      views={views}
                       createdAt={createdAt}
                       // rating={2.5}
                       mediaType={mediaType}

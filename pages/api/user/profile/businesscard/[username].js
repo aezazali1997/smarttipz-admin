@@ -14,7 +14,7 @@ const handler = async (req, res) => {
             );
 
             const user = await User.findOne({
-                attributes: ['id'],
+                attributes: ['id','avgRating','totalViews'],
                 where: { username: req.query.username }
             });
 

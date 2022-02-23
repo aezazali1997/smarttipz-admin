@@ -9,20 +9,22 @@ const User = require('../../models/User');
 const Business = require('../../models/Business');
 const Video = require('../../models/Video');
 const VideoCategory = require('../../models/VideoCategory');
+const Views = require('../../models/Views')
 // const sequelize = require('sequelize');
 
 const handler = async (req, res) => {
 
     // sequelize.sync({ alter: true });
-    Admin.sync({ alter: true });
-    PermissionType.sync({ alter: true });
+    // Admin.sync({ alter: true });
+    // PermissionType.sync({ alter: true });
+        // Views.sync({alter:true})
     // Session.sync({ force: true });
     // Business.sync({ force: true });
     // BusinessCard.sync({ force: true });
     // Chat.sync({ force: true });
     // Testimonial.sync({ force: true });
     // User.sync({ alter: true });
-    // Video.sync({ force: true });
+    Video.sync({ alter: true });
     // VideoCategory.sync({ force: true });
 
     res.status(200).send({ message: "Tables created Successfully" });
