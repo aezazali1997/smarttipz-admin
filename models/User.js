@@ -2,10 +2,10 @@ const { DataTypes } = require('sequelize');
 const sequelize = require('./db');
 const Video = require('./Video');
 const Business = require('./Business');
+const Comment = require('./Comments');
 const Share = require('./Share');
-import Comment from './Comments';
-
-
+const WithDrawRequest = require('./WithDrawRequest');
+const BankDetails=require ('./BankDetail')
 const User = sequelize.define('User', {
   name: {
     type: DataTypes.STRING
@@ -72,6 +72,7 @@ const User = sequelize.define('User', {
     type: DataTypes.INTEGER,
     defaultValue: 0
   },
+  // totalAmount
   totalTipsAmount: {
     type: DataTypes.DOUBLE,
     defaultValue: 0
@@ -137,5 +138,10 @@ Comment.belongsTo(User);
 User.hasMany(Share);
 Share.belongsTo(User);
 
+User.hasOne(BankDetails);
+BankDetails.belongsTo(User);
+
+User.hasOne(WithDrawRequest);
+WithDrawRequest.belongsTo(User)
 
 module.exports = User;

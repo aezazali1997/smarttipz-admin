@@ -2,6 +2,7 @@
 import axiosInstance from 'APIs/axiosInstance';
 import { Button, Card, Modal, Searchbar, Spinner, VideoPlayer } from 'components';
 import { initial, isEmpty } from 'lodash';
+import {Helmet} from 'react-helmet'
 import React, { useEffect, useState } from 'react'
 import { getInputClasses } from 'utils/helpers';
 import { FormikProvider, useFormik } from 'formik';
@@ -122,6 +123,11 @@ const ContentManagement = () => {
 
 	return (
 		<div className="bg-white space-y-3 h-screen w-full">
+		 {/*SEO Support*/}
+            <Helmet>
+                <title>Content Management | Smart Tipz Admin Panel</title>
+            </Helmet>
+            {/*SEO Support End */}
 			{
 
 				loading ? (

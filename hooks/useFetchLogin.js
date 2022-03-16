@@ -47,7 +47,7 @@ const UseFetchLogin = () => {
             setStatus(message);
             setShowAlert(true);
             cookie.set('token', token);
-            localStorage.setItem('id', id);
+            localStorage.setItem('userId', id);
             localStorage.setItem('role', role);
             localStorage.setItem('permissions', JSON.stringify(permissions));
             router.push('/dashboard/admin');

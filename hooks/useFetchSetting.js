@@ -18,11 +18,17 @@ const UseFetchSetting = () => {
 
     // const [personalLoading, setPersonalLoading] = useState(false);
     const [accountLoading, setAccountLoading] = useState(false);
+   
+
+    // useEffect(()=>{
+
+    // },[1])
     // const [personalInfo, setPersonalInfo] = useState({
     //     phone: '', accessible: '', name: '', email: '', showPhone: '', about: '', username: '',
     //     accountType: '', showName: '', showUsername: '', tip: ''
     // });
     const [updated, setUpdated] = useState(false);
+   
     // const [imageUrl, setImageUrl] = useState('');
     // const [businessCard, setBusinessCard] = useState('');
     // const [countryCode, setCountryCode] = useState('')
@@ -202,7 +208,7 @@ const UseFetchSetting = () => {
     });
 
     return {
-        accountLoading, formik,
+        accountLoading, formik
         // personalInfo, personalLoading, businessCard, countryCode,
         // imageUrl, _Update, _OnChange, _DeleteImg, handleFileChange, FileInput, openFileDialog,
         // _ChangeCountryCode, onChangeBusinessWebsite

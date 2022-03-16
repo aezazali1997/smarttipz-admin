@@ -6,6 +6,7 @@ import { useFormik } from 'formik';
 import { Plus } from 'assets/SVGs';
 import axiosInstance from '../../APIs/axiosInstance';
 import { Button, Searchbar, Spinner, Modal, AdminForm } from '../../components';
+import { Helmet } from 'react-helmet';
 import { CreateAdminValidationSchema, OptionalAdminSchema } from 'utils/validation_shema';
 import useDebounce from 'utils/Debounce';
 
@@ -172,6 +173,9 @@ const Dashboard = () => {
 
     return (
         <div className="bg-white py-5 px-3 space-y-3 h-screen">
+            <Helmet>
+            <title>Manage Users | Smart Tipz Admin Panel</title>
+            </Helmet>
             <div className="sticky top-0 bg-white flex w-full">
                 <Searchbar search={search} onChange={setSearch} />
             </div>

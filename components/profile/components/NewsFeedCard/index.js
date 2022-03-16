@@ -139,9 +139,7 @@ const NewsfeedCard = ({
 				<div className="flex justify-between w-full px-3">
 					<span className="flex items-center z-0">
 						{/* need to changed too */}
-						{
-							console.log("avg rating", avgRating)
-						}
+					
 						<CustomStar value={avgRating || 0} isHalf={true} />
 						{/* <Rating value={avgRating || 0} isHalf={true} edit={false} /> */}
 					</span>

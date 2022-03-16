@@ -18,6 +18,7 @@
     "axios": "^0.21.4",
     "bcryptjs": "^2.4.3",
     "formik": "^2.2.9",
+    "framer-motion": "^6.2.8",
     "hamburger-react": "^2.4.1",
     "joi": "^17.4.2",
     "js-cookie": "^3.0.1",

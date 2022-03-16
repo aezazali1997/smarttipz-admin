@@ -24,6 +24,10 @@ const Video = sequelize.define("Video", {
   category: {
     type: DataTypes.STRING
   },
+  catalogue: {
+    type: DataTypes.BOOLEAN,
+    defaultValue: false
+  },
   language: {
     type: DataTypes.STRING
   },
@@ -46,46 +50,62 @@ const Video = sequelize.define("Video", {
   productLink: {
     type: DataTypes.STRING
   },
+  watchLimit: {
+    type: DataTypes.INTEGER,
+    defaultValue: 0
+  },
+  rating: {
+    type: DataTypes.FLOAT,
+    defaultValue: 0
+  },
+  //amount
+  tip: {
+    type: DataTypes.INTEGER,
+    defaultValue:0
+  },
   cost: {
     type: DataTypes.INTEGER,
   },
-  isApproved: {
-    type: DataTypes.BOOLEAN,
-    defaultValue: true
-  },
-  rating: {
-    type: DataTypes.INTEGER,
-  },
-  tip: {
+  comment: {
     type: DataTypes.INTEGER,
   },
   isShowOnNewsfeed: {
     type: DataTypes.BOOLEAN,
     defaultValue: true
   },
-  comment: {
-    type: DataTypes.INTEGER,
+  isApproved: {
+    type: DataTypes.BOOLEAN,
+    defaultValue: true
   },
   approvedBy: {
     type: DataTypes.INTEGER,
   },
-   views:{
+    shareCount:{
+        type:DataTypes.INTEGER,
+        defaultValue:0,
+    },
+    views:{
       type:DataTypes.INTEGER,
       defaultValue:0
     }
 });
 
-Video.hasMany(Favourite);
+
+Video.hasMany(Favourite,{
+  onDelete:'cascade'
+});
 Favourite.belongsTo(Video);
 
-Video.hasMany(AllPosts);
+Video.hasMany(AllPosts,{
+  onDelete:'cascade'
+});
 AllPosts.belongsTo(Video);
 
-Video.hasMany(Share);
+Video.hasMany(Share,
+{
+  onDelete:'cascade'
+});
 Share.belongsTo(Video);
-
-
-
 
 
 module.exports = Video;

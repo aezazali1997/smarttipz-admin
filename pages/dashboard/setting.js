@@ -1,58 +1,58 @@
 /* eslint-disable @next/next/no-img-element */
-import React from 'react'
-import { Helmet } from 'react-helmet';
+import React, { useState } from "react";
+import { Helmet } from "react-helmet";
 // import { parseCookies } from 'nookies';
 // import axios from 'axios';
 // import ReactTooltip from 'react-tooltip';
 // import profile from '../../public/profile.jpg';
-import { getInputClasses } from 'utils/helpers';
-import { UseFetchSetting } from 'hooks';
-import { AccountSetting } from 'components';
+import { getInputClasses } from "utils/helpers";
+import { UseFetchSetting } from "hooks";
+import { AccountSetting, Skeleton } from "components";
+
 
 const Setting = () => {
+  const {
+    accountLoading,
+    formik,
+    balance,
+    // personalInfo, personalLoading,
+    // imageUrl, businessCard, countryCode,
+    _Update,
+    // _OnChange, _DeleteImg, handleFileChange, FileInput, openFileDialog, _ChangeCountryCode,
+    // onChangeBusinessWebsite
+  } = UseFetchSetting();
 
-    const { accountLoading, formik,
-        // personalInfo, personalLoading,
-        // imageUrl, businessCard, countryCode,
-        _Update,
-        // _OnChange, _DeleteImg, handleFileChange, FileInput, openFileDialog, _ChangeCountryCode,
-        // onChangeBusinessWebsite
-    } = UseFetchSetting();
+  // const { name, email, about, accessible, showPhone, accountType, phone, username, showName, showUsername, tip } = personalInfo;
+  // const { website } = businessCard;
+  return (
+    <div className="flex flex-col h-full w-full p-3 sm:p-5 ">
+      {/*SEO Support*/}
+      <Helmet>
+        <title>Setting | Smart Tipz Admin Panel</title>
+      </Helmet>
+      {/*SEO Support End */}
 
-    // const { name, email, about, accessible, showPhone, accountType, phone, username, showName, showUsername, tip } = personalInfo;
-    // const { website } = businessCard;
-    return (
-
-        <div className="flex flex-col h-full w-full p-3 sm:p-5 ">
-            {/*SEO Support*/}
-            <Helmet>
-                <title>Setting | Smart Tipz Admin Panel</title>
-            </Helmet>
-            {/*SEO Support End */}
-
-            <div className="flex flex-col w-full">
-                {/* section starts here*/}
-                {/* <div className="flex w-full px-2 py-1">
+      <div className="flex flex-col-reverse lg:flex-row w-full">
+        {/* section starts here*/}
+        {/* <div className="flex w-full px-2 py-1">
                     <div className="relative space-y-2">
                         <div className="rounded-2xl profilePic relative">
-                            {
-                                imageUrl ?
-                                    <img src={imageUrl} alt="Display Pic" className="rounded-2xl h-40 w-30 object-cover" />
-                                    :
+                
+                                
                                     <img className="rounded-full" src="https://thumbs.dreamstime.com/b/solid-purple-gradient-user-icon-web-mobile-design-interface-ui-ux-developer-app-137467998.jpg" alt="" />
-                            }
+                            
                         </div>
                         <div className="flex w-full space-x-1">
 
-                            <FileInput onChange={handleFileChange} />
+                            {/* <FileInput onChange={handleFileChange} />}
 
                             <button
-                                onClick={openFileDialog}
+                                // onClick={openFileDialog}
                                 className="px-2 py-1 w-1/2 flex justify-center items-center text-white text-sm rounded-md btn">
                                 Upload
                             </button>
                             <button
-                                onClick={_DeleteImg}
+                                // onClick={_DeleteImg}
                                 type="button"
                                 className="px-2 py-1 w-1/2 flex items-center justify-center text-white text-sm bg-red-600 rounded-md hover:bg-red-700">
                                 Remove
@@ -60,14 +60,14 @@ const Setting = () => {
                         </div>
                     </div>
                 </div> */}
-                {/* section ends here */}
-                {/* section starts here */}
-                <form className="w-full" onSubmit={formik.handleSubmit}>
-                    <div className="flex flex-col sm:flex-row mt-10 w-full sm:divide-x-2">
-                        <div className="flex flex-col w-full lg:w-1/2 space-y-2 sm:px-3">
-                            {/* <h1 className="text-lg font-semibold"></h1> */}
-                            <div className="flex flex-col w-full">
-                                {/* <div className="flex w-full justify-between space-x-3">
+        {/* section ends here */}
+        {/* section starts here */}
+        <form className="w-full" onSubmit={formik.handleSubmit}>
+          <div className="flex flex-col sm:flex-row mt-10 w-full sm:divide-x-2">
+            <div className="flex flex-col w-full lg:w-1/2 space-y-2 sm:px-3">
+              {/* <h1 className="text-lg font-semibold"></h1> */}
+              <div className="flex flex-col w-full">
+                {/* <div className="flex w-full justify-between space-x-3">
                                     <InputField
                                         name={"name"}
                                         type={"text"}
@@ -217,7 +217,7 @@ const Setting = () => {
                                     />
                                 </div> */}
 
-                                {/* <div className="flex w-full justify-between mb-5">
+                {/* <div className="flex w-full justify-between mb-5">
                                     <p className="text-md font-normal">Private Messages</p>
                                     <div className="flex items-center space-x-1">
                                         <span>
@@ -235,8 +235,8 @@ const Setting = () => {
                                         />
                                     </div>
                                 </div> */}
-                            </div>
-                            {/* <div className="flex w-full items-center justify-end">
+              </div>
+              {/* <div className="flex w-full items-center justify-end">
                                 <Button
                                     onSubmit={_Update}
                                     type="button"
@@ -245,15 +245,15 @@ const Setting = () => {
                                     classNames={"px-3 py-2 flex justify-center items-center text-white text-sm btn rounded-md "} />
 
                             </div> */}
-                            <div className={'flex flex-col w-full space-y-2'}>
-                                <AccountSetting
-                                    accountLoading={accountLoading}
-                                    formik={formik}
-                                    getInputClasses={getInputClasses}
-                                />
-                            </div>
-                            {/* </div> */}
-                            {/* <div className="flex flex-col w-full lg:w-1/2 mt-10 sm:mt-0 sm:px-3">
+              <div className={"flex flex-col w-full space-y-2"}>
+                <AccountSetting
+                  accountLoading={accountLoading}
+                  formik={formik}
+                  getInputClasses={getInputClasses}
+                />
+              </div>
+              {/* </div> */}
+              {/* <div className="flex flex-col w-full lg:w-1/2 mt-10 sm:mt-0 sm:px-3">
                             <div className='flex flex-col'>
                                 <AccountSetting
                                     accountLoading={accountLoading}
@@ -261,7 +261,7 @@ const Setting = () => {
                                     getInputClasses={getInputClasses}
                                 />
                             </div> */}
-                            {/* <div className={accountType === 'Business' ? "flex flex-col space-y-2" : "hidden"}>
+              {/* <div className={accountType === 'Business' ? "flex flex-col space-y-2" : "hidden"}>
                                 <h1 className="text-lg font-semibold">Contact Details</h1>
                                 <BusinessCard
                                     image={imageUrl}
@@ -271,14 +271,14 @@ const Setting = () => {
                                     email={email}
                                 />
                             </div> */}
-                        </div>
-                    </div>
-                </form>
-                {/* section ends here */}
-            </div >
-        </div >
-    )
-}
+            </div>
+          </div>
+        </form>
+      
+      </div>
+    </div>
+  );
+};
 
 // export const getServerSideProps = async (context) => {
 //     const { token } = parseCookies(context);

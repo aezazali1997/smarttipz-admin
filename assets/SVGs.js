@@ -2,6 +2,9 @@ import Image from 'next/image';
 import EmptyImg from '../public/Empty.svg';
 import HalfImg from '../public/HalfStar.svg';
 import FilledImg from '../public/FullStar.svg';
+import topUp from '../public/Top-up.svg';
+import wallet from '../public/Virtual-Wallet.svg';
+import withDraw from '../public/Withdraw.svg';
 
 export const Plus = () => {
     return (
@@ -91,3 +94,21 @@ export const HalfStar = () => (
             layout="fill" objectFit="cover" alt="brand logo" priority={true} />
     </span>
 );
+export const TopUp = () => (
+     <span className="flex relative sm:h-8 mr-3 h-6 w-6">
+        <Image src={topUp}
+            layout="fill" objectFit="cover" alt="brand logo" priority={true} />
+    </span>
+)
+export const WithDraw = () => (
+     <span className="flex relative sm:h-8 mr-3 h-6 w-6">
+        <Image src={withDraw}
+            layout="fill" objectFit="cover" alt="brand logo" priority={true} />
+    </span>
+)
+export const Wallet = () => (
+     <span className="flex relative sm:w-16 sm:h-16 mr-3 w-12 h-12">
+        <Image src={wallet}
+            layout="fill" objectFit="cover" alt="brand logo" priority={true} />
+    </span>
+)

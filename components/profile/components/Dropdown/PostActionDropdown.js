@@ -25,8 +25,8 @@ const PostActionDropdown = ({ _HandleCatalogue, _HandleDeleteVideo, catalogue, o
     })
 
     useEffect(() => {
-        if (localStorage.getItem('id') !== null) {
-            setID(localStorage.getItem('id'))
+        if (localStorage.getItem('userId') !== null) {
+            setID(localStorage.getItem('userId'))
         }
     }, [])
 

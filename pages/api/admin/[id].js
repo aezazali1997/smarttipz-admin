@@ -8,7 +8,7 @@ const handler = async (req, res) => {
     if (req.method === 'DELETE') {
         const { headers: { authorization }, query: { id } } = req;
         try {
-            console.log('adminID: ', id);
+            // console.log('adminID: ', id);
 
             if (!authorization) {
                 return res.status(401).send({ error: true, data: [], message: 'Please Login' })
@@ -21,7 +21,7 @@ const handler = async (req, res) => {
 
             const admins = await Admin.update({ isDelete: true }, { where: { id } });
 
-            console.log('admins: ', admins);
+            // console.log('admins: ', admins);
 
             res.status(200).json({ error: false, data: [], message: 'Admin delete successfuly.' });
         } catch (err) {
@@ -51,7 +51,7 @@ const handler = async (req, res) => {
                 process.env.SECRET_KEY
             );
 
-            console.log('ADMIN ID, role: ', id, permissions)
+            // console.log('ADMIN ID, role: ', id, permissions)
 
             const admin = await Admin.update({ permissions }, { where: { id } });
 

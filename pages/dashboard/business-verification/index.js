@@ -2,6 +2,7 @@
 /* eslint-disable @next/next/no-img-element */
 import React, { useEffect, useState } from "react";
 import Swal from "sweetalert2";
+import { Helmet } from "react-helmet";
 import { useFormik } from "formik";
 import { useRouter } from "next/router";
 import {
@@ -289,9 +290,8 @@ const Dashboard = () => {
   });
 
   const handleActiveTab = (category) => {
-    // console.log('category: ', category);
     let filtered = [];
-    if (category === "verified") {
+    if (category === "Verified") {
       filtered = allUsers.filter((user) => user.isApproved === true && user);
       setUsers(filtered);
     } else if (category === "Unverified") {
@@ -313,6 +313,9 @@ const Dashboard = () => {
 
   return (
     <div className={`bg-white py-5 px-3 space-y-3 h-screen`}>
+      <Helmet>
+        <title>Bussiness Varification | Smart Tipz Admin Panel</title>
+      </Helmet>
       <div className="flex w-full bg-white sticky top-0">
         <Searchbar search={search} onChange={setSearch} />
       </div>

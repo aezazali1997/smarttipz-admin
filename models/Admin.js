@@ -1,6 +1,5 @@
-const { DataTypes, STRING } = require('sequelize');
+const { DataTypes } = require('sequelize');
 const sequelize = require('./db');
-const PermissionType = require('./PermissionType');
 
 const Admin = sequelize.define('Admin', {
     name: {
@@ -42,6 +41,10 @@ const Admin = sequelize.define('Admin', {
     isDelete: {
         type: DataTypes.BOOLEAN,
         defaultValue: false
+    },
+    totalAmount:{
+        type:DataTypes.DOUBLE,
+        defaultValue:0,
     }
 });
 

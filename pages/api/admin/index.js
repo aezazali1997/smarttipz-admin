@@ -31,7 +31,7 @@ const handler = async (req, res) => {
                 // // order: [["createdAt", "DESC"]]
             });
 
-            console.log('admins: ', admins);
+            
             if (isEmpty(admins)) {
                 return res.status(200).json({ error: false, data: { admins }, message: 'Admins fetched successfuly.' });
             }
@@ -81,7 +81,7 @@ const handler = async (req, res) => {
                 throw new Error('Email already in use');
             }
 
-            console.log(user)
+
 
             const encPassword = await bcrypt.hash(password, 12);
 

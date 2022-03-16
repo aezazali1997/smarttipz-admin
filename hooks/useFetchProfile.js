@@ -289,14 +289,14 @@ const UseFetchProfile = (profile) => {
     }
 
     const _OnUploadMedia = async (values, setSubmitting, resetForm) => {
-        console.log('In Upload Media')
+        // console.log('In Upload Media')
         setSubmitting(true);
-        console.log('values => ', values);
+        // console.log('values => ', values);
         values.url = urls;
         values.thumbnail = thumbnailUrl;
         values.category = 'catalogue';
         values.agree = agree;
-        console.log(values);
+        // console.log(values);
         try {
             const res = await axiosInstance.uploadNewsFeed(values)
             // console.log(res);

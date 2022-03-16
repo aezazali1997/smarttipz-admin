@@ -1,4 +1,4 @@
-import { faCog, faComment, faNewspaper, faPlayCircle, faUserCircle } from "@fortawesome/free-solid-svg-icons";
+import { faCog, faComment, faNewspaper, faPlayCircle, faUserCircle,faDollarSign } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 export const Routes = [
@@ -26,4 +26,10 @@ export const Routes = [
         permission: 'contentManagement',
         icon: (<FontAwesomeIcon icon={faComment} />)
     },
+    {
+        name:'Withdraw Requests',
+        path:'/dashboard/withdraw-requests',
+        permission:'withdrawRequests',
+        icon:(<FontAwesomeIcon icon={faDollarSign}  className=" w-4"/>)
+    }
 ]

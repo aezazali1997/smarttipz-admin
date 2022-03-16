@@ -1,6 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 import { Modal, Spinner, TestimonialForm } from 'components';
-import { getInputClasses } from 'helpers';
+import { getInputClasses } from '../../../../utils/helpers';
 import React from 'react'
 
 const AddTestimonialModal = ({ FileInput, imageUrl, formik, handleFileChange, _DeleteImg, openFileDialog,
