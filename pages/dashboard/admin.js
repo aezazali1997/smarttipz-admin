@@ -351,7 +351,8 @@ const Dashboard = () => {
   });
 
   return (
-    <div className="bg-white py-5 px-3 space-y-3 h-screen relative">
+    <div className="bg-white py-5 px-3 space-y-3  relative">
+    {/* /h-screen */}
       <Helmet>
         <title>Admin | SmartTipz Admin</title>
       </Helmet>

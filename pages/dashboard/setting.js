@@ -9,7 +9,6 @@ import { getInputClasses } from "utils/helpers";
 import { UseFetchSetting } from "hooks";
 import { AccountSetting } from "components";
 
-
 const Setting = () => {
   const {
     accountLoading,

@@ -14,7 +14,9 @@ const FundsCheckBox = ({
      setChecked(false)
   },[balance])
   const [checked, setChecked] = useState(false);
-
+   const removeElement = (acc, val) => {
+    return acc.filter((ele) => ele != val);
+  };
   const onSelectionChange = (e) => {
     let accounts = [...payingAccounts];
     if (e.target.checked) {

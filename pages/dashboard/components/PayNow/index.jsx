@@ -55,7 +55,7 @@ const PayNow = ({
   };
 
   return (
-    <div className="absolute bottom-10 lg:right-3">
+    <div className="absolute bottom-10 right-10 lg:right-5">
       <button
         disabled={sumToPay <= 0}
         onClick={() => {

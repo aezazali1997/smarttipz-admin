@@ -95,13 +95,13 @@ export const HalfStar = () => (
     </span>
 );
 export const TopUp = () => (
-     <span className="flex relative sm:h-8 mr-3 h-6 w-6">
+     <span className="flex relative lg:h-8 mr-3 h-6 w-6">
         <Image src={topUp}
             layout="fill" objectFit="cover" alt="brand logo" priority={true} />
     </span>
 )
 export const WithDraw = () => (
-     <span className="flex relative sm:h-8 mr-3 h-6 w-6">
+     <span className="flex relative lg:h-8 mr-3 h-6 w-6">
         <Image src={withDraw}
             layout="fill" objectFit="cover" alt="brand logo" priority={true} />
     </span>

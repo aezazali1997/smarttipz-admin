@@ -312,7 +312,8 @@ const Dashboard = () => {
   };
 
   return (
-    <div className={`bg-white py-5 px-3 space-y-3 h-screen`}>
+    <div className={`bg-white py-5 px-3 space-y-3`}>
+    {/* h-screen */}
       <Helmet>
         <title>Bussiness Varification | Smart Tipz Admin Panel</title>
       </Helmet>

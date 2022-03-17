@@ -3,3 +3,16 @@
 .color-app{
   color:$primary-color;
 }
+.spinner{
+  top: 50%;
+  left: 55%;
+  transform: translateX(-50%);
+}
+@media screen and (max-width:552px) { 
+// .excel,.pay-now{
+//   left: 50%;
+//   transform: translate(-50%,0);
+// }
+
+  
+}

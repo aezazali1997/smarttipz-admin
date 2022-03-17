@@ -12,6 +12,12 @@
 //     text-align: center;
 // }
 .custom-height{
-    height: 30.5rem;
-    overflow-y: auto;
+    height: 30rem;
+    overflow: auto;
+}
+@media screen and(max-width:1024px) {
+.custom-height{
+    height: 25rem;
+    overflow: auto;
+}    
 }
