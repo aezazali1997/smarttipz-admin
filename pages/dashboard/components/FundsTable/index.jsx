@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { RequestedBy, FundsCheckBox } from "../";
+import RequestedBy from '../RequestedBy'; 
+import  FundsCheckBox  from "../FundsCheckBox";
 import { Badge, Button, Spinner } from "components";
-import BankDetails from "../BankDetails";
+import BankDetails from "../BankDetails/index";
 import axiosInstance from "APIs/axiosInstance";
 import moment from "moment";
 const FundsTable = ({
@@ -130,7 +131,7 @@ const FundsTable = ({
               </tr>
             </thead>
             <tbody className="divide-y-2">
-              {allRequests.length > 0 &&
+              {allRequests && allRequests.length > 0 &&
                 allRequests.map(
                   (
                     { id, amount, status, createdAt, BankDetail, User },

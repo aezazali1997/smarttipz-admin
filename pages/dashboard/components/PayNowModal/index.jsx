@@ -10,7 +10,7 @@ const PayNowModal = ({toggleModal,modalTitle,amount,submitPayNow,isPaying,error,
       body={
         <>
           <div className="flex h-full flex-col relative space-y-5 w-full ">
-            <span className="text-xl text-center">Are you sure to pay $ {amount.toFixed(2)} ?</span>
+            <span className="text-xl text-center">Are you sure to pay $ {amount?.toFixed(2)} ?</span>
             <span className='text-red-700 text-center font-md'>{error}</span>
             
           

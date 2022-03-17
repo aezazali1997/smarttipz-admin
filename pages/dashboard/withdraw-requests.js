@@ -24,15 +24,12 @@ import { PreviewEye } from "assets/SVGs";
 import axiosInstance from "APIs/axiosInstance";
 import { TopUp, WithDraw, Wallet } from "assets/SVGs";
 import { TopUpModal, WithDrawModal } from "components/Modals";
-import {
-  FundsTable,
-  FundsCheckBox,
-  PayNow,
-  RequestedBy,
-  ReceivedBy,
-} from "./components/index";
+import FundsTable from './components/FundsTable'
+import FundsCheckBox from './components/FundsCheckBox';
+import  PayNow from './components/PayNow';
+import  RequestedBy from './components/RequestedBy';
+import ReceivedBy from './components/RequestedBy';
 
-import { customArray } from "./customArray";
 
 const initials = {
   name: "",
@@ -473,15 +470,17 @@ const Dashboard = () => {
                   <span className="lg:text-4xl lg:font-bold text-2xl my-1 lg:my-0 block bg-transparent">
                     $ {balance.toFixed(2)}
                   </span>
-                ) : (
-                  <Skeleton
-                    height="h-10"
-                    width="w-32"
-                    bgColor="bg-gray-100"
-                    round="rounded"
-                    display="block"
-                  />
-                )}
+                ) : null 
+                // (
+                //   <Skeleton
+                //     height="h-10"
+                //     width="w-32"
+                //     bgColor="bg-gray-100"
+                //     round="rounded"
+                //     display="block"
+                //   />
+                // )
+                }
               </div>
             </div>
           </div>

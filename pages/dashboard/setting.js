@@ -7,7 +7,7 @@ import { Helmet } from "react-helmet";
 // import profile from '../../public/profile.jpg';
 import { getInputClasses } from "utils/helpers";
 import { UseFetchSetting } from "hooks";
-import { AccountSetting, Skeleton } from "components";
+import { AccountSetting } from "components";
 
 
 const Setting = () => {

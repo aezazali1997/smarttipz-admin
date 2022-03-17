@@ -12,12 +12,12 @@ const BankDetailModal = ({toggleModal,modalTitle,bankDetails}) => {
           <div className="flex h-full flex-col relative space-y-5 w-full ">
             <div className="flex justify-between mt-5" >
             <span className="text-md font-bold">Account Title</span>
-            <span>{bankDetails.accountTitle}</span>
+            <span>{bankDetails?.accountTitle}</span>
             </div>
             <div className="flex justify-between mt-5" >
             <span className="text-md font-bold">IBAN Number</span>
 
-            <span>{bankDetails.iban}</span>
+            <span>{bankDetails?.iban}</span>
             </div>
           
           </div>
