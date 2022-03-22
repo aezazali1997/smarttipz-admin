@@ -11,13 +11,3 @@
 // .funds-mgt-table tbody tr td{
 //     text-align: center;
 // }
-.custom-height{
-    height: 30rem;
-    overflow: auto;
-}
-@media screen and(max-width:1024px) {
-.custom-height{
-    height: 25rem;
-    overflow: auto;
-}    
-}

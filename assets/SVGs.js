@@ -95,17 +95,27 @@ export const HalfStar = () => (
     </span>
 );
 export const TopUp = () => (
-     <span className="flex relative lg:h-8 mr-3 h-6 w-6">
-        <Image src={topUp}
-            layout="fill" objectFit="cover" alt="brand logo" priority={true} />
-    </span>
-)
+  <span className="flex relative md:h-8 md:w-8 md:mr-3 mr-1 h-5 w-5">
+    <Image
+      src={topUp}
+      layout="fill"
+      objectFit="cover"
+      alt="brand logo"
+      priority={true}
+    />
+  </span>
+);
 export const WithDraw = () => (
-     <span className="flex relative lg:h-8 mr-3 h-6 w-6">
-        <Image src={withDraw}
-            layout="fill" objectFit="cover" alt="brand logo" priority={true} />
-    </span>
-)
+  <span className="flex relative md:h-8 md:w-8   md:mr-3 mr-1 h-5 w-5">
+    <Image
+      src={withDraw}
+      layout="fill"
+      objectFit="cover"
+      alt="brand logo"
+      priority={true}
+    />
+  </span>
+);
 export const Wallet = () => (
      <span className="flex relative sm:w-16 sm:h-16 mr-3 w-12 h-12">
         <Image src={wallet}

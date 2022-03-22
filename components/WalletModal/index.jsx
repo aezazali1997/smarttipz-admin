@@ -1,5 +1,4 @@
-import React,{useState,useEffect} from "react";
-import Swal from "sweetalert2";
+import React from "react";
 import Modal from '../Modal'
 import {Wallet} from 'assets/SVGs'
 const WalletModal = ({toggleModal,modalTitle,balance}) => {

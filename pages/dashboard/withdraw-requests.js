@@ -1,33 +1,23 @@
 /* eslint-disable @next/next/no-img-element */
 import React, { useEffect, useState } from "react";
-import Swal from "sweetalert2";
 import { Helmet } from "react-helmet";
 import { useFormik } from "formik";
 import { useRouter } from "next/router";
 import { AnimatePresence } from "framer-motion";
 import {
-  Button,
   Searchbar,
   Spinner,
-  Modal,
-  AdminForm,
   CategoryFilter,
-  
+  FundsTable,
+  PayNow,
+  GenerateExcel,
+  UserAccount,
 } from "components";
-import {
-  OptionalBusinessVerificationSchema,
-} from "utils/validation_shema";
+import { OptionalBusinessVerificationSchema } from "utils/validation_shema";
 import useDebounce from "utils/Debounce";
 
 import axiosInstance from "APIs/axiosInstance";
-import { TopUp, WithDraw } from "assets/SVGs";
 import { TopUpModal, WithDrawModal } from "components/Modals";
-import FundsTable from './components/FundsTable'
-import  PayNow from './components/PayNow';
-
-
-import {GenerateExcel} from './components'
-
 
 const initials = {
   name: "",
@@ -40,9 +30,9 @@ const Dashboard = () => {
 
   const [allRequests, setAllRequests] = useState([]);
   const [requests, setRequests] = useState([]);
-  
+
   const [loading, setIsLoading] = useState(true);
-  const [showModal, setShowModal] = useState(false);
+  // const [showModal, setShowModal] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [modalTitle, setModalTitle] = useState("Create Admin");
   const [initialValues, setInitialValues] = useState(initials);
@@ -62,7 +52,6 @@ const Dashboard = () => {
   const [withDraw, setWithDraw] = useState(0);
   const [isWithDrawing, setIsWithDrawing] = useState(false);
   const [showWithDrawModal, setShowWithDrawModal] = useState(false);
-  // const []
 
   const toggleWithDrawModal = () => {
     setShowWithDrawModal(!showWithDrawModal);
@@ -100,47 +89,6 @@ const Dashboard = () => {
 
   const debouncedSearchTerm = useDebounce(search, 1000);
 
-  const FetchBusinessVerificationUsers = async (search) => {
-    enableLoading();
-    try {
-      const {
-        data: {
-          data: { users },
-        },
-      } = await axiosInstance.getAllBusinessUsers(search);
-      // console.log("users", users);
-      setAllUsers(users);
-      setUsers(users);
-      disableLoading();
-    } catch (e) {
-      console.log("API Error: ", e);
-      Swal.fire({
-        text: e,
-        icon: "info",
-        showCancelButton: false,
-        showConfirmButton: false,
-        timer: 4000,
-      });
-      disableLoading();
-    }
-  };
-
-  // useEffect(() => {
-  //   FetchBusinessVerificationUsers(search);
-  // }, [1]);
-
-  // useEffect(() => {
-  //   // if (debouncedSearchTerm) {
-  //   FetchBusinessVerificationUsers(debouncedSearchTerm);
-  //   // }
-  //   return () => {
-  //     setUsers("");
-  //     setAllUsers([]);
-  //   };
-  // }, [debouncedSearchTerm]);
-
-  
-
   const enableLoading = () => {
     setIsLoading(true);
   };
@@ -158,28 +106,14 @@ const Dashboard = () => {
   }, [1]);
 
   const fetchBalance = async (adminId) => {
-    setIsLoading(true);
+    enableLoading();
     try {
       const {
         data: { data },
       } = await axiosInstance.getBalance(adminId);
       setBalance(data);
-    setIsLoading(false);
+      disableLoading();
     } catch (error) {}
-  };
-  const ToggleEditModal = (id, name, email, phoneNumber, link) => {
-    setInitialValues({
-      id,
-      name,
-      email,
-      password: "",
-      website: link,
-    });
-    setPhone(phoneNumber);
-    setWebsite(link);
-    setModalTitle("Edit Business User");
-    setShowPassword(false);
-    setShowModal(!showModal);
   };
 
   let Active = (path) => {
@@ -187,8 +121,6 @@ const Dashboard = () => {
       ? "background text-white z-20"
       : "text bg-white";
   };
-
- 
 
   const formik = useFormik({
     enableReinitialize: true,
@@ -216,83 +148,58 @@ const Dashboard = () => {
     setSumToPay(0);
   };
 
-
-   return (
-    <div className={`bg-white py-5 px-3 space-y-3`}>
-    
+  return (
+    <div
+      className={`bg-white md:py-5 px-3 flex flex-col justify-between wrapper`}
+    >
       <Helmet>
         <title>Withdraw | Smart Tipz Admin Panel</title>
       </Helmet>
-
-      <div className="flex w-full bg-white top-0">
-        <Searchbar search={search} onChange={setSearch} placeholder="Search" />
-      </div>
-      {loading ? (
-        <div className="w-full absolute spinner ">
-          <span className="flex flex-col items-center">
-            <Spinner />
-          
-          </span>
+      <div className=" request-container">
+        <div className="flex w-full  bg-white search-bar">
+          <Searchbar
+            search={search}
+            onChange={setSearch}
+            placeholder="Search"
+          />
         </div>
-      ) : (
-        <div
-          className={
-            "flex flex-col min-w-0 break-words w-full admin-table rounded-lg"
-          }
-        >
-          {/* section ends here */}
-          <div className="flex flex-col lg:items-end items-center w-full">
-            <div className="flex flex-col lg:flex-row justify-between lg:my-2  lg:space-x-2 order-2">
-              <button
-                onClick={() => toggleTopUpModal()}
-                className="px-2 py-2 flex justify-center items-center text-white text-md rounded-md btn my-1 w-full"
-              >
-                <TopUp />
-                Top up
-              </button>
-
-              <button
-                onClick={() => toggleWithDrawModal()}
-                className="px-2 py-2 flex justify-center  items-center text-white text-md rounded-md btn my-1 w-full"
-              >
-                <WithDraw />
-                Withdraw
-              </button>
+        {loading ? (
+          <Spinner />
+        ) : (
+          <div
+            className={
+              "flex flex-col min-w-0 break-words w-full admin-table rounded-lg overflow-auto custom-flex-basis"
+            }
+          >
+            <UserAccount
+              balance={balance}
+              toggleTopUpModal={toggleTopUpModal}
+              toggleWithDrawModal={toggleWithDrawModal}
+            />
+            <div className="flex w-full justify-center items-center mb-5 py-3 px-3">
+              <CategoryFilter
+                Active={Active}
+                handleActiveTab={handleFundsTab}
+                tabs={["Pending", "Paid", "All"]}
+              />
             </div>
-            <div className="flex flex-col justify-center items-center lg:flex-row">
-              <div>
-                {/* <Wallet /> */}
-              </div>
-              <div>
-                {!(balance === null) ? (
-                  <span className="lg:text-4xl lg:font-bold text-2xl my-1 lg:my-0 block bg-transparent">
-                    $ {balance.toFixed(2)}
-                  </span>
-                ) : null 
-                }
-              </div>
-            </div>
-          </div>
 
-          <div className="flex w-full justify-center items-center mb-5 py-3 px-3">
-            <CategoryFilter
-              Active={Active}
-              handleActiveTab={handleFundsTab}
-              tabs={["Pending", "Paid", "All"]}
+            <FundsTable
+              allRequests={requests}
+              setAllRequests={setAllRequests}
+              setRequests={setRequests}
+              setSumToPay={setSumToPay}
+              sumToPay={sumToPay}
+              setPayingAccounts={setPayingAccounts}
+              payingAccounts={payingAccounts}
+              balance={balance}
             />
           </div>
-
-          <FundsTable
-            allRequests={requests}
-            setAllRequests={setAllRequests}
-            setRequests={setRequests}
-            setSumToPay={setSumToPay}
-            sumToPay={sumToPay}
-            setPayingAccounts={setPayingAccounts}
-            payingAccounts={payingAccounts}
-            balance={balance}
-          />
-
+        )}
+      </div>
+      {!loading && allRequests.length > 0 && (
+        <div className="flex justify-between bottom-container">
+          <GenerateExcel active={activeCategory} />
           <PayNow
             sumToPay={sumToPay}
             payingAccounts={payingAccounts}
@@ -303,46 +210,7 @@ const Dashboard = () => {
             balance={balance}
             activeCategory={activeCategory}
           />
-          <GenerateExcel />
         </div>
-      )}
-
-      {showModal && (
-        <form onSubmit={formik.handleSubmit}>
-          <Modal
-            _Toggle={ToggleEditModal}
-            title={modalTitle}
-            body={
-              <>
-                <AdminForm
-                  formik={formik}
-                  businessUser={true}
-                  showPassword={showPassword}
-                  setShowPassword={setShowPassword}
-                  _OnPhoneNoChange={_OnPhoneNoChange}
-                  phoneNumber={phone}
-                />
-              </>
-            }
-            footer={
-              <>
-                <button
-                  onClick={ToggleEditModal}
-                  type="button"
-                  className="mt-3 w-full inline-flex justify-center hover:underline  px-4 py-2 text-base font-medium text  sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"
-                >
-                  Cancel
-                </button>
-                <Button
-                  type="submit"
-                  className="w-full inline-flex justify-center rounded-md border-none px-4 py-2 primary-btn text-base font-medium text-white focus:outline-none sm:ml-3 sm:w-auto sm:text-sm"
-                  childrens={"Save"}
-                  loading={formik.isSubmitting}
-                />
-              </>
-            }
-          />
-        </form>
       )}
       <AnimatePresence>
         {showTopUpModal && (

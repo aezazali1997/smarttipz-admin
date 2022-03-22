@@ -1,6 +1,5 @@
 import React from 'react'
 import Modal from '../Modal'
-import Swal from 'sweetalert2';
 import {Button} from 'components'
 const PayNowModal = ({toggleModal,modalTitle,amount,submitPayNow,isPaying,error,setError}) => {
   return (

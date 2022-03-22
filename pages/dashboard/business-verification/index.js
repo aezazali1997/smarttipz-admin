@@ -313,7 +313,7 @@ const Dashboard = () => {
 
   return (
     <div className={`bg-white py-5 px-3 space-y-3`}>
-    {/* h-screen */}
+      {/* h-screen */}
       <Helmet>
         <title>Bussiness Varification | Smart Tipz Admin Panel</title>
       </Helmet>
@@ -321,32 +321,14 @@ const Dashboard = () => {
         <Searchbar search={search} onChange={setSearch} />
       </div>
       {loading ? (
-        <div className="flex w-full h-4/5 justify-center items-center">
-          <span className="flex flex-col items-center">
-            <Spinner />
-            {/* <p className="text-sm text-gray-400"> Fetching Admins</p> */}
-          </span>
-        </div>
+        <Spinner />
       ) : (
         <div
           className={
             "relative flex flex-col min-w-0 break-words w-full admin-table rounded-lg"
           }
         >
-          {/* <div className="flex rounded-t px-4 py-3 border-0 mb-10 justify-center">
-                            <div className="flex items-center w-full">
-                                <div className="relative w-full px-4 max-w-full flex-grow flex-1">
-                            <h3
-                                className={
-                                    "font-semibold text-lg " +
-                                    (color === "light" ? "text-blueGray-700" : "text-white")
-                                }
-                            >
-                                Card Tables
-                            </h3>
-                        </div>
-                            </div>
-                        </div> */}
+       
           <div className="flex w-full justify-center items-center mb-5 py-3 px-3">
             <CategoryFilter Active={Active} handleActiveTab={handleActiveTab} />
           </div>
@@ -453,11 +435,7 @@ const Dashboard = () => {
                         />
                       </td>
                       <td className="border-t-0 w-max space-x-3 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-wrap  p-4 text-left flex items-center">
-                        {/* <img
-                                                        src={picture}
-                                                        className="h-12 w-12 bg-white rounded-full border"
-                                                        alt="..."
-                                                    /> */}
+                       
                         <span className={"font-bold text-blueGray-600"}>
                           {name}
                         </span>

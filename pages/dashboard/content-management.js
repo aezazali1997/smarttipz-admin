@@ -103,23 +103,23 @@ const ContentManagement = () => {
 	});
 
 
-	const _FetchMoreData = async () => {
-		console.log('here');
-		if (videos.length >= totalVideosCount) {
-			setHasMore(false);
-		}
-		else {
-			try {
-				const { data: { data: { videos: newVideos, totalVideos, currentPage } } } = await axiosInstance.getContentVideos(search, page + 1);
-				// setVideos([...videos, [...newVideos]])
-				// setTotalVideosCount(totalVideos);
-				// setPage(currentPage);
-			}
-			catch (e) {
-				console.log('error: ', e);
-			}
-		}
-	};
+	// const _FetchMoreData = async () => {
+	// 	console.log('here');
+	// 	if (videos.length >= totalVideosCount) {
+	// 		setHasMore(false);
+	// 	}
+	// 	else {
+	// 		try {
+	// 			const { data: { data: { videos: newVideos, totalVideos, currentPage } } } = await axiosInstance.getContentVideos(search, page + 1);
+	// 			// setVideos([...videos, [...newVideos]])
+	// 			// setTotalVideosCount(totalVideos);
+	// 			// setPage(currentPage);
+	// 		}
+	// 		catch (e) {
+	// 			console.log('error: ', e);
+	// 		}
+	// 	}
+	// };
 
 	return (
 		<div className="bg-white space-y-3 h-screen w-full">
@@ -130,14 +130,9 @@ const ContentManagement = () => {
             {/*SEO Support End */}
 			{
 
-				loading ? (
-					<div className="flex w-full h-4/5 justify-center items-center" >
-						<span className="flex flex-col items-center">
-							<Spinner />
-							{/* <p className="text-sm text-gray-400"> Fetching Admins</p> */}
-						</span>
-					</div>
-				)
+				loading ? 
+            <Spinner />
+          
 					:
 					isEmpty(videos) ?
 						<p className="flex h-screen w-full justify-center items-center">
@@ -170,17 +165,7 @@ const ContentManagement = () => {
 									))
 								}
 							</div>
-							{/* <InView>
-								{({ inView, ref, entry , onChange}) => (
-									<div ref={ref}>
-										{inView ? _FetchMoreData() : ''}
-										<h2>{`Header inside viewport ${inView}.`}</h2>
-									</div>
-								)}
-							</InView> */}
-							{/* <InView as="div" onChange={(inView) => { if (inView) _FetchMoreData() }}>
-								<h2>Plain children are always rendered. Use onChange to monitor state.</h2>
-							</InView> */}
+				
 						</>
 			}
 			{

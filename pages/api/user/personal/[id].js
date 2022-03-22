@@ -8,7 +8,7 @@ const handler = async (req, res) => {
     if (req.method === 'DELETE') {
         const { headers: { authorization }, query: { id } } = req;
         try {
-            console.log('userID: ', id);
+            
 
             if (!authorization) {
                 return res.status(401).send({ error: true, data: [], message: 'Please Login' })

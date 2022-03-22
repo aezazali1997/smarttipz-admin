@@ -42,13 +42,7 @@ const Login = () => {
                     <div className="flex flex-col w-full items-center">
                         <div className="flex flex-col w-full lg:max-w-md mt-4 lg:mt-0 space-y-2">
                             <p className=" font-bold text-3xl text-center lg:text-left lg:text-3xl">Login</p>
-                            {/* <p className="text-gray-400 text-md text-center lg:text-left">New user?&nbsp;
-                                <Link
-                                    href="/auth/signup">
-                                    <a className="text text-md font-semibold hover:underline"
-                                    >Create an account
-                                    </a>
-                                </Link></p> */}
+                        
                         </div>
                         <div className="flex w-full lg:max-w-md justify-evenly flex-col mt-6">
                             <form className="w-full" onSubmit={formik.handleSubmit}>
@@ -158,16 +152,10 @@ const Login = () => {
                             </form>
                         </div>
                     </div>
-                    {/* <span className="flex justify-center lg:hidden pt-2">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="185" height="6" viewBox="0 0 185 6">
-                        <rect id="_-" data-name="-" width="185" height="6" rx="3" fill="#714de1" />
-                    </svg>
-                </span> */}
+                 
                 </div>
             </div>
-            {/* <div className="fixed bottom-0 w-full"> */}
-            {/* <Footer /> */}
-            {/* </div> */}
+           
         </div>
     )
 }

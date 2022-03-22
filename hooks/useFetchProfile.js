@@ -90,7 +90,6 @@ const UseFetchProfile = (profile) => {
         try {
             const { data: { data: { catalogues } } } = await axiosInstance.getCatalogues(username);
             setCatalogues(catalogues);
-            console.log('catalogues: ', catalogues);
             disableFetchCatalogue();
         }
         catch ({ response: { data: { message } } }) {
@@ -156,20 +155,7 @@ const UseFetchProfile = (profile) => {
     }
 
     const _EditTestimonial = (id, isVisible) => {
-        // axiosInstance.updateTestimonial({ id, isVisible }).then(({ data: { data, message } }) => {
-        //     const CopyOriginalArray = [...testimonial];
-        //     let updatedArray = CopyOriginalArray.map((item, index) => {
-        //         if (item.id !== id) return item;
-        //         else {
-        //             item.isVisible = !isVisible;
-        //             return item;
-        //         }
-        //     })
-        //     setTestimonial(updatedArray);
-
-        // }).catch(({ response: { data: { message } } }) => {
-        //     console.log('error: ', message);
-        // })
+    
     }
 
     const _DeleteTestimonial = (data) => {
@@ -289,9 +275,9 @@ const UseFetchProfile = (profile) => {
     }
 
     const _OnUploadMedia = async (values, setSubmitting, resetForm) => {
-        // console.log('In Upload Media')
+
         setSubmitting(true);
-        // console.log('values => ', values);
+   
         values.url = urls;
         values.thumbnail = thumbnailUrl;
         values.category = 'catalogue';

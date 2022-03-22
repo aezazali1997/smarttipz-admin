@@ -53,7 +53,7 @@ const UseFetchLogin = () => {
             router.push('/dashboard/admin');
         }
         catch (e) {
-            console.log(e.response.status);
+            
             setError(true)
             setStatus(e.response.data.message);
             setShowAlert(true);

@@ -46,8 +46,7 @@ const handler = async (req, res) => {
     else if (req.method === 'POST') {
         const { body, body: { email, message, id, UserId }, headers: { authorization } } = req;
 
-        console.log('email,message', email, message, id, UserId);
-
+     
         try {
             if (!authorization) {
                 return res.status(401).send({ error: true, data: [], message: 'Please Login' })

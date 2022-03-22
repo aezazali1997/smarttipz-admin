@@ -164,7 +164,7 @@ const Profile = ({ profile }) => {
                 </h1>
               </div>
               <h2 className="text-sm text-gray-500">{phone}</h2>
-              {/* <h2 className="text-sm text-gray-500">Marketing Specialist</h2> */}
+             
               <div className="flex lg:flex-row lg:justify-between w-full md:max-w-xs mt-1">
                 <span className="flex w-full items-center">
                   <svg
@@ -237,14 +237,7 @@ const Profile = ({ profile }) => {
       {/* section starts here */}
       {accountType === "Business" && (
         <>
-          {/* <div className="flex w-full justify-end items-center px-2 mt-8">
-                            <Button
-                                // onSubmit={_OpenUploadModal}
-                                type="button"
-                                childrens={'Upload Photo/Video'}
-                                classNames={"px-3 py-2 flex justify-center items-center text-white text-sm primary-btn rounded-md "}
-                            />
-                        </div> */}
+         
           <div className="flex flex-col w-full px-2 mt-4">
             <h1 className="text-md font-medium">My Catalogue</h1>
             {fetchingCatalogues ? (
@@ -543,31 +536,7 @@ const Profile = ({ profile }) => {
         </div>
       )}
 
-      {/* {
-                showModal && (
-                    <MediaUploadForm
-                        title={modalTitle}
-                        heading='Upload Photo/Video'
-                        urls={urls}
-                        agree={agree}
-                        formik={formik}
-                        accept={'video/*, image/*'}
-                        MediaType={MediaType}
-                        thumbnailUrl={thumbnailUrl}
-                        thumbnailRef={thumbnailRef}
-                        setUrls={setUrls}
-                        _DeleteImg={_DeleteImg}
-                        setMediaType={setMediaType}
-                        ChangeAgreement={ChangeAgreement}
-                        onChangeThumbnail={onChangeThumbnail}
-                        _OnThumbnailClick={_OnThumbnailClick}
-                        _CloseUploadModal={_CloseUploadModal}
-                        _OnRemoveThumbnail={_OnRemoveThumbnail}
-                        uploadingThumbnail={uploadingThumbnail}
-
-                    />
-                )
-            } */}
+   
     </div>
   );
 };

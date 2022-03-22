@@ -1,17 +1,17 @@
 import axiosInstance from "APIs/axiosInstance";
 import React, { useState } from "react";
 import PayNowModal from "../PayNowModal";
+
 const PayNow = ({
   sumToPay,
   payingAccounts,
-  allRequests,
   setAllRequests,
   setRequests,
   setBalance,
   balance,
-  activeCategory
+  activeCategory,
 }) => {
-  let bal=balance
+  let bal = balance;
   const [showPayModal, setShowPayModal] = useState(false);
   const [isPaying, setIsPaying] = useState(false);
   const [error, setError] = useState("");
@@ -21,7 +21,6 @@ const PayNow = ({
   };
 
   const submitPayNow = async () => {
-
     if (bal < sumToPay) {
       setError("Requested amount exceeded your balance");
       return;
@@ -36,26 +35,22 @@ const PayNow = ({
         data: { withDrawRequests, balance },
       },
     } = await axiosInstance.adminPay(payload);
-    if(activeCategory==='All')
-    {
-      
-    setRequests(withDrawRequests);
-
+    if (activeCategory === "All") {
+      setRequests(withDrawRequests);
+    } else if (activeCategory === "Pending") {
+      setRequests(
+        withDrawRequests.filter((request) => request.status === false)
+      );
     }
-    else if (activeCategory==='Pending'){
-      console.log('pending');
-    setRequests(withDrawRequests.filter((request) => request.status === false))
+    setAllRequests(withDrawRequests);
 
-    }
-    setAllRequests(withDrawRequests)
-    
     setBalance(balance);
     setIsPaying(false);
     toggleModal();
   };
 
   return (
-    <div className="absolute bottom-10 right-10 lg:right-5">
+    <div className="right-10 lg:right-5">
       <button
         disabled={sumToPay <= 0}
         onClick={() => {
@@ -63,7 +58,7 @@ const PayNow = ({
         }}
         className={`${
           sumToPay <= 0 ? "btn-disable" : "btn"
-        }  px-4 text-lg py-2 rounded-md text-white `}
+        }  md:px-4 px-2 md:text-lg text-md  md:py-2 py-1 rounded-md text-white `}
       >
         Pay Now{" "}
       </button>

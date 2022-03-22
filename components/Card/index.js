@@ -14,7 +14,7 @@ const Card = ({ video, title, description, onClick, picture }) => {
                     alt="Profile image" />
                 <div className="flex flex-col w-full ">
                     <h1 className="text-md text-sm sm:text-md text-bold font-sans">{title}</h1>
-                    {/* <h1 className="text-sm text-gray-600 font-sans"><span className="inline-block w-2 h-2 mr-2 bg-green-600 rounded-full"></span>Active Now</h1> */}
+                   
                     <h1 className="text-sm text-gray-600 font-sans break-all">{description}</h1>
                 </div>
             </div>

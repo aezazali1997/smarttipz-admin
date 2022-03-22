@@ -7,7 +7,6 @@ class AxiosInstance {
     getUserInfo() {
         const cookie = parseCookies();
         let token = cookie?.token || null;
-        // console.log('token', token);
         return token;
     }
 

@@ -1,10 +1,16 @@
 import React, { useState, useEffect } from "react";
-import RequestedBy from "../RequestedBy";
-import FundsCheckBox from "../FundsCheckBox";
-import { Badge, Button, Spinner } from "components";
-import BankDetails from "../BankDetails/index";
-import axiosInstance from "APIs/axiosInstance";
+import {
+  Badge,
+  Spinner,
+  BankDetails,
+  FundsCheckBox,
+  RequestedBy,
+} from "components";
+
 import moment from "moment";
+
+import axiosInstance from "APIs/axiosInstance";
+
 const FundsTable = ({
   allRequests,
   setAllRequests,
@@ -34,7 +40,6 @@ const FundsTable = ({
   //   setShowBankDetails(!showBankDetails);
   // };
 
- 
   const getWithDrawRequests = async () => {
     setIsLoading(true);
     try {
@@ -44,12 +49,11 @@ const FundsTable = ({
         setAllRequests(data);
         setRequests(data);
       } else if (res.status === 204) {
-        
       }
       setIsLoading(false);
     } catch (error) {
-      console.log("error", error);
-      console.log(error.message);
+      console.log("error", error.message);
+      // console.log(error.message);
     }
   };
 
@@ -61,17 +65,10 @@ const FundsTable = ({
           <Spinner />
         </div>
       ) : (
-        <div className="block relative w-full custom-height">
+        <div className="block relative  w-full overflow-auto ">
           <table className="items-center w-full bg-transparent border-collapse funds-mgt-table">
-            <thead>
+            <thead className="table-head">
               <tr>
-                <th
-                  className={
-                    " px-8 align-middle border border-solid py-3 text-xs uppercase border-t-0 border-l-0 border-r-0 whitespace-nowrap font-semibold text-left "
-                  }
-                >
-                  Select
-                </th>
                 <th
                   className={
                     "px-6 align-middle border border-solid py-3 text-xs uppercase border-t-0 border-l-0 border-r-0 whitespace-nowrap font-semibold text-left "
@@ -124,6 +121,13 @@ const FundsTable = ({
                 >
                   Bank Details
                 </th>
+                <th
+                  className={
+                    " px-8 align-middle border border-solid py-3 text-xs uppercase border-t-0 border-l-0 border-r-0 whitespace-nowrap font-semibold text-left "
+                  }
+                >
+                  Select
+                </th>
               </tr>
             </thead>
             <tbody className="divide-y-2">
@@ -135,19 +139,6 @@ const FundsTable = ({
                     index
                   ) => (
                     <tr key={index} className={"admin-table"}>
-                      <td className="border-t-0 text-center border-l-0 border-r-0 text-xs whitespace-nowrap">
-                        <FundsCheckBox
-                          val={id}
-                          status={status}
-                          setSumToPay={setSumToPay}
-                          setRequests={setRequests}
-                          allRequests={allRequests}
-                          setPayingAccounts={setPayingAccounts}
-                          payingAccounts={payingAccounts}
-                          sumToPay={sumToPay}
-                          balance={balance}
-                        />
-                      </td>
                       <td className="space-x-2 border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
                         <Badge
                           color={status ? "bg-green-400" : "bg-red-400"}
@@ -178,6 +169,19 @@ const FundsTable = ({
 
                       <td className="border-t-0 px-6 flex justify-center items-center align-middle border-l-0 border-r-0 text-xs whitespace-nowrap">
                         <BankDetails bankdetails={BankDetail} />
+                      </td>
+                      <td className="border-t-0 text-center border-l-0 border-r-0 text-xs whitespace-nowrap">
+                        <FundsCheckBox
+                          val={id}
+                          status={status}
+                          setSumToPay={setSumToPay}
+                          setRequests={setRequests}
+                          allRequests={allRequests}
+                          setPayingAccounts={setPayingAccounts}
+                          payingAccounts={payingAccounts}
+                          sumToPay={sumToPay}
+                          balance={balance}
+                        />
                       </td>
                     </tr>
                   )

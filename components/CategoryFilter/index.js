@@ -13,7 +13,7 @@ const Index = ({
         type="button"
         childrens={tabs[0]}
         classNames={`${Active(tabs[0])}
-                absolute left-12 md:left-28 px-3 py-2 w-32 md:w-36 flex justify-center items-center
+                absolute left-20 md:left-28 px-3 py-2 w-24 md:w-36 flex justify-center items-center
                 border text-sm border-purple-600 rounded-lg active-btn`}
       />
       <Button
@@ -21,7 +21,7 @@ const Index = ({
         type="button"
         childrens={tabs[1]}
         classNames={`${Active(tabs[1])} 
-                border z-10 border-purple-600 px-3 py-2 w-20 md:w-36 flex justify-center 
+                border z-10 border-purple-600 px-3 py-2 w-24 md:w-36 flex justify-center 
                 items-center text-sm rounded-lg active-btn`}
       />
       <Button
@@ -29,7 +29,7 @@ const Index = ({
         type="button"
         childrens={tabs[2]}
         classNames={`${Active(tabs[2])}
-                border border-purple-600 absolute right-12 md:right-28 px-3 py-2 w-32 md:w-36 flex justify-center items-center
+                border border-purple-600 absolute right-20 md:right-28 px-3 py-2 w-24 md:w-36 flex justify-center items-center
                 text-sm rounded-lg active-btn`}
       />
     </div>

@@ -13,6 +13,7 @@ const MyApp = ({ Component, pageProps }) => {
     const cookies = parseCookies();
     const token = cookies?.token || null;
     setAuthorized(token)
+    
   })
 
   if (authorized) {
