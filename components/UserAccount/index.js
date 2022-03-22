@@ -7,7 +7,7 @@ const UserAccount = ({ balance, toggleTopUpModal, toggleWithDrawModal }) => {
       <div className="flex flex-row lg:w-auto w-full justify-between px-1 sm:justify-evenly lg:my-2  lg:space-x-2 order-2 btns-container mb-2 h-20 -mt-24">
         <button
           onClick={() => toggleTopUpModal()}
-          className=" flex justify-center items-center text-white text-md rounded-md btn h-10 md:h-12 my-1 md:w-28 w-auto md:px-2 md:py-2 px-1 py-1"
+          className=" flex justify-center items-center text-white text-md rounded-md btn h-10 md:h-12 my-1 w-auto md:px-2 md:py-2 px-1 py-1"
         >
           <TopUp />
           Top up
@@ -15,7 +15,7 @@ const UserAccount = ({ balance, toggleTopUpModal, toggleWithDrawModal }) => {
 
         <button
           onClick={() => toggleWithDrawModal()}
-          className="md:px-2 md:py-2 px-1 py-1 flex justify-center  items-center text-white text-md rounded-md btn h-10 md:h-12 my-1 md:w-28 w-auto"
+          className="md:px-2 md:py-2 px-1 py-1 flex justify-center  items-center text-white text-md rounded-md btn h-10 md:h-12 my-1 w-auto"
         >
           <WithDraw />
           Withdraw
