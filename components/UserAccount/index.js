@@ -22,7 +22,7 @@ const UserAccount = ({ balance, toggleTopUpModal, toggleWithDrawModal }) => {
         </button>
       </div>
       <div className="flex flex-col justify-center items-center lg:flex-row">
-        <div>
+        <div className="w-12 sm:w-16 ">
           <Wallet />
         </div>
         <div>
