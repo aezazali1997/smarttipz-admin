@@ -2,6 +2,7 @@ const WithDrawRequest = require("models/WithDrawRequest");
 const Admin = require("models/Admin");
 const User = require("models/User");
 const BankDetail = require("models/BankDetail");
+const stripe = require("stripe")(process.env.STRIPE_SK);
 const handler = async (req, res) => {
   try {
     if (!req.headers.authorization) {
@@ -22,15 +23,44 @@ const handler = async (req, res) => {
       const { amount, accounts } = req.body;
 
       let data = accounts;
-      // change the status of ids in data array
+
+      console.log("accounts", data);
       for (let i = 0; i < data.length; i++) {
+        let ammount = 0;
+        let withDrawReq = await WithDrawRequest.findOne({
+          where: {
+            id: data[i].id,
+          },
+        });
+        ammount = Number(data[i].payment);
+        console.log("amount : ", ammount);
+        console.log(
+          "amount con : ",
+          (ammount.toFixed(10) * 100).toString().split(".")[0]
+        );
+        let user = await User.find({
+          where: {
+            id: withDrawReq.UserId,
+          },
+        });
+
+        console.log("user", user.stripeAccountId);
+
+        const transfer = await stripe.transfers.create({
+          amount: Number((ammount * 100).toString().split(".")[0]),
+          currency: "usd",
+          destination: user.stripeAccountId,
+        });
+
+        console.log("transfer", transfer);
+
         const requests = await WithDrawRequest.update(
           {
             status: true,
           },
           {
             where: {
-              id: data[i],
+              id: data[i].id,
             },
           }
         );

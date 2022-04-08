@@ -4,6 +4,7 @@ import PayNowModal from "../PayNowModal";
 
 const PayNow = ({
   sumToPay,
+  setSumToPay,
   payingAccounts,
   setAllRequests,
   setRequests,
@@ -45,6 +46,7 @@ const PayNow = ({
     setAllRequests(withDrawRequests);
 
     setBalance(balance);
+    setSumToPay(0);
     setIsPaying(false);
     toggleModal();
   };

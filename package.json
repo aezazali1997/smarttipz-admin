@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
-      },
+  },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.2.36",
     "@fortawesome/free-solid-svg-icons": "^5.15.4",
@@ -45,6 +45,7 @@
     "react-tooltip": "^4.2.21",
     "sass": "^1.32.13",
     "sequelize": "^4.23.0",
+    "stripe": "^8.215.0",
     "sweetalert": "^2.1.2",
     "sweetalert2": "^11.1.7",
     "video-react": "^0.15.0",

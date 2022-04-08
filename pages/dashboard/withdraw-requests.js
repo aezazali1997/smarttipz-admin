@@ -153,7 +153,7 @@ const Dashboard = () => {
       className={`bg-white md:py-5 px-3 flex flex-col justify-between wrapper`}
     >
       <Helmet>
-        <title>Withdraw | Smart Tipz Admin Panel</title>
+        <title>WithDraw</title>
       </Helmet>
       <div className=" request-container">
         <div className="flex w-full  bg-white search-bar">
@@ -202,6 +202,7 @@ const Dashboard = () => {
           <GenerateExcel active={activeCategory} />
           <PayNow
             sumToPay={sumToPay}
+            setSumToPay={setSumToPay}
             payingAccounts={payingAccounts}
             allRequests={requests}
             setAllRequests={setAllRequests}

@@ -21,13 +21,22 @@ const FundsCheckBox = ({
     let accounts = [...payingAccounts];
     if (e.target.checked) {
       setChecked(true);
-      accounts.push(Number(e.target.value));
+      let withdrawRequestId = Number(e.target.value);
+
+      // accounts.push(Number(e.target.value));
       allRequests.forEach((request) => {
         if (request.id == e.target.value) {
           setSumToPay(
             sumToPay +
               (Number(request.amount) - Number(request.amount) * (2.1 / 100))
           );
+          let payment = Number(
+            Number(request.amount) - Number(request.amount) * (2.1 / 100)
+          );
+          accounts.push({
+            id: withdrawRequestId,
+            payment,
+          });
         }
       });
       setPayingAccounts(accounts);
