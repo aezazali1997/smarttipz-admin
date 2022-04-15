@@ -15,23 +15,20 @@ try {
     })
   }
   if(req.method==='GET'){
-    const allRequest =await WithdrawRequest.findAll({
-      include:[
+    const allRequest = await WithdrawRequest.findAll({
+      include: [
         {
-          model:BankDetail,
-          attributes:['iban','accountTitle']
+          model: BankDetail,
+          attributes: ["iban", "accountTitle"],
         },
         {
-          model:User,
-          attributes:['email','totalTipsAmount']
-        }
+          model: User,
+          attributes: ["email", "totalTipsAmount"],
+        },
       ],
-      group:[
-        'WithDrawRequest.id',
-        'User.id',
-        'BankDetail.id'
-      ]
-    })
+      group: ["WithDrawRequest.id", "User.id", "BankDetail.id"],
+      order: [["createdAt", "DESC"]],
+    });
     
     if (!isEmpty(allRequest)){
       res.status(200).json({

@@ -1,6 +1,7 @@
 import axiosInstance from "APIs/axiosInstance";
 import React, { useState } from "react";
 import PayNowModal from "../PayNowModal";
+import Swal from "sweetalert2";
 
 const PayNow = ({
   sumToPay,
@@ -26,29 +27,40 @@ const PayNow = ({
       setError("Requested amount exceeded your balance");
       return;
     }
-    let payload = {
-      amount: sumToPay,
-      accounts: payingAccounts,
-    };
-    setIsPaying(true);
-    let {
-      data: {
-        data: { withDrawRequests, balance },
-      },
-    } = await axiosInstance.adminPay(payload);
-    if (activeCategory === "All") {
-      setRequests(withDrawRequests);
-    } else if (activeCategory === "Pending") {
-      setRequests(
-        withDrawRequests.filter((request) => request.status === false)
-      );
-    }
-    setAllRequests(withDrawRequests);
+    try {
+      let payload = {
+        amount: sumToPay,
+        accounts: payingAccounts,
+      };
+      setIsPaying(true);
+      let {
+        data: {
+          data: { withDrawRequests, balance },
+        },
+      } = await axiosInstance.adminPay(payload);
+      if (activeCategory === "All") {
+        setRequests(withDrawRequests);
+      } else if (activeCategory === "Pending") {
+        setRequests(
+          withDrawRequests.filter((request) => request.status === false)
+        );
+      }
+      setAllRequests(withDrawRequests);
 
-    setBalance(balance);
-    setSumToPay(0);
-    setIsPaying(false);
-    toggleModal();
+      setBalance(balance);
+      setSumToPay(0);
+      setIsPaying(false);
+      toggleModal();
+      Swal.fire({
+        text: "Payment Successfull",
+        icon: "success",
+        timer: 3000,
+        showConfirmButton: false,
+        showCancelButton: false,
+      });
+    } catch (error) {
+      console.log("Error: ", error.message);
+    }
   };
 
   return (

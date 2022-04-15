@@ -114,13 +114,13 @@ const FundsTable = ({
                   Remaining Amount Payable
                 </th>
 
-                <th
+                {/* <th
                   className={
                     " px-8 align-middle border border-solid py-3 text-xs uppercase border-t-0 border-l-0 border-r-0 whitespace-nowrap font-semibold text-left "
                   }
                 >
                   Bank Details
-                </th>
+                </th> */}
                 <th
                   className={
                     " px-8 align-middle border border-solid py-3 text-xs uppercase border-t-0 border-l-0 border-r-0 whitespace-nowrap font-semibold text-left "
@@ -167,9 +167,9 @@ const FundsTable = ({
                         {(amount - (amount.toFixed(2) * 2.1) / 100).toFixed(2)}
                       </td>
 
-                      <td className="border-t-0 px-6 flex justify-center items-center align-middle border-l-0 border-r-0 text-xs whitespace-nowrap">
+                      {/* <td className="border-t-0 px-6 flex justify-center items-center align-middle border-l-0 border-r-0 text-xs whitespace-nowrap">
                         <BankDetails bankdetails={BankDetail} />
-                      </td>
+                      </td> */}
                       <td className="border-t-0 text-center border-l-0 border-r-0 text-xs whitespace-nowrap">
                         <FundsCheckBox
                           val={id}
@@ -241,20 +241,20 @@ const FundsTable = ({
                   Remaining Amount Payable
                 </th>
 
-                <th
+                {/* <th
                   className={
                     " px-8 align-middle border border-solid py-3 text-xs uppercase border-t-0 border-l-0 border-r-0 whitespace-nowrap font-semibold text-left "
                   }
                 >
                   Account Title
-                </th>
-                <th
+                </th> */}
+                {/* <th
                   className={
                     " px-8 align-middle border border-solid py-3 text-xs uppercase border-t-0 border-l-0 border-r-0 whitespace-nowrap font-semibold text-left "
                   }
                 >
                   IBAN Number
-                </th>
+                </th> */}
               </tr>
             </thead>
             <tbody className="divide-y-2">
@@ -294,12 +294,12 @@ const FundsTable = ({
                         {(amount - (amount.toFixed(2) * 2.1) / 100).toFixed(2)}
                       </td>
 
-                      <td className="border-t-0 px-6 flex justify-center items-center align-middle border-l-0 border-r-0 text-xs whitespace-nowrap">
+                      {/* <td className="border-t-0 px-6 flex justify-center items-center align-middle border-l-0 border-r-0 text-xs whitespace-nowrap">
                         {BankDetail.accountTitle}
                       </td>
                       <td className="border-t-0 text-center border-l-0 border-r-0 text-xs whitespace-nowrap">
                         {BankDetail.iban}
-                      </td>
+                      </td> */}
                     </tr>
                   )
                 )}

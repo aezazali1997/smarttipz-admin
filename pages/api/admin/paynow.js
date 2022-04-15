@@ -70,6 +70,9 @@ const handler = async (req, res) => {
           id: 4,
         },
       });
+      console.log(typeof admin.totalAmount);
+      console.log(typeof amount);
+
       await Admin.update(
         {
           totalAmount: Number(admin.totalAmount) - Number(amount),
@@ -80,6 +83,7 @@ const handler = async (req, res) => {
           },
         }
       );
+      console.log(admin.totalAmount);
 
       const requests = await WithDrawRequest.findAll({
         include: [
@@ -93,6 +97,7 @@ const handler = async (req, res) => {
           },
         ],
         group: ["WithDrawRequest.id", "User.id", "BankDetail.id"],
+        order: [["createdAt", "DESC"]],
       });
 
       res.status(200).json({
