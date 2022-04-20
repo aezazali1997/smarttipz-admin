@@ -241,11 +241,9 @@ const Profile = ({ profile }) => {
           <div className="flex flex-col w-full px-2 mt-4">
             <h1 className="text-md font-medium">My Catalogue</h1>
             {fetchingCatalogues ? (
-              <div className="flex w-full justify-center">
-                <span className="flex flex-col items-center">
-                  <Spinner />
+              <div className="flex flex-col items-center w-full justify-center">
                   <p className="text-sm text-gray-400"> Loading Catalogues</p>
-                </span>
+                  <div className=" ml-3 loader ease-linear rounded-full border-4 border-t-4 border-gray-200 h-6 w-6 "></div>
               </div>
             ) : isEmpty(catalogues) ? (
               <div className="flex w-full justify-center items-center">
@@ -323,11 +321,11 @@ const Profile = ({ profile }) => {
       <div className="flex flex-col w-full px-2  mt-8">
         <h1 className="text-md font-medium">Videos</h1>
         {fetchingMyVideos ? (
-          <div className="flex w-full justify-center">
-            <span className="flex flex-col items-center">
-              <Spinner />
+          <div className="flex flex-col w-full justify-center items-center">
               <p className="text-sm text-gray-400"> Loading Videos</p>
-            </span>
+            
+              <div className=" ml-3 loader ease-linear rounded-full border-4 border-t-4 border-gray-200 h-6 w-6 "></div>
+            
           </div>
         ) : isEmpty(myVideos) ? (
           <div className="flex w-full justify-center items-center">
@@ -462,11 +460,10 @@ const Profile = ({ profile }) => {
               </form>
             )}
             {loadingTestimonial ? (
-              <div className="flex w-full justify-center">
-                <span className="flex flex-col items-center">
-                  <Spinner />
+              <div className="flex flex-col w-full justify-center items-center">
                   <p className="text-sm text-gray-400"> Loading Testimonials</p>
-                </span>
+                <div className=" ml-3 loader ease-linear rounded-full border-4 border-t-4 border-gray-200 h-6 w-6 "></div>
+                
               </div>
             ) : isEmpty(filteredTestimonial) ? (
               <div className="flex w-full justify-center items-center">

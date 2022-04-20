@@ -41,6 +41,7 @@ const Dashboard = () => {
     "Manage Users",
     "Business Verification",
     "Content Management",
+    "Withdraw Requests"
   ];
 
   const FetchAllAdmins = async () => {
@@ -502,7 +503,8 @@ const Dashboard = () => {
                                   />
                                 </svg>
                               </p>
-                              <p
+                              {
+                                email!=='superadmin@smarttipz.com' &&     <p
                                 onClick={() => _OnDelete(id)}
                                 className="flex items-center cursor-pointer"
                               >
@@ -519,6 +521,8 @@ const Dashboard = () => {
                                   />
                                 </svg>
                               </p>
+                              }
+                          
                             </div>
                           </td>
                         </>

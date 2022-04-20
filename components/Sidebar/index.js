@@ -27,7 +27,7 @@ const Sidebar = ({ logout }) => {
   useEffect(() => {}, [localStorage.getItem("permissions")]);
 
   let Active = (path) => {
-    return asPath === path ? "bg-white text" : "sidebar-item";
+    return asPath === path || asPath.includes(path.split('/dashboard/')[1]) ? "bg-white text" : "sidebar-item";
   };
 
   const toggleDropdown = () => {

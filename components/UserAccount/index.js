@@ -3,7 +3,7 @@ import { TopUp, WithDraw, Wallet } from "assets/SVGs";
 
 const UserAccount = ({ balance, toggleTopUpModal, toggleWithDrawModal }) => {
   return (
-    <div className="flex flex-col space-y-2 px-3 lg:items-end items-center w-full pt-2">
+    <div className="flex flex-col space-y-2 px-0 lg:items-end items-center w-full pt-2">
       <div className="flex flex-row lg:w-auto w-full justify-between px-1 sm:justify-evenly lg:my-2  lg:space-x-2 order-2 btns-container mb-2 h-20 -mt-24">
         <button
           onClick={() => toggleTopUpModal()}

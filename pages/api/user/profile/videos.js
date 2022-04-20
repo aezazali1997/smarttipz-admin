@@ -50,7 +50,7 @@ const handler = async (req, res) => {
           },
           {
             model: Share,
-            attributes: ["id", "caption"],
+            attributes: ["id"],
           },
         ],
         where: {
@@ -91,18 +91,16 @@ const handler = async (req, res) => {
 
       for (let i = 0; i < videos.length; i++) {
         const item = videos[i];
-        const { id, VideoId, Video, Share: Shares, isShared } = item;
+        const { id, VideoId, Video} = item;
+
+
+        // like count extract comment count extract and share count extract
         const likeCount = await PostLikee.count({
           where: {
             AllPostId: id,
           },
         });
-        const isLiked = await PostLikee.find({
-          where: {
-            AllPostId: id,
-            reviewerId: userId,
-          },
-        });
+      
         const commentCount = await Comments.count({
           where: {
             AllPostId: id,
@@ -120,20 +118,19 @@ const handler = async (req, res) => {
 						group by p.id`);
 
         const avgRating = isEmpty(ratings[0]) ? 0 : ratings[0][0].avgRating;
-        const totalRaters = isEmpty(ratings[0]) ? 0 : ratings[0][0].totalRaters;
+       
 
         videos[i] = {
           id,
-          totalRaters,
           avgRating,
           VideoId,
-          isShared,
+         
           Video,
-          Share: Shares,
+          
           likeCount,
           shareCount,
           commentCount,
-          isLiked: isLiked ? true : false,
+         
         };
       }
 

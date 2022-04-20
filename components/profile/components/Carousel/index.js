@@ -47,6 +47,7 @@ const Index = ({ children }) => {
 
     return (
         <ItemsCarousel
+  
             requestToChangeActive={setActiveItemIndex}
             activeItemIndex={activeItemIndex}
             numberOfCards={renderItems}
@@ -63,10 +64,14 @@ const Index = ({ children }) => {
                     <span className="iconin">&gt;</span>
                 </div>
             }
+            
             outsideChevron={false}
             chevronWidth={chevronWidth}
+            
+           
         >
             {children}
+            
         </ItemsCarousel>
     )
 }

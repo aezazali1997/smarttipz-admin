@@ -95,7 +95,7 @@ export const HalfStar = () => (
     </span>
 );
 export const TopUp = () => (
-  <span className="flex mx-2 relative h-5 w-5 md:h-8 md:w-8">
+  <span className="flex mr-2 relative h-5 w-5 md:h-8 md:w-8">
     <Image
       src={topUp}
       layout="fill"
@@ -106,7 +106,7 @@ export const TopUp = () => (
   </span>
 );
 export const WithDraw = () => (
-  <span className="flex mx-2 relative h-5 w-5 md:h-8 md:w-8">
+  <span className="flex mr-2 relative h-5 w-5 md:h-8 md:w-8">
     <Image
       src={withDraw}
       layout="fill"
