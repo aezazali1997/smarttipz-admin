@@ -83,16 +83,26 @@ export const EmptyStar = () => (
     </span>
 );
 export const FilledStar = () => (
-    <span className="flex relative w-3 h-3">
-        <Image src={FilledImg}
-            layout="fill" objectFit="cover" alt="brand logo" priority={true} />
-    </span>
+  <span className="flex relative w-4 h-4">
+    <Image
+      src={FilledImg}
+      layout="fill"
+      objectFit="cover"
+      alt="brand logo"
+      priority={true}
+    />
+  </span>
 );
 export const HalfStar = () => (
-    <span className="flex relative w-3 h-3">
-        <Image src={HalfImg}
-            layout="fill" objectFit="cover" alt="brand logo" priority={true} />
-    </span>
+  <span className="flex relative w-4 h-4">
+    <Image
+      src={HalfImg}
+      layout="fill"
+      objectFit="cover"
+      alt="brand logo"
+      priority={true}
+    />
+  </span>
 );
 export const TopUp = () => (
   <span className="flex mr-2 relative h-5 w-5 md:h-8 md:w-8">
