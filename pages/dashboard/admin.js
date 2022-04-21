@@ -44,7 +44,7 @@ const Dashboard = () => {
     "Withdraw Requests"
   ];
 
-  const FetchAllAdmins = async () => {
+  const FetchAllAdmins = async (search = "") => {
     enableLoading();
     try {
       const {

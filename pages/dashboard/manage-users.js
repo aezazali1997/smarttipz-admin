@@ -30,7 +30,7 @@ const Dashboard = () => {
   const [search, setSearch] = useState("");
   
 
-  const FetchPersonalUsers = async () => {
+  const FetchPersonalUsers = async (search = "") => {
     enableLoading();
     try {
       const {

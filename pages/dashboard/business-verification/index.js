@@ -46,7 +46,7 @@ const Dashboard = () => {
   const [search, setSearch] = useState("");
   
 
-  const FetchBusinessVerificationUsers = async () => {
+  const FetchBusinessVerificationUsers = async (search = "") => {
     enableLoading();
     try {
       const {
@@ -74,8 +74,6 @@ const Dashboard = () => {
   useEffect(() => {
     FetchBusinessVerificationUsers(search);
   }, []);
-
-
 
   useEffect(() => {}, [users, initialValues, activeCategory]);
 
@@ -304,7 +302,9 @@ const Dashboard = () => {
   };
 
   const _PreviewProfile = async (username) => {
+    enableLoading();
     router.push(`/dashboard/business-verification/preview/${username}`);
+    disableLoading();
   };
 
   return (

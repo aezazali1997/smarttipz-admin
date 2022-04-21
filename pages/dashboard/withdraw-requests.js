@@ -157,18 +157,18 @@ const Dashboard = () => {
     setSumToPay(0);
   };
 
-  const getWithDrawRequests = async () => {
-setFetchingReq(true);
+  const getWithDrawRequests = async (search = "") => {
+    setFetchingReq(true);
     try {
       const res = await axiosInstance.getWithDrawRequests(search);
-        const { data } = res.data;
-        setAllRequests(data);
-        setRequests(data);
+      const { data } = res.data;
+      setAllRequests(data);
+      setRequests(data);
     } catch (error) {
       console.log("error", error.message);
       // console.log(error.message);
     }
-      setFetchingReq(false);
+    setFetchingReq(false);
   };
 
   return (
@@ -191,7 +191,7 @@ setFetchingReq(true);
           <Spinner />
         ) : (
           <div
-            className={
+            classSName={
               "flex flex-col min-w-0 break-words w-full admin-table rounded-lg overflow-auto custom-flex-basis"
             }
           >
@@ -222,7 +222,7 @@ setFetchingReq(true);
           </div>
         )}
       </div>
-      {!loading && allRequests.length > 0 && (
+      {!fetchingReq && allRequests.length > 0 && (
         <div className="flex justify-between bottom-container">
           <GenerateExcel active={activeCategory} />
           <PayNow
