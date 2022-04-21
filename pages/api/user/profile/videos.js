@@ -91,21 +91,9 @@ const handler = async (req, res) => {
 
       for (let i = 0; i < videos.length; i++) {
         const item = videos[i];
-        const { id, VideoId, Video} = item;
+        console.log('item -------------',item)
+        const { id, VideoId, Video,likeCount,commentCount} = item;
 
-
-        // like count extract comment count extract and share count extract
-        const likeCount = await PostLikee.count({
-          where: {
-            AllPostId: id,
-          },
-        });
-      
-        const commentCount = await Comments.count({
-          where: {
-            AllPostId: id,
-          },
-        });
         const shareCount = await Share.count({
           where: {
             VideoId,
@@ -124,13 +112,10 @@ const handler = async (req, res) => {
           id,
           avgRating,
           VideoId,
-         
           Video,
-          
           likeCount,
-          shareCount,
+          shareCount:Video.shareCount,
           commentCount,
-         
         };
       }
 
