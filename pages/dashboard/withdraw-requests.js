@@ -52,6 +52,7 @@ const Dashboard = () => {
   const [withDraw, setWithDraw] = useState(0);
   const [isWithDrawing, setIsWithDrawing] = useState(false);
   const [showWithDrawModal, setShowWithDrawModal] = useState(false);
+  const [fetchingReq,setFetchingReq]=useState(false);
 
   const toggleWithDrawModal = () => {
     setShowWithDrawModal(!showWithDrawModal);
@@ -104,6 +105,14 @@ const Dashboard = () => {
 
     return () => setBalance(0);
   }, [1]);
+  useEffect(() => {
+    getWithDrawRequests();
+    return () => {
+      setAllRequests([]);
+      setRequests([]);
+      setIsLoading(false);
+    };
+  }, []);
 
   const fetchBalance = async (adminId) => {
     enableLoading();
@@ -148,6 +157,20 @@ const Dashboard = () => {
     setSumToPay(0);
   };
 
+  const getWithDrawRequests = async () => {
+setFetchingReq(true);
+    try {
+      const res = await axiosInstance.getWithDrawRequests(search);
+        const { data } = res.data;
+        setAllRequests(data);
+        setRequests(data);
+    } catch (error) {
+      console.log("error", error.message);
+      // console.log(error.message);
+    }
+      setFetchingReq(false);
+  };
+
   return (
     <div
       className={`bg-white md:py-5 px-3 flex flex-col justify-between wrapper`}
@@ -161,6 +184,7 @@ const Dashboard = () => {
             search={search}
             onChange={setSearch}
             placeholder="Search"
+            fetch={getWithDrawRequests}
           />
         </div>
         {loading ? (
@@ -186,13 +210,14 @@ const Dashboard = () => {
 
             <FundsTable
               allRequests={requests}
-              setAllRequests={setAllRequests}
               setRequests={setRequests}
               setSumToPay={setSumToPay}
               sumToPay={sumToPay}
               setPayingAccounts={setPayingAccounts}
               payingAccounts={payingAccounts}
               balance={balance}
+              fetch={getWithDrawRequests}
+              loading={fetchingReq}
             />
           </div>
         )}

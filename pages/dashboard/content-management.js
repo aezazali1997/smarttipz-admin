@@ -27,9 +27,8 @@ const ContentManagement = () => {
 	const [hasMore, setHasMore] = useState(true);
 	const [inView, setInView] = useState(false);
 
-	const debouncedSearchTerm = useDebounce(search, 1000);
 
-	const fetchMedia = async (search) => {
+	const fetchMedia = async () => {
 		enableLoading(true);
 		try {
 			const { data: { data: { videos } } } =
@@ -49,9 +48,9 @@ const ContentManagement = () => {
 		fetchMedia(search);
 	}, [])
 
-	useEffect(() => {
-		fetchMedia(debouncedSearchTerm);
-	}, [debouncedSearchTerm])
+	// useEffect(() => {
+	// 	fetchMedia(debouncedSearchTerm);
+	// }, [debouncedSearchTerm])
 
 
 	const enableLoading = () => {
@@ -141,15 +140,16 @@ const ContentManagement = () => {
 						:
 						<>
 							<div className="py-2 px-3 sticky top-0 z-30 bg-white">
-								<Searchbar search={search} onChange={setSearch} />
+								<Searchbar search={search} onChange={setSearch} fetch={fetchMedia} />
 							</div>
 
 							<div className='pb-3 px-3 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-y-6 gap-x-6'>
 								{
 									videos.map(({ url, thumbnail, id, UserId, mediaType,
-										User: { username, picture, accountType, email, name } }, index) => (
+										User: { username, picture, accountType, email, name },rating,views }, index) => (
 
 										<div key={index}>
+
 											<Card
 												onClick={() => _OpenModal(id, UserId, email)}
 												video={
@@ -160,6 +160,8 @@ const ContentManagement = () => {
 												title={name}
 												description={accountType === 'Business' ? email : username}
 												picture={picture}
+												rating={rating}
+												views={views}
 											/>
 										</div>
 									))

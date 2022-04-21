@@ -157,3 +157,24 @@ export const FilterContent = (search) => {
 
     }
 }
+export const filterWithDraw = (search) => {
+  return {
+    [sequelize.Op.or]: [
+      {
+        "$User.name$": {
+          [sequelize.Op.iLike]: `%${search}%`,
+        },
+      },
+      {
+        "$User.email$": {
+          [sequelize.Op.iLike]: `%${search}%`,
+        },
+      },
+      {
+        "$User.username$": {
+          [sequelize.Op.iLike]: `%${search}%`,
+        },
+      },
+    ],
+  };
+};

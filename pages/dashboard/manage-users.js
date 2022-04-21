@@ -28,9 +28,9 @@ const Dashboard = () => {
   const [modalTitle, setModalTitle] = useState("Create Admin");
   const [initialValues, setInitialValues] = useState(initials);
   const [search, setSearch] = useState("");
-  const debouncedSearchTerm = useDebounce(search, 1000);
+  
 
-  const FetchPersonalUsers = async (search) => {
+  const FetchPersonalUsers = async () => {
     enableLoading();
     try {
       const {
@@ -50,11 +50,11 @@ const Dashboard = () => {
     FetchPersonalUsers(search);
   }, []);
 
-  useEffect(() => {
-    // if (debouncedSearchTerm) {
-    FetchPersonalUsers(debouncedSearchTerm);
-    // }
-  }, [debouncedSearchTerm]);
+  // useEffect(() => {
+  //   // if (debouncedSearchTerm) {
+  //   FetchPersonalUsers(debouncedSearchTerm);
+  //   // }
+  // }, [debouncedSearchTerm]);
 
   useEffect(() => {}, [users, initialValues]);
 
@@ -199,7 +199,7 @@ const Dashboard = () => {
         <title>Manage Users | Smart Tipz Admin Panel</title>
       </Helmet>
       <div className="sticky top-0 bg-white flex w-full">
-        <Searchbar search={search} onChange={setSearch} />
+        <Searchbar search={search} onChange={setSearch} fetch={FetchPersonalUsers} />
       </div>
       {loading ? (
         <Spinner />

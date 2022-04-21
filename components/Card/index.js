@@ -1,12 +1,19 @@
 /* eslint-disable @next/next/no-img-element */
 import { Button } from 'components';
+import {CustomStar} from 'components/profile/components'
 import React from 'react'
 
-const Card = ({ video, title, description, onClick, picture }) => {
+const Card = ({ video, title, description, onClick, picture,rating,views }) => {
     return (
         <div className="max-w-sm h-auto rounded-lg overflow-hidden border card shadow-md">
             <div className="w-full">
                 {video}
+            </div>
+            <div className='flex justify-between px-4 mt-2'>
+            <div className="flex">
+            <CustomStar value={rating} isHalf />
+            </div>
+            <div> {views} view{views > 1 ? 's' : null}</div>
             </div>
             <div className="flex items-center w-full space-x-3 p-3 pb-2">
                 <img className="inline object-cover w-14 h-12 rounded-full"
@@ -14,7 +21,6 @@ const Card = ({ video, title, description, onClick, picture }) => {
                     alt="Profile image" />
                 <div className="flex flex-col w-full ">
                     <h1 className="text-md text-sm sm:text-md text-bold font-sans">{title}</h1>
-                   
                     <h1 className="text-sm text-gray-600 font-sans break-all">{description}</h1>
                 </div>
             </div>

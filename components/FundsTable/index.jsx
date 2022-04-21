@@ -13,53 +13,25 @@ import axiosInstance from "APIs/axiosInstance";
 
 const FundsTable = ({
   allRequests,
-  setAllRequests,
   setRequests,
   setSumToPay,
   sumToPay,
   setPayingAccounts,
   payingAccounts,
   balance,
+  fetch,
+  loading
 }) => {
-  const [isLoading, setIsLoading] = useState(true);
+  // const [isLoading, setIsLoading] = useState(true);
   const [bankDetails, setBankDetails] = useState(null);
 
   const [showBankDetails, setShowBankDetails] = useState(false);
 
-  useEffect(() => {
-    getWithDrawRequests();
-    return () => {
-      setAllRequests([]);
-      setRequests([]);
-      setIsLoading(false);
-    };
-  }, [1]);
 
-  // const toggleShowBank = () => {
-
-  //   setShowBankDetails(!showBankDetails);
-  // };
-
-  const getWithDrawRequests = async () => {
-    setIsLoading(true);
-    try {
-      const res = await axiosInstance.getWithDrawRequests();
-      if (res.status === 200) {
-        const { data } = res.data;
-        setAllRequests(data);
-        setRequests(data);
-      } else if (res.status === 204) {
-      }
-      setIsLoading(false);
-    } catch (error) {
-      console.log("error", error.message);
-      // console.log(error.message);
-    }
-  };
 
   return (
     <>
-      {isLoading ? (
+      {loading ? (
         <div className="flex absolute spinner">
           {" "}
           <Spinner />

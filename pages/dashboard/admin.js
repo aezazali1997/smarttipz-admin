@@ -34,7 +34,7 @@ const Dashboard = () => {
   const [selctedAccess, setSelectedAccess] = useState(false);
   const [search, setSearch] = useState("");
 
-  const debouncedSearchTerm = useDebounce(search, 1000);
+  // const debouncedSearchTerm = useDebounce(search, 1000);
 
   const Permissions = [
     "Admin",
@@ -68,12 +68,7 @@ const Dashboard = () => {
 
   useEffect(() => {}, [users, initialValues]);
 
-  useEffect(() => {
-    // if (debouncedSearchTerm) {
-    FetchAllAdmins(debouncedSearchTerm);
-    // }
-    return () => setUsers([]);
-  }, [debouncedSearchTerm]);
+
 
   const enableLoading = () => {
     setIsLoading(true);
@@ -357,7 +352,7 @@ const Dashboard = () => {
         <title>Admin | SmartTipz Admin</title>
       </Helmet>
       <div className="flex w-full bg-white top-0 z-10">
-        <Searchbar search={search} onChange={setSearch} />
+        <Searchbar search={search} onChange={setSearch} fetch={FetchAllAdmins} />
       </div>
       <div className="flex w-full justify-end">
         <Button
@@ -423,7 +418,7 @@ const Dashboard = () => {
                   </th>
                   <th
                     className={
-                      "px-6 align-middle border border-solid py-3 text-xs uppercase border-t-0 border-l-0 border-r-0 whitespace-nowrap font-semibold text-left " +
+                      "  px-6 align-middle border border-solid py-3 text-xs uppercase border-t-0 border-l-0 border-r-0 whitespace-nowrap font-semibold text-left " +
                       (color === "light"
                         ? "bg-blueGray-50 text-blueGray-500 border-blueGray-100"
                         : "bg-blueGray-600 text-blueGray-200 border-blueGray-500")
@@ -433,7 +428,7 @@ const Dashboard = () => {
                   </th>
                   <th
                     className={
-                      "px-6 align-middle border border-solid py-3 text-xs uppercase border-t-0 border-l-0 border-r-0 whitespace-nowrap font-semibold text-left " +
+                      " text-center px-6 align-middle border border-solid py-3 text-xs uppercase border-t-0 border-l-0 border-r-0 whitespace-nowrap font-semibold  " +
                       (color === "light"
                         ? "bg-blueGray-50 text-blueGray-500 border-blueGray-100"
                         : "bg-blueGray-600 text-blueGray-200 border-blueGray-500")
@@ -465,14 +460,19 @@ const Dashboard = () => {
                       <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
                         {email}
                       </td>
-                      <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+                      {
+                        role!='superadmin' &&   <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
                         <i className="fas fa-circle text-orange-500 mr-2"></i>
                         {"******"}
                       </td>
-                      {((localStorage.getItem("role") !== "superadmin" &&
+                      }
+                    
+                      { role!='superadmin' && 
+                      ((localStorage.getItem("role") !== "superadmin" &&
                         role !== "superadmin") ||
                         localStorage.getItem("role") === "superadmin") && (
                         <>
+                        
                           <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 whitespace-nowrap p-4">
                             <div
                               onClick={() =>
@@ -528,9 +528,9 @@ const Dashboard = () => {
                         </>
                       )}
 
-                     <td>
+                     {/* <td>
                        <hr />
-                     </td>
+                     </td> */}
                     </tr>
                   )
                 )}

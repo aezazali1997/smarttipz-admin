@@ -29,6 +29,9 @@ const handler = async (req, res) => {
                 //     // }
                 // },
                 // // order: [["createdAt", "DESC"]]
+            ,
+            
+            order: [['createdAt', 'ASC']],
             });
 
             

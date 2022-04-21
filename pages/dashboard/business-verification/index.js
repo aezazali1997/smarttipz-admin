@@ -44,9 +44,9 @@ const Dashboard = () => {
   const [website, setWebsite] = useState("");
 
   const [search, setSearch] = useState("");
-  const debouncedSearchTerm = useDebounce(search, 1000);
+  
 
-  const FetchBusinessVerificationUsers = async (search) => {
+  const FetchBusinessVerificationUsers = async () => {
     enableLoading();
     try {
       const {
@@ -75,11 +75,7 @@ const Dashboard = () => {
     FetchBusinessVerificationUsers(search);
   }, []);
 
-  useEffect(() => {
-    // if (debouncedSearchTerm) {
-    FetchBusinessVerificationUsers(debouncedSearchTerm);
-    // }
-  }, [debouncedSearchTerm]);
+
 
   useEffect(() => {}, [users, initialValues, activeCategory]);
 
@@ -318,7 +314,7 @@ const Dashboard = () => {
         <title>Bussiness Varification | Smart Tipz Admin Panel</title>
       </Helmet>
       <div className="flex w-full bg-white sticky top-0">
-        <Searchbar search={search} onChange={setSearch} />
+        <Searchbar search={search} onChange={setSearch} fetch={FetchBusinessVerificationUsers} />
       </div>
       {loading ? (
         <Spinner />

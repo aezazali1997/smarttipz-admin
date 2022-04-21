@@ -141,8 +141,8 @@ class AxiosInstance {
         }
         return await axios.post(USER_API_BASE_URL+`api/dashboard/funds-management/withdraw`,payload,this.getAuthHeader())
     }
-    async getWithDrawRequests (){
-        return await axios.get(USER_API_BASE_URL+`api/admin/withdrawrequest`,this.getAuthHeader());
+    async getWithDrawRequests (search){
+        return await axios.get(USER_API_BASE_URL+`api/admin/withdrawrequest?search=${search}`,this.getAuthHeader());
     } 
     async adminPay(payload){
         return await axios.post(USER_API_BASE_URL+`api/admin/paynow`,payload,this.getAuthHeader());
