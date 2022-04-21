@@ -127,8 +127,16 @@ export const WithDraw = () => (
   </span>
 );
 export const Wallet = () => (
-     <span className="flex relative sm:w-16 sm:h-16 mr-3 w-12 h-12">
-        <Image src={wallet}
-            layout="fill" objectFit="cover" alt="brand logo" priority={true} />
-    </span>
-)
+  <span
+    className="flex relative sm:w-20 sm:h-20 mr-6 w-12 h-12 "
+    style={{ width: "4rem", height: "4rem" }}
+  >
+    <Image
+      src={wallet}
+      layout="fill"
+      objectFit="cover"
+      alt="brand logo"
+      priority={true}
+    />
+  </span>
+);
