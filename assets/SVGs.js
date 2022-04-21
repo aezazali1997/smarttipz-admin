@@ -77,10 +77,15 @@ export const SearchSVG = ({ classNames }) => {
 }
 
 export const EmptyStar = () => (
-    <span className="flex relative w-3 h-3">
-        <Image src={EmptyImg}
-            layout="fill" objectFit="cover" alt="brand logo" priority={true} />
-    </span>
+  <span className="flex relative w-4 h-4">
+    <Image
+      src={EmptyImg}
+      layout="fill"
+      objectFit="cover"
+      alt="brand logo"
+      priority={true}
+    />
+  </span>
 );
 export const FilledStar = () => (
   <span className="flex relative w-4 h-4">
