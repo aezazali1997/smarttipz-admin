@@ -16,7 +16,7 @@ const Searchbar = ({
         }}
         onKeyDown={(e) => {
           if (e.key == "Enter") {
-            fetch();
+            fetch(search);
           }
         }}
         value={search}

@@ -127,36 +127,104 @@ export const FilterPersonalUsers = (search) => {
 
     }
 }
-
-export const FilterContent = (search) => {
-    console.log("searched >>", search);
+export const filterVideoContent = (search) => {
+  if (containsSearchedView(search)) {
+    let number = 0;
+    try {
+      number = search.split(" ")[0];
+    } catch (error) {}
+    console.log("number", number);
     return {
-        [sequelize.Op.and]: [
-            {
-                isDeleted: {
-                    [sequelize.Op.eq]: false
-                },
-            },
-        ],
-        [sequelize.Op.or]: [{
-            name: {
-                [sequelize.Op.iLike]: `%${search}%`,
-            }
+      [sequelize.Op.and]: [
+        {
+          isApproved: {
+            [sequelize.Op.eq]: true,
+          },
         },
         {
-            email: {
-                [sequelize.Op.iLike]: `%${search}%`,
-            }
+          views: {
+            [sequelize.Op.eq]: Number(number),
+          },
         },
-        {
-            username: {
-                [sequelize.Op.iLike]: `%${search}%`,
-            }
-        }
-        ]
-
+      ],
+    };
+  }
+  if (containsSearchedRating(search)) {
+    let rating = 0;
+    try {
+      rating = search.split(" ")[0];
+    } catch (error) {
+      console.log("ERROR", error.message);
     }
-}
+    console.log("rating search");
+    return {
+      [sequelize.Op.and]: [
+        {
+          isApproved: {
+            [sequelize.Op.eq]: true,
+          },
+        },
+        {
+          rating: {
+            [sequelize.Op.eq]: Number(rating),
+          },
+        },
+      ],
+    };
+  } else {
+    return {
+      [sequelize.Op.and]: [
+        {
+          isApproved: {
+            [sequelize.Op.eq]: true,
+          },
+        },
+      ],
+    };
+  }
+};
+export const containsSearchedView = (search) => {
+  return search.includes("view") || search.includes("views");
+};
+export const containsSearchedRating = (search) => {
+  return (
+    search.includes("rated") ||
+    search.includes("rate") ||
+    search.includes("rating") ||
+    search.includes("star")
+  );
+};
+export const FilterContent = (search) => {
+  console.log("searched >>", search);
+  if (!(containsSearchedView(search) || containsSearchedRating(search))) {
+    return {
+      [sequelize.Op.and]: [
+        {
+          isDeleted: {
+            [sequelize.Op.eq]: false,
+          },
+        },
+      ],
+      [sequelize.Op.or]: [
+        {
+          name: {
+            [sequelize.Op.iLike]: `%${search}%`,
+          },
+        },
+        {
+          email: {
+            [sequelize.Op.iLike]: `%${search}%`,
+          },
+        },
+        {
+          username: {
+            [sequelize.Op.iLike]: `%${search}%`,
+          },
+        },
+      ],
+    };
+  }
+};
 export const filterWithDraw = (search) => {
   return {
     [sequelize.Op.or]: [
