@@ -194,19 +194,23 @@ const Dashboard = () => {
   });
 
   return (
-    <div className="bg-white py-5 px-3 space-y-3 ">
+    <div className="bg-white py-5 px-3 space-y-3 h-screen ">
       <Helmet>
         <title>Manage Users | Smart Tipz Admin Panel</title>
       </Helmet>
-      <div className="sticky top-0 bg-white flex w-full">
-        <Searchbar search={search} onChange={setSearch} fetch={FetchPersonalUsers} />
+      <div className=" bg-white flex sticky top-1 py-2" style={{ zIndex: 2 }}>
+        <Searchbar
+          search={search}
+          onChange={setSearch}
+          fetch={FetchPersonalUsers}
+        />
       </div>
       {loading ? (
         <Spinner />
       ) : (
         <div
           className={
-            "relative flex flex-col min-w-0 break-words w-full admin-table rounded-lg"
+            "relative z-0 flex flex-col min-w-0 break-words w-full admin-table rounded-lg top-space-drop"
           }
         >
           <div className="block w-full overflow-x-auto">
@@ -298,7 +302,6 @@ const Dashboard = () => {
                       </td>
                       <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
                         <div className="flex justify-start w-full ">
-                        
                           <p
                             onClick={() => _HandleDelete(id)}
                             className="flex items-center cursor-pointer"
@@ -318,7 +321,6 @@ const Dashboard = () => {
                           </p>
                         </div>
                       </td>
-                   
                     </tr>
                   )
                 )}

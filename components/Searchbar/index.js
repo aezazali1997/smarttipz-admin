@@ -8,7 +8,7 @@ const Searchbar = ({
   fetch,
 }) => {
   return (
-    <div className="relative w-full">
+    <div className="relative w-full z-1">
       <input
         className="searchbar"
         onChange={(e) => {
@@ -30,7 +30,7 @@ const Searchbar = ({
             onChange("");
             fetch();
           }}
-          className=" absolute right-10 top-3"
+          className=" absolute right-12 top-3"
         >
           <CroseIcon className={`w-4 h-4 color-app`} />
         </button>
@@ -44,10 +44,10 @@ const Searchbar = ({
           search.length > 0
             ? " btn rounded-md cursor-pointer "
             : " cursor-default "
-        }w-6 h-6 absolute right-2 top-2`}
+        }w-10 h-10 absolute right-0`}
       >
         <SearchSVG
-          classNames={`w-4 h-4 ml-1 ${
+          classNames={`w-5 h-5 ml-2 ${
             search.length > 0 ? "custom-classes" : "text-gray-500"
           }`}
         />

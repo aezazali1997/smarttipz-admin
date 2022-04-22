@@ -123,24 +123,27 @@ const ContentManagement = () => {
 	// };
 
 	return (
-    <div className="bg-white space-y-3 h-screen w-full">
+    <div className="bg-white space-y-3 w-full">
       {/*SEO Support*/}
       <Helmet>
         <title>Content Management | Smart Tipz Admin Panel</title>
       </Helmet>
       {/*SEO Support End */}
-      <div className="py-2 px-3 sticky top-0 z-30 bg-white">
+      <div className="py-2 px-2 sticky top-0 bg-white" style={{ zIndex: 99 }}>
         <Searchbar search={search} onChange={setSearch} fetch={fetchMedia} />
       </div>
       {loading ? (
         <Spinner />
       ) : isEmpty(videos) ? (
-        <p className="flex h-screen w-full justify-center items-center">
+        <p className="flex w-full justify-center items-center">
           No Content Available
         </p>
       ) : (
         <>
-          <div className="pb-3 px-3 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-y-6 gap-x-6">
+          <div
+            className="pb-3 px-3 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-y-6 gap-x-6 "
+            style={{ marginTop: "0px !important" }}
+          >
             {videos.map(
               (
                 {

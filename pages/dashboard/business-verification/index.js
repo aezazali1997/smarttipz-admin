@@ -42,9 +42,9 @@ const Dashboard = () => {
   const [activeCategory, setActiveCategory] = useState("All");
   const [phone, setPhone] = useState("");
   const [website, setWebsite] = useState("");
+  const [profileLoading, setProfileLoading] = useState(false);
 
   const [search, setSearch] = useState("");
-  
 
   const FetchBusinessVerificationUsers = async (search = "") => {
     enableLoading();
