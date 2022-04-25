@@ -303,7 +303,7 @@ const Dashboard = () => {
 
   const _PreviewProfile = async (username) => {
     enableLoading();
-    router.push(`/dashboard/business-verification/preview/${username}`);
+    await router.push(`/dashboard/business-verification/preview/${username}`);
     disableLoading();
   };
 
