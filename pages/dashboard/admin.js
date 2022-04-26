@@ -33,7 +33,7 @@ const Dashboard = () => {
   const [selected, setSelected] = useState("");
   const [selctedAccess, setSelectedAccess] = useState(false);
   const [search, setSearch] = useState("");
-
+  const [isSubmitting, setIsSubmitting] = useState(false);
   // const debouncedSearchTerm = useDebounce(search, 1000);
 
   const Permissions = [
@@ -41,7 +41,7 @@ const Dashboard = () => {
     "Manage Users",
     "Business Verification",
     "Content Management",
-    "Withdraw Requests"
+    "Withdraw Requests",
   ];
 
   const FetchAllAdmins = async (search = "") => {
@@ -67,8 +67,6 @@ const Dashboard = () => {
   }, []);
 
   useEffect(() => {}, [users, initialValues]);
-
-
 
   const enableLoading = () => {
     setIsLoading(true);
@@ -150,6 +148,7 @@ const Dashboard = () => {
   };
 
   const _OnAccess = () => {
+    setIsSubmitting(true);
     console.log("permissions: ", access, selected);
     const payload = {
       permissions: access,
@@ -191,6 +190,7 @@ const Dashboard = () => {
           });
         }
       );
+    setIsSubmitting(false);
   };
 
   const _OnDelete = (id) => {
@@ -246,6 +246,7 @@ const Dashboard = () => {
   };
 
   const _OnSubmit = (values, setSubmitting) => {
+    setIsSubmitting(true);
     // setSubmitting(true);
     values.permissions = access;
     console.log("values: ", values);
@@ -281,6 +282,7 @@ const Dashboard = () => {
           setSubmitting(false);
         }
       );
+    setIsSubmitting(false);
   };
 
   const _OnEdit = (values, setSubmitting) => {
@@ -352,7 +354,11 @@ const Dashboard = () => {
         <title>Admin | SmartTipz Admin</title>
       </Helmet>
       <div className="flex w-full bg-white top-0 z-10">
-        <Searchbar search={search} onChange={setSearch} fetch={FetchAllAdmins} />
+        <Searchbar
+          search={search}
+          onChange={setSearch}
+          fetch={FetchAllAdmins}
+        />
       </div>
       <div className="flex w-full justify-end">
         <Button
@@ -368,9 +374,9 @@ const Dashboard = () => {
           }
         />
       </div>
-      {loading ?
-            <Spinner />
-        : isEmpty(users) ? (
+      {loading ? (
+        <Spinner />
+      ) : isEmpty(users) ? (
         <div className="flex w-full justify-center items-center">
           <p className="text-gray-500"> No Admins Yet</p>
         </div>
@@ -380,7 +386,6 @@ const Dashboard = () => {
             "relative flex flex-col min-w-0 break-words w-full admin-table rounded-lg"
           }
         >
-       
           <div className="block w-full overflow-x-auto">
             {/* Projects table */}
             <table className="items-center w-full bg-transparent border-collapse">
@@ -447,12 +452,10 @@ const Dashboard = () => {
                 </tr>
               </thead>
               <tbody className="divide-y-2">
-                
                 {users.map(
                   ({ name, email, picture, id, role, permissions }, index) => (
                     <tr key={index}>
                       <td className="border-t-0 w-max space-x-3 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-wrap  p-4 text-left flex items-center">
-                       
                         <span className={"font-bold text-blueGray-600"}>
                           {name}
                         </span>
@@ -460,75 +463,75 @@ const Dashboard = () => {
                       <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
                         {email}
                       </td>
-                      {
-                        role!='superadmin' &&   <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                        <i className="fas fa-circle text-orange-500 mr-2"></i>
-                        {"******"}
-                      </td>
-                      }
-                    
-                      { role!='superadmin' && 
-                      ((localStorage.getItem("role") !== "superadmin" &&
-                        role !== "superadmin") ||
-                        localStorage.getItem("role") === "superadmin") && (
-                        <>
-                        
-                          <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 whitespace-nowrap p-4">
-                            <div
-                              onClick={() =>
-                                OpenAccessModal(id, permissions, role)
-                              }
-                              className="flex hover:underline hover:font-semibold text-md cursor-pointer text-purple-600"
-                            >
-                              View
-                            </div>
-                          </td>
-                          <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                            <div className="flex justify-between w-full space-x-2">
-                              <p
-                                onClick={() => ToggleEditModal(id, name, email)}
-                                className="flex items-center cursor-pointer"
-                              >
-                                <svg
-                                  className="w-5 h-5 icon"
-                                  fill="currentColor"
-                                  viewBox="0 0 20 20"
-                                  xmlns="http://www.w3.org/2000/svg"
-                                >
-                                  <path d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z" />
-                                  <path
-                                    fillRule="evenodd"
-                                    d="M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z"
-                                    clipRule="evenodd"
-                                  />
-                                </svg>
-                              </p>
-                              {
-                                email!=='superadmin@smarttipz.com' &&     <p
-                                onClick={() => _OnDelete(id)}
-                                className="flex items-center cursor-pointer"
-                              >
-                                <svg
-                                  className="w-5 h-5 icon"
-                                  fill="currentColor"
-                                  viewBox="0 0 20 20"
-                                  xmlns="http://www.w3.org/2000/svg"
-                                >
-                                  <path
-                                    fillRule="evenodd"
-                                    d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z"
-                                    clipRule="evenodd"
-                                  />
-                                </svg>
-                              </p>
-                              }
-                          
-                            </div>
-                          </td>
-                        </>
+                      {role != "superadmin" && (
+                        <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+                          <i className="fas fa-circle text-orange-500 mr-2"></i>
+                          {"******"}
+                        </td>
                       )}
 
-                     {/* <td>
+                      {role != "superadmin" &&
+                        ((localStorage.getItem("role") !== "superadmin" &&
+                          role !== "superadmin") ||
+                          localStorage.getItem("role") === "superadmin") && (
+                          <>
+                            <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 whitespace-nowrap p-4">
+                              <div
+                                onClick={() =>
+                                  OpenAccessModal(id, permissions, role)
+                                }
+                                className="flex hover:underline hover:font-semibold text-md cursor-pointer text-purple-600"
+                              >
+                                View
+                              </div>
+                            </td>
+                            <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+                              <div className="flex justify-between w-full space-x-2">
+                                <p
+                                  onClick={() =>
+                                    ToggleEditModal(id, name, email)
+                                  }
+                                  className="flex items-center cursor-pointer"
+                                >
+                                  <svg
+                                    className="w-5 h-5 icon"
+                                    fill="currentColor"
+                                    viewBox="0 0 20 20"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                  >
+                                    <path d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z" />
+                                    <path
+                                      fillRule="evenodd"
+                                      d="M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z"
+                                      clipRule="evenodd"
+                                    />
+                                  </svg>
+                                </p>
+                                {email !== "superadmin@smarttipz.com" && (
+                                  <p
+                                    onClick={() => _OnDelete(id)}
+                                    className="flex items-center cursor-pointer"
+                                  >
+                                    <svg
+                                      className="w-5 h-5 icon"
+                                      fill="currentColor"
+                                      viewBox="0 0 20 20"
+                                      xmlns="http://www.w3.org/2000/svg"
+                                    >
+                                      <path
+                                        fillRule="evenodd"
+                                        d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z"
+                                        clipRule="evenodd"
+                                      />
+                                    </svg>
+                                  </p>
+                                )}
+                              </div>
+                            </td>
+                          </>
+                        )}
+
+                      {/* <td>
                        <hr />
                      </td> */}
                     </tr>
@@ -579,7 +582,7 @@ const Dashboard = () => {
                   type="button"
                   className="w-full inline-flex justify-center rounded-md border-none px-4 py-2 primary-btn text-base font-medium text-white focus:outline-none sm:ml-3 sm:w-auto sm:text-sm"
                   childrens={"Done"}
-                  loading={formik.isSubmitting}
+                  loading={isSubmitting}
                 />
               </>
             }

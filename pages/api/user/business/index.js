@@ -7,6 +7,7 @@ const User = require('models/User');
 const Joi = require('joi');
 const bcrypt = require('bcryptjs');
 const Sequelize = require('sequelize');
+import SendEmail from "utils/sendMail";
 
 const handler = async (req, res) => {
     if (req.method === 'GET') {

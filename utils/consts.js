@@ -1,7 +1,24 @@
 
 const sequelize = require('sequelize');
 
-
+export const checkRoles = (pastPerms, currPerms) => {
+  let rolesChanged = [];
+  let added = false;
+  for (let i = 0; i < pastPerms.length; i++) {
+    if (pastPerms[i].value !== currPerms[i].value) {
+      if (pastPerms[i].value === true) {
+        added = false;
+      } else {
+        added = true;
+      }
+      rolesChanged.push(currPerms[i]);
+    }
+  }
+  return {
+    added,
+    rolesChanged,
+  };
+};
 export const getPagination = (page, size) => {
     const limit = size ? +size : 10;
     const offset = page ? page * limit : 0;
