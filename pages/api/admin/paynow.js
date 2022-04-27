@@ -2,6 +2,7 @@ const WithDrawRequest = require("models/WithDrawRequest");
 const Admin = require("models/Admin");
 const User = require("models/User");
 const BankDetail = require("models/BankDetail");
+const SendEmail = require("utils/sendMail");
 const stripe = require("stripe")(process.env.STRIPE_SK);
 const handler = async (req, res) => {
   try {
@@ -24,7 +25,6 @@ const handler = async (req, res) => {
 
       let data = accounts;
 
-      console.log("accounts", data);
       for (let i = 0; i < data.length; i++) {
         let ammount = 0;
         let withDrawReq = await WithDrawRequest.findOne({
@@ -33,26 +33,18 @@ const handler = async (req, res) => {
           },
         });
         ammount = Number(data[i].payment);
-        console.log("amount : ", ammount);
-        console.log(
-          "amount con : ",
-          (ammount.toFixed(10) * 100).toString().split(".")[0]
-        );
+
         let user = await User.find({
           where: {
             id: withDrawReq.UserId,
           },
         });
 
-        console.log("user", user.stripeAccountId);
-
         const transfer = await stripe.transfers.create({
           amount: Number((ammount * 100).toString().split(".")[0]),
           currency: "usd",
           destination: user.stripeAccountId,
         });
-
-        console.log("transfer", transfer);
 
         const requests = await WithDrawRequest.update(
           {
@@ -64,14 +56,24 @@ const handler = async (req, res) => {
             },
           }
         );
+
+        const { success, message } = await SendEmail(
+          user.email,
+          "SmartTipz Payment alert!",
+          `The SmartTipz has sent you the amount: $ ${ammount} against your withdrawal request .The amount will appear in your stripe account within 5 working days`,
+          "d-ac5c77a4fb3242d2830134ac2342f1dc"
+        );
+        // it needs to be changed
+        if (!success)
+          return res
+            .status(400)
+            .json({ error: true, message: message, data: [] });
       }
       const admin = await Admin.find({
         where: {
           id: 4,
         },
       });
-      console.log(typeof admin.totalAmount);
-      console.log(typeof amount);
 
       await Admin.update(
         {
@@ -83,7 +85,6 @@ const handler = async (req, res) => {
           },
         }
       );
-      console.log(admin.totalAmount);
 
       const requests = await WithDrawRequest.findAll({
         include: [

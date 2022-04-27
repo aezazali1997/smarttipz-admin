@@ -191,7 +191,7 @@ const Dashboard = () => {
           <Spinner />
         ) : (
           <div
-            classSName={
+            className={
               "flex flex-col min-w-0 break-words w-full admin-table rounded-lg overflow-auto custom-flex-basis"
             }
           >

@@ -21,6 +21,7 @@ const FundsCheckBox = ({
     let accounts = [...payingAccounts];
     if (e.target.checked) {
       setChecked(true);
+
       let withdrawRequestId = Number(e.target.value);
 
       // accounts.push(Number(e.target.value));

@@ -193,8 +193,10 @@ const Dashboard = () => {
   };
 
   const _HandleBlock = (id, isBlocked) => {
-    SwalDeleteModal("", isBlocked ? "Unblock" : "Block", () =>
-      _OnBlock(id, isBlocked)
+    SwalDeleteModal(
+      `you want to ${isBlocked ? "unblock" : "block"} this user`,
+      isBlocked ? "Unblock" : "Block",
+      () => _OnBlock(id, isBlocked)
     );
   };
 
