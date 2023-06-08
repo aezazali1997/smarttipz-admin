@@ -54,7 +54,6 @@ const Dashboard = () => {
           data: { users },
         },
       } = await axiosInstance.getAllBusinessUsers(search);
-      console.log("users", users);
       setAllUsers(users);
       setUsers(users);
       disableLoading();
@@ -163,7 +162,6 @@ const Dashboard = () => {
   };
 
   const _HandleDelete = (id) => {
-    console.log("ID to delete: ", id);
     SwalDeleteModal("You won't be able to revert this!", "Delete", () =>
       _OnDelete(id)
     );
@@ -252,7 +250,6 @@ const Dashboard = () => {
             return user;
           }
         });
-        console.log({ updatedData });
         setUsers(updatedData);
         ToggleEditModal();
         setSubmitting(false);
@@ -315,7 +312,7 @@ const Dashboard = () => {
       <Helmet>
         <title>Bussiness Varification | Smart Tipz Admin Panel</title>
       </Helmet>
-      <div className="flex w-full bg-white sticky top-0">
+      <div className="sticky top-0 flex w-full bg-white">
         <Searchbar search={search} onChange={setSearch} fetch={FetchBusinessVerificationUsers} />
       </div>
       {loading ? (
@@ -327,7 +324,7 @@ const Dashboard = () => {
           }
         >
        
-          <div className="flex w-full justify-center items-center mb-5 py-3 px-3">
+          <div className="flex items-center justify-center w-full px-3 py-3 mb-5">
             <CategoryFilter Active={Active} handleActiveTab={handleActiveTab} />
           </div>
           <div className="block w-full overflow-x-auto">
@@ -414,7 +411,7 @@ const Dashboard = () => {
                     index
                   ) => (
                     <tr key={index} className={"admin-table"}>
-                      <td className="space-x-2 border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+                      <td className="p-4 px-6 space-x-2 text-xs align-middle border-t-0 border-l-0 border-r-0 whitespace-nowrap">
                         <Badge
                           color={
                             isBlocked
@@ -432,22 +429,22 @@ const Dashboard = () => {
                           }
                         />
                       </td>
-                      <td className="border-t-0 w-max space-x-3 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-wrap  p-4 text-left flex items-center">
+                      <td className="flex items-center p-4 px-6 space-x-3 text-xs text-left align-middle border-t-0 border-l-0 border-r-0 w-max whitespace-wrap">
                        
                         <span className={"font-bold text-blueGray-600"}>
                           {name}
                         </span>
                       </td>
-                      <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+                      <td className="p-4 px-6 text-xs align-middle border-t-0 border-l-0 border-r-0 whitespace-nowrap">
                         {phoneNumber}
                       </td>
-                      <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+                      <td className="p-4 px-6 text-xs align-middle border-t-0 border-l-0 border-r-0 whitespace-nowrap">
                         {Business?.link}
                       </td>
-                      <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 whitespace-nowrap p-4">
+                      <td className="p-4 px-6 align-middle border-t-0 border-l-0 border-r-0 whitespace-nowrap">
                         {email}
                       </td>
-                      <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap">
+                      <td className="px-6 text-xs align-middle border-t-0 border-l-0 border-r-0 whitespace-nowrap">
                         {isApproved ? (
                           <div className="flex justify-around w-full space-x-2">
                             <span
@@ -570,13 +567,13 @@ const Dashboard = () => {
                 <button
                   onClick={ToggleEditModal}
                   type="button"
-                  className="mt-3 w-full inline-flex justify-center hover:underline  px-4 py-2 text-base font-medium text  sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"
+                  className="inline-flex justify-center w-full px-4 py-2 mt-3 text-base font-medium hover:underline text sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"
                 >
                   Cancel
                 </button>
                 <Button
                   type="submit"
-                  className="w-full inline-flex justify-center rounded-md border-none px-4 py-2 primary-btn text-base font-medium text-white focus:outline-none sm:ml-3 sm:w-auto sm:text-sm"
+                  className="inline-flex justify-center w-full px-4 py-2 text-base font-medium text-white border-none rounded-md primary-btn focus:outline-none sm:ml-3 sm:w-auto sm:text-sm"
                   childrens={"Save"}
                   loading={formik.isSubmitting}
                 />

@@ -3,12 +3,26 @@ const Admin = require('models/Admin');
 const jwt = require('jsonwebtoken');
 const Joi = require('joi');
 const bcrypt = require('bcryptjs');
+// const cors = require('cors')
+
+// Enable CORS
+const corsOptions = {
+  origin: 'https://smart-tipz-admin-ni9j7ryio-aezazali1997.vercel.app',
+  methods: ['GET', 'POST'],
+  allowedHeaders: ['Content-Type'],
+};
+
+  // Apply CORS options
 
 
 const handler = async (req, res) => {
-    
+    console.log('request recieved')
+//   await cors(corsOptions)(req, res);
+if (req.method == "OPTIONS") {
+    res.setHeader("Allow", "POST");
+    return res.status(202).json({});
+  }
     if (req.method === 'POST') {
-
         const {
             body
         } = req;
@@ -51,7 +65,7 @@ const handler = async (req, res) => {
             res.status(500).json({ error: true, message: err.message, data: [] });
         }
     } else {
-        res.status(404).end('API Not Found');
+        res.status(404).end('API Not Found,custom');
     }
 };
 

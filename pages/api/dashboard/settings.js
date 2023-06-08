@@ -16,7 +16,6 @@ const handler = async(req, res) => {
           id:adminId
         }
       });
-      console.log('admin',admin.totalAmount);
     res.status(200).send({
       error:false,
       message:'Balance fetched Succesfully',

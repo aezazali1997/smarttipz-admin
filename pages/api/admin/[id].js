@@ -13,7 +13,6 @@ const handler = async (req, res) => {
       query: { id },
     } = req;
     try {
-      // console.log('adminID: ', id);
 
       if (!authorization) {
         return res
@@ -41,7 +40,6 @@ const handler = async (req, res) => {
           .status(400)
           .json({ error: true, message: message, data: [] });
 
-      // console.log('admins: ', admins);
 
       res
         .status(200)
@@ -56,6 +54,7 @@ const handler = async (req, res) => {
       headers: { authorization },
       query: { id },
     } = req;
+    console.log('id recoeved',id);
     const validateSignup = (data) => {
       const schema = Joi.object({
         permissions: Joi.required(),
@@ -79,7 +78,11 @@ const handler = async (req, res) => {
         process.env.SECRET_KEY
       );
 
-      const admin = await Admin.findById(id);
+      const admin = await Admin.find({
+        where:{
+          id
+        }
+      });
       // check wether roles are removed or adeed
       const rolesUpdate = checkRoles(admin.permissions, permissions);
       const re = await Admin.update({ permissions }, { where: { id } });

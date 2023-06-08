@@ -349,18 +349,18 @@ const Dashboard = () => {
   });
 
   return (
-    <div className="bg-white py-5 px-3 space-y-3 ">
+    <div className="px-3 py-5 space-y-3 bg-white ">
       <Helmet>
         <title>Admin | SmartTipz Admin</title>
       </Helmet>
-      <div className="flex w-full bg-white top-0 z-10">
+      <div className="top-0 z-10 flex w-full bg-white">
         <Searchbar
           search={search}
           onChange={setSearch}
           fetch={FetchAllAdmins}
         />
       </div>
-      <div className="flex w-full justify-end">
+      <div className="flex justify-end w-full">
         <Button
           onSubmit={ToggleCreateModal}
           type="button"
@@ -377,7 +377,7 @@ const Dashboard = () => {
       {loading ? (
         <Spinner />
       ) : isEmpty(users) ? (
-        <div className="flex w-full justify-center items-center">
+        <div className="flex items-center justify-center w-full">
           <p className="text-gray-500"> No Admins Yet</p>
         </div>
       ) : (
@@ -455,17 +455,17 @@ const Dashboard = () => {
                 {users.map(
                   ({ name, email, picture, id, role, permissions }, index) => (
                     <tr key={index}>
-                      <td className="border-t-0 w-max space-x-3 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-wrap  p-4 text-left flex items-center">
+                      <td className="flex items-center p-4 px-6 space-x-3 text-xs text-left align-middle border-t-0 border-l-0 border-r-0 w-max whitespace-wrap">
                         <span className={"font-bold text-blueGray-600"}>
                           {name}
                         </span>
                       </td>
-                      <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+                      <td className="p-4 px-6 text-xs align-middle border-t-0 border-l-0 border-r-0 whitespace-nowrap">
                         {email}
                       </td>
                       {role != "superadmin" && (
-                        <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                          <i className="fas fa-circle text-orange-500 mr-2"></i>
+                        <td className="p-4 px-6 text-xs align-middle border-t-0 border-l-0 border-r-0 whitespace-nowrap">
+                          <i className="mr-2 text-orange-500 fas fa-circle"></i>
                           {"******"}
                         </td>
                       )}
@@ -475,17 +475,17 @@ const Dashboard = () => {
                           role !== "superadmin") ||
                           localStorage.getItem("role") === "superadmin") && (
                           <>
-                            <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 whitespace-nowrap p-4">
+                            <td className="p-4 px-6 align-middle border-t-0 border-l-0 border-r-0 whitespace-nowrap">
                               <div
                                 onClick={() =>
                                   OpenAccessModal(id, permissions, role)
                                 }
-                                className="flex hover:underline hover:font-semibold text-md cursor-pointer text-purple-600"
+                                className="flex text-purple-600 cursor-pointer hover:underline hover:font-semibold text-md"
                               >
                                 View
                               </div>
                             </td>
-                            <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+                            <td className="p-4 px-6 text-xs align-middle border-t-0 border-l-0 border-r-0 whitespace-nowrap">
                               <div className="flex justify-between w-full space-x-2">
                                 <p
                                   onClick={() =>
@@ -548,10 +548,10 @@ const Dashboard = () => {
             _Toggle={_CloseAccessModal}
             title={modalTitle}
             body={
-              <div className="flex w-full justify-center items-center">
+              <div className="flex items-center justify-center w-full">
                 <div className="grid grid-cols-2 gap-6">
                   {access.map(({ name, value }, index) => (
-                    <div>
+                    <div key={index}>
                       <label className="inline-flex items-center">
                         <input
                           name={name}
@@ -573,14 +573,14 @@ const Dashboard = () => {
                 <button
                   onClick={_CloseAccessModal}
                   type="button"
-                  className="mt-3 w-full inline-flex justify-center hover:underline  px-4 py-2 text-base font-medium text  sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"
+                  className="inline-flex justify-center w-full px-4 py-2 mt-3 text-base font-medium hover:underline text sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"
                 >
                   Cancel
                 </button>
                 <Button
                   onSubmit={_OnAccess}
                   type="button"
-                  className="w-full inline-flex justify-center rounded-md border-none px-4 py-2 primary-btn text-base font-medium text-white focus:outline-none sm:ml-3 sm:w-auto sm:text-sm"
+                  className="inline-flex justify-center w-full px-4 py-2 text-base font-medium text-white border-none rounded-md primary-btn focus:outline-none sm:ml-3 sm:w-auto sm:text-sm"
                   childrens={"Done"}
                   loading={isSubmitting}
                 />
@@ -605,8 +605,8 @@ const Dashboard = () => {
                   />
                   {modalTitle === "Create Admin" && (
                     <>
-                      <p className="text-md font-semibold mb-4">Access</p>
-                      <div className="flex w-full justify-center items-center">
+                      <p className="mb-4 font-semibold text-md">Access</p>
+                      <div className="flex items-center justify-center w-full">
                         <div className="grid grid-cols-2 gap-6">
                           {access.map(({ name, value }, index) => (
                             <div>
@@ -630,7 +630,7 @@ const Dashboard = () => {
                     </>
                   )}
                   {!selctedAccess && modalTitle === "Create Admin" && (
-                    <p className="text-danger text-sm font-normal mt-2 text-center">
+                    <p className="mt-2 text-sm font-normal text-center text-danger">
                       Select atleast one role
                     </p>
                   )}
@@ -645,7 +645,7 @@ const Dashboard = () => {
                         : ToggleEditModal
                     }
                     type="button"
-                    className="mt-3 w-full inline-flex justify-center hover:underline  px-4 py-2 text-base font-medium text  sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"
+                    className="inline-flex justify-center w-full px-4 py-2 mt-3 text-base font-medium hover:underline text sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"
                   >
                     Cancel
                   </button>

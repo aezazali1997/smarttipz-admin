@@ -20,7 +20,6 @@ const Card = ({ video, title, description, onClick, picture,rating,views }) => {
           <img
             className="inline object-cover w-14 h-12 rounded-full"
             src={
-              picture ||
               "https://images.pexels.com/photos/2589653/pexels-photo-2589653.jpeg?auto=compress&cs=tinysrgb&h=650&w=940"
             }
             alt="Profile image"

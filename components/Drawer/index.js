@@ -17,7 +17,6 @@ const Drawer = ({ isOpen, toggle, logout }) => {
   const { asPath } = router;
   const [dropdown, setShowDropdown] = useState(false);
 
-  useEffect(() => {}, [localStorage.getItem("permissions")]);
 
   let Active = (path) => {
     return asPath === path ? "bg-white text" : "sidebar-item";
@@ -50,22 +49,23 @@ const Drawer = ({ isOpen, toggle, logout }) => {
     <Sidebar
       sidebar={
         <nav
-          className="flex flex-col w-auto h-full py-5 px-5 text-white justify-between relative navbar"
+          className="relative flex flex-col justify-between w-auto h-full px-5 py-5 text-white navbar"
           role="navigation"
         >
-          <div className="py-7 flex items-center flex-col relative">
+          <div className="relative flex flex-col items-center py-7">
             <Link href="/dashboard/admin" passHref>
               <a>
                 <Image
                   src="https://smart-tipz-data-bucket.s3.ap-southeast-1.amazonaws.com/public/logo.svg"
                   objectFit="cover"
+                  height={100}
+                  width={100}
                   alt="brand"
-                  layout="fill"
                 />
               </a>
             </Link>
           </div>
-          <div className="lg:flex flex-col h-full space-y-2 overflow-y-auto pt-4">
+          <div className="flex-col h-full pt-4 space-y-2 overflow-y-auto lg:flex">
             {Routes &&
               Routes.map(({ name, path, icon, permission }, index) => (
                 <div key={index}>
@@ -157,7 +157,7 @@ const Drawer = ({ isOpen, toggle, logout }) => {
       }}
     >
       <nav
-        className="lg:hidden flex justify-between items-center h-16 text-black relative font-mono navbar"
+        className="relative flex items-center justify-between h-16 font-mono text-black lg:hidden navbar"
         role="navigation"
       >
         <div className="px-3">
@@ -170,7 +170,7 @@ const Drawer = ({ isOpen, toggle, logout }) => {
             size={28}
           />
         </div>
-        <h1 className="text-xl text-center font-bold font-sans">
+        <h1 className="font-sans text-xl font-bold text-center">
           {asPath === "/dashboard/setting"
             ? "Settings"
             : asPath === "/dashboard/admin"
@@ -181,7 +181,7 @@ const Drawer = ({ isOpen, toggle, logout }) => {
             ? "Manage Users"
             : "Content Management"}
         </h1>
-        <span className="relative px-6 inline-block cursor-pointer">
+        <span className="relative inline-block px-6 cursor-pointer">
          
         </span>
       </nav>

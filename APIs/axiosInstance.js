@@ -15,12 +15,12 @@ class AxiosInstance {
     }
 
     async signup(payload) {
-        return await axios.post(USER_API_BASE_URL + "api/user/signup", payload);
+        return await axios.post(`${USER_API_BASE_URL}api/user/signup`, payload);
     }
 
     async login(credentials) {
-       
-        return await axios.post(USER_API_BASE_URL + "api/auth/signin", credentials);
+        console.log('trying to login')
+        return await axios.post(`${USER_API_BASE_URL}api/auth/signin`, credentials);
     }
 
     async authenticate(payload) {

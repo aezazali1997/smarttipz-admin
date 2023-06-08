@@ -15,50 +15,48 @@ const WithDrawRequest = require('models/WithDrawRequest');
 const Pay = require('models/Pay');
 const TipTransaction = require('models/TipTransaction');
 const AllPost = require('models/AllPost');
-// const sequelize = require('sequelize');
 
 const handler = async (req, res) => {
-    // Admin.sync({
-    //     alter:true
-    // })
-    // TipTransaction.sync({
-    //     alter:true
-    // });
-    // Pay.sync({
-    //     alter:true
-    // });
+    Admin.sync({
+        force:true
+    })
+    TipTransaction.sync({
+        force:true
+    });
+    Pay.sync({
+        force:true
+    });
     WithDrawRequest.sync({
-        alter:true
+        force:true
     })
 
         User.sync({
-            alter:true
+            force:true
         });
         BankDetail.sync({
-            alter:true
+            force:true
         })
-        // WithDrawRequest.sync({
-        //     alter:true
-        // })
-        // Admin.sync({
-        //     alter:true
-        // })
-    // sequelize.sync({ alter: true });
-    // Admin.sync({ alter: true });
-    // PermissionType.sync({ alter: true });
-        // Views.sync({alter:true})
-    // Session.sync({ force: true });
-    // Business.sync({ force: true });
-    // BusinessCard.sync({ force: true });
-    // Chat.sync({ force: true });
-    // Testimonial.sync({ force: true });
-    // User.sync({ alter: true });
-    // Video.sync({ alter: true });
-    // VideoCategory.sync({ force: true });
-    // AllPost.sync({
-    //     alter:true
-    // })
-
+        WithDrawRequest.sync({
+            force:true
+        })
+        Admin.sync({
+            force:true
+        })
+        Admin.sync({ force: true });
+        PermissionType.sync({ force: true });
+        Views.sync({force:true})
+        Session.sync({ force: true });
+    Business.sync({ force: true });
+    BusinessCard.sync({ force: true });
+    Chat.sync({ force: true });
+    Testimonial.sync({ force: true });
+    User.sync({ force: true });
+    Video.sync({ force: true });
+    VideoCategory.sync({ force: true });
+    AllPost.sync({
+        force:true
+    })
+    
     res.status(200).send({ message: "Tables created Successfully" });
 }
 export default handler;

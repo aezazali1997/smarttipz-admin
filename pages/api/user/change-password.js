@@ -35,7 +35,6 @@ const handler = async (req, res) => {
             }
 
             const verified = await bcrypt.compare(oldPassword, user.password);
-            console.log('verified:', verified);
 
             if (!verified) {
                 return res.status(400).send({ error: true, data: [], message: 'Old password is incorrect' })

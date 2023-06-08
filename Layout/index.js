@@ -21,7 +21,7 @@ const CustomLayout = ({ children }) => {
       return () => {
         window.removeEventListener("resize", hideMenu);
       };
-    });
+    },[]);
 
     const toggle = () => {
       setIsOpen(!isOpen);
@@ -36,6 +36,7 @@ const CustomLayout = ({ children }) => {
          confirmButtonText: "Logout",
          showLoaderOnConfirm: true,
          preConfirm: () => {
+          setIsOpen(false)
            cookie.remove("name");
            cookie.remove("token");
            cookie.remove("username");
@@ -56,7 +57,7 @@ const CustomLayout = ({ children }) => {
 
     return (
       <div className={`flex flex-col lg:flex-row w-full h-screen`}>
-        <Sidebar logout={_Logout} />
+        <Sidebar logout={_Logout} toggle={toggle} />
         <Drawer logout={_Logout} toggle={toggle} isOpen={isOpen} />
         <main className="Content">{children}</main>
       </div>

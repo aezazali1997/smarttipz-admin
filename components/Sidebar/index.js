@@ -19,16 +19,15 @@ import { isEmpty } from "lodash";
 import { Routes } from "routes";
 // import Badge from 'components/Badge';
 
-const Sidebar = ({ logout }) => {
+const Sidebar = ({ logout,toggle }) => {
   const router = useRouter();
   const { asPath } = router;
   const [dropdown, setShowDropdown] = useState(false);
 
-  useEffect(() => {}, [localStorage.getItem("permissions")]);
 
   let Active = (path) => {
-    return asPath === path || asPath.includes(path.split('/dashboard/')[1]) ? "bg-white text" : "sidebar-item";
-  };
+    return asPath === path ? "bg-white text" : "sidebar-item";
+  }
 
   const toggleDropdown = () => {
     setShowDropdown(!dropdown);
@@ -42,7 +41,7 @@ const Sidebar = ({ logout }) => {
     let permissions = JSON.parse(localStorage.getItem("permissions"));
     if (permissions) {
       let result = permissions.filter(
-        (item) => item.name === name && item.value === true
+        (item) => item.name=== name && item.value === true
       );
       return isEmpty(result) ? "hidden" : "";
     }
@@ -51,26 +50,28 @@ const Sidebar = ({ logout }) => {
   return (
     <div className="sidebar">
       <nav
-        className="flex flex-col w-full h-full py-5 px-5 text-white justify-between relative navbar"
+        className="relative flex flex-col justify-between w-full h-full px-5 py-5 text-white navbar"
         role="navigation"
       >
-        <div className="py-7 flex items-center flex-col relative">
+        <div className="relative flex flex-col items-center py-7">
           <Link href="/dashboard/admin">
             <a>
               <Image
                 className="cursor-pointer"
                 src="https://smart-tipz-data-bucket.s3.ap-southeast-1.amazonaws.com/public/logo.svg"
                 objectFit="cover"
+                height={100}
+                width={100}
                 alt="brand"
-                layout="fill"
               />
             </a>
           </Link>
         </div>
-        <div className="lg:flex h-full flex-col space-y-2 overflow-y-auto pt-4">
+        <div className="flex-col h-full pt-4 space-y-2 overflow-y-auto lg:flex">
           {Routes &&
             Routes.map(({ name, path, icon, permission }, index) => (
               <div key={index}>
+              
                 <Link
                   href={path}
                   className="p-4 font-sans nav-link nav-link-ltr"

@@ -282,10 +282,8 @@ const UseFetchProfile = (profile) => {
         values.thumbnail = thumbnailUrl;
         values.category = 'catalogue';
         values.agree = agree;
-        // console.log(values);
         try {
             const res = await axiosInstance.uploadNewsFeed(values)
-            // console.log(res);
             const { data: { message } } = res;
             Swal.fire({
                 text: message,

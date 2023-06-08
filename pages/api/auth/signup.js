@@ -21,17 +21,18 @@ const handler = async (req, res) => {
         };
 
         const { error } = validateSignup(body);
+        console.log(error)
 
         if (error) return res.status(400).json({ error: error.details[0].message });
 
 
         try {
-            // user = await Admin.findOne({ where: { username } });
-            // if (user) {
-            //     throw new Error('Username already exists');
-            // }
+            let user = await Admin.findOne({ where: { name } });
+            if (user) {
+                throw new Error('Username already exists');
+            }
 
-            const user = await Admin.findOne({
+            user = await Admin.findOne({
                 where: { email }
             });
             if (user) {
@@ -39,37 +40,40 @@ const handler = async (req, res) => {
             }
 
             const encPassword = await bcrypt.hash(password, 12);
-
-
-            const newUser = await Admin.create({
-                name,
-                // username,
-                role,
-                permissions: [{
-                    name: 'admin',
-                    value: true
-
-                },
-                {
-                    name: 'manageUsers',
-                    value: true
-
-                },
-                {
-                    name: 'businessVerification',
-                    value: true
-
-                },
-                {
-                    name: 'contentManagement',
-                    value: true
-
-                }],
-                email,
-                password: encPassword,
-            });
-
-            // const { id } = newUser;
+            try {
+                const newUser = await Admin.create({
+                    name,
+                    // username,
+                    role,
+                    permissions: [{
+                        name: 'admin',
+                        value: true
+    
+                    },
+                    {
+                        name: 'manageUsers',
+                        value: true
+    
+                    },
+                    {
+                        name: 'businessVerification',
+                        value: true
+    
+                    },
+                    {
+                        name: 'contentManagement',
+                        value: true
+    
+                    }],
+                    email,
+                    password: encPassword,
+                });
+    
+        
+                } catch (error) {
+                        console.log('ERROR ',error)
+            }
+                        // const { id } = newUser;
 
             // const permissions = await PermissionType.create({
             //     names: ['admin', 'businessVerification', 'manageUsers', 'contentMangement'],

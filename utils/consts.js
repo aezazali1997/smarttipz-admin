@@ -36,7 +36,6 @@ export const getPagingData = (data, page, limit, name) => {
 
 
 export const getFilterAdmins = (search) => {
-    console.log("searched >>", search);
     return {
 
         [sequelize.Op.and]: [
@@ -62,7 +61,6 @@ export const getFilterAdmins = (search) => {
 }
 
 export const getUsers = (search) => {
-    console.log("searched >>", search);
     return {
         [sequelize.Op.and]: [
             {
@@ -106,7 +104,6 @@ export const getUsers = (search) => {
     }
 }
 export const FilterPersonalUsers = (search) => {
-    console.log("searched >>", search);
     return {
         [sequelize.Op.and]: [
             {
@@ -150,7 +147,6 @@ export const filterVideoContent = (search) => {
     try {
       number = search.split(" ")[0];
     } catch (error) {}
-    console.log("number", number);
     return {
       [sequelize.Op.and]: [
         {
@@ -212,7 +208,6 @@ export const containsSearchedRating = (search) => {
   );
 };
 export const FilterContent = (search) => {
-  console.log("searched >>", search);
   if (!(containsSearchedView(search) || containsSearchedRating(search))) {
     return {
       [sequelize.Op.and]: [

@@ -104,7 +104,7 @@ const Dashboard = () => {
     fetchBalance(adminId);
 
     return () => setBalance(0);
-  }, [1]);
+  }, []);
   useEffect(() => {
     getWithDrawRequests();
     return () => {
@@ -147,7 +147,6 @@ const Dashboard = () => {
       filtered = allRequests.filter((request) => request.status === true);
       setRequests(filtered);
     } else if (category === "Pending") {
-      console.log("pending");
       filtered = allRequests.filter((request) => request.status === false);
       setRequests(filtered);
     } else {
@@ -179,7 +178,7 @@ const Dashboard = () => {
         <title>WithDraw</title>
       </Helmet>
       <div className=" request-container">
-        <div className="flex w-full  bg-white search-bar">
+        <div className="flex w-full bg-white search-bar">
           <Searchbar
             search={search}
             onChange={setSearch}
@@ -200,7 +199,7 @@ const Dashboard = () => {
               toggleTopUpModal={toggleTopUpModal}
               toggleWithDrawModal={toggleWithDrawModal}
             />
-            <div className="flex w-full justify-center items-center mb-5 py-3 px-3">
+            <div className="flex items-center justify-center w-full px-3 py-3 mb-5">
               <CategoryFilter
                 Active={Active}
                 handleActiveTab={handleFundsTab}

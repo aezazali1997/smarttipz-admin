@@ -55,7 +55,6 @@ const handler = async (req, res) => {
       res.status(500).json({ error: true, message: err.message, data: [] });
     }
   } else if (req.method === "POST") {
-    console.log("post---------------------------");
     const {
       body,
       body: { name, email, password, permissions },

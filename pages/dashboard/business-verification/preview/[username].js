@@ -138,7 +138,6 @@ const Profile = ({ profile }) => {
               src={picture}
               alt="profile"
               className="rounded-2xl w-30 h-40"
-              layout="fill"
             />
           ) : (
             <img

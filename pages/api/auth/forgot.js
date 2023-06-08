@@ -30,7 +30,6 @@ const handler = async (req, res) => {
       const encNewPassword = await bcrypt.hash(newPassword, 12);
 
       await user.update({ password: encNewPassword });
-      console.log(newPassword);
 
       await sendEmail(
         email,

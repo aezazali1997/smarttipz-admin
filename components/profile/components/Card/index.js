@@ -17,7 +17,7 @@ const Card = ({ image, like, comment, share, title, views, rating, disclaimer, m
                             <VideoPlayer poster={thumbnail} src={image} />
                         :
                         <img className="w-full rounded-lg"
-                            src={image} alt="Sunset in the mountains" layout="fill" />
+                            src={image} alt="Sunset in the mountains" />
                 }
                 <div className="py-2 flex flex-row justify-between space-x-2">
                     <div className="flex w-1/2 text-sm">
