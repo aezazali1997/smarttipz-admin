@@ -7,7 +7,7 @@ const bcrypt = require('bcryptjs');
 
 // Enable CORS
 const corsOptions = {
-  origin: 'https://smart-tipz-admin-ni9j7ryio-aezazali1997.vercel.app',
+  origin: 'https://smart-tipz-admin-nu.vercel.app/',
   methods: ['GET', 'POST'],
   allowedHeaders: ['Content-Type'],
 };
@@ -17,7 +17,7 @@ const corsOptions = {
 
 const handler = async (req, res) => {
     console.log('request recieved')
-//   await cors(corsOptions)(req, res);
+  await cors(corsOptions)(req, res);
 if (req.method == "OPTIONS") {
     res.setHeader("Allow", "POST");
     return res.status(202).json({});
