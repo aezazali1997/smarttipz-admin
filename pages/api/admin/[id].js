@@ -78,11 +78,16 @@ const handler = async (req, res) => {
         process.env.SECRET_KEY
       );
 
-      const admin = await Admin.find({
+      const admin = await Admin.findOne({
         where:{
           id
         }
       });
+      if (!authorization) {
+        return res
+          .status(401)
+          .send({ error: true, data: [], message: "Please Login" });
+      }
       // check wether roles are removed or adeed
       const rolesUpdate = checkRoles(admin.permissions, permissions);
       const re = await Admin.update({ permissions }, { where: { id } });

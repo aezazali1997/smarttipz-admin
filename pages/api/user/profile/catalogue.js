@@ -92,7 +92,7 @@ const handler = async (req, res) => {
                         AllPostId: id
                     }
                 });
-                const isLiked = await PostLikee.find({
+                const isLiked = await PostLikee.findOne({
                     where: {
                         AllPostId: id,
                         reviewerId: userId

@@ -507,6 +507,7 @@ const Dashboard = () => {
                                     />
                                   </svg>
                                 </p>
+                                  {/* setting super admin email to my personal */}
                                 {email !== "superadmin@smarttipz.com" && (
                                   <p
                                     onClick={() => _OnDelete(id)}

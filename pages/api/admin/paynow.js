@@ -34,7 +34,7 @@ const handler = async (req, res) => {
         });
         ammount = Number(data[i].payment);
 
-        let user = await User.find({
+        let user = await User.findOne({
           where: {
             id: withDrawReq.UserId,
           },
@@ -69,7 +69,7 @@ const handler = async (req, res) => {
             .status(400)
             .json({ error: true, message: message, data: [] });
       }
-      const admin = await Admin.find({
+      const admin = await Admin.findOne({
         where: {
           id: 4,
         },

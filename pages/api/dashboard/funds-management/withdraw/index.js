@@ -17,7 +17,7 @@ const handler = async(req, res) => {
         withDraw,id
       }=req.body
     
-    let admin= await Admin.find({
+    let admin= await Admin.findOne({
       where:{
         id:id
       }

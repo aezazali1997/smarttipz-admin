@@ -47,22 +47,22 @@ const handler = async (req, res) => {
                     role,
                     permissions: [{
                         name: 'admin',
-                        value: true
+                        value: false
     
                     },
                     {
                         name: 'manageUsers',
-                        value: true
+                        value: false
     
                     },
                     {
                         name: 'businessVerification',
-                        value: true
+                        value: false
     
                     },
                     {
                         name: 'contentManagement',
-                        value: true
+                        value: false
     
                     }],
                     email,
