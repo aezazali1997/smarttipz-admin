@@ -3,7 +3,7 @@ const Admin = require('models/Admin');
 const jwt = require('jsonwebtoken');
 const Joi = require('joi');
 const bcrypt = require('bcryptjs');
-// const cors = require('cors')
+const cors = require('cors')
 
 // Enable CORS
 const corsOptions = {
