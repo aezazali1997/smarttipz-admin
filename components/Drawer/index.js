@@ -9,6 +9,7 @@ import Sidebar from "react-sidebar";
 import { useRouter } from "next/router";
 import Hamburger from "hamburger-react";
 import { Routes } from "routes";
+import Logo from '../../public/logo.png'
 
 // import Badge from 'components/Badge';
 
@@ -56,7 +57,7 @@ const Drawer = ({ isOpen, toggle, logout }) => {
             <Link href="/dashboard/admin" passHref>
               <a>
                 <Image
-                  src="https://smart-tipz-data-bucket.s3.ap-southeast-1.amazonaws.com/public/logo.svg"
+                  src={Logo}
                   objectFit="cover"
                   height={100}
                   width={100}

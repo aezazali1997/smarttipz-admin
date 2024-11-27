@@ -9,6 +9,8 @@ const CustomLayout = ({ children }) => {
     const router = useRouter();
     const [isOpen, setIsOpen] = useState(false);
 
+    const userId = localStorage.getItem('userId');
+
     useEffect(() => {
       const hideMenu = () => {
         if (window.innerWidth > 991 && isOpen) {
@@ -57,7 +59,9 @@ const CustomLayout = ({ children }) => {
 
     return (
       <div className={`flex flex-col lg:flex-row w-full h-screen`}>
-        <Sidebar logout={_Logout} toggle={toggle} />
+       {
+        userId ? <Sidebar logout={_Logout} toggle={toggle} /> : null
+       }
         <Drawer logout={_Logout} toggle={toggle} isOpen={isOpen} />
         <main className="Content">{children}</main>
       </div>

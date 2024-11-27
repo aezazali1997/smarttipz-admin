@@ -6,10 +6,13 @@ import Helmet from 'react-helmet';
 import { parseCookies } from 'nookies';
 // import logo from '../../public/ST-2.png';
 import login from '../../public/login.png';
+import logo from '../../public/logo.png';
+
 import { UseFetchLogin } from 'hooks';
 import { Button, InputField } from 'components';
 import { getInputClasses } from 'utils/helpers';
 import { CloseEye, Email, OpenEye } from 'assets/SVGs';
+
 
 
 const Login = () => {
@@ -28,7 +31,7 @@ const Login = () => {
 
                 <div className="flex-col hidden w-full lg:flex">
                     <span className="relative flex w-48 h-11">
-                        <Image src='https://smart-tipz-data-bucket.s3.ap-southeast-1.amazonaws.com/public/ST-2.svg'
+                        <Image src={logo}
                             layout="fill" objectFit="cover" alt="brand logo" priority={true} />
                     </span>
                 </div>

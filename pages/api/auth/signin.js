@@ -3,21 +3,12 @@ const Admin = require('models/Admin');
 const jwt = require('jsonwebtoken');
 const Joi = require('joi');
 const bcrypt = require('bcryptjs');
-const cors = require('cors')
 
-// Enable CORS
-const corsOptions = {
-  origin: 'https://smart-tipz-admin-nu.vercel.app/',
-  methods: ['GET', 'POST'],
-  allowedHeaders: ['Content-Type'],
-};
 
-  // Apply CORS options
 
 
 const handler = async (req, res) => {
     console.log('request recieved')
-  await cors(corsOptions)(req, res);
 if (req.method == "OPTIONS") {
     res.setHeader("Allow", "POST");
     return res.status(202).json({});
@@ -37,6 +28,7 @@ if (req.method == "OPTIONS") {
         console.log(body)
         const { error } = validateSignin(body);
 
+
         if (error)
             return res.status(400).json({ error: true, message: error.details[0].message, data: [] });
 
@@ -49,6 +41,7 @@ if (req.method == "OPTIONS") {
             }
 
             const { id, role, permissions } = user;
+
 
             const match = await bcrypt.compare(password, user.password);
 

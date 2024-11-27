@@ -1,8 +1,6 @@
 const { Sequelize } = require('sequelize');
 
 const sequelize = new Sequelize(
-  //   'postgres://cnjqyhlh:UjxgpDUN-LisiJugvQFmDKqzZ7xp3Y3v@chunee.db.elephantsql.com/cnjqyhlh'
-  // );
 
   process.env.DB_DATABASE,
   process.env.DB_USERNAME,
@@ -10,7 +8,13 @@ const sequelize = new Sequelize(
   {
     host: process.env.HOST,
     port:process.env.DB_PORT,
-    dialect: 'postgres'
+    dialect: 'postgres',
+    dialectOptions: {
+      ssl: {
+        require: true, // This will help you connect securely by enforcing SSL
+        rejectUnauthorized: false // This should only be used if you fully trust your database and it uses a self-signed certificate
+      }
+    }
   }
 );
 

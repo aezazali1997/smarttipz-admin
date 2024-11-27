@@ -17,6 +17,8 @@ import {
 import { useRouter } from "next/router";
 import { isEmpty } from "lodash";
 import { Routes } from "routes";
+import Logo from '../../public/logo.png'
+
 // import Badge from 'components/Badge';
 
 const Sidebar = ({ logout,toggle }) => {
@@ -58,10 +60,10 @@ const Sidebar = ({ logout,toggle }) => {
             <a>
               <Image
                 className="cursor-pointer"
-                src="https://smart-tipz-data-bucket.s3.ap-southeast-1.amazonaws.com/public/logo.svg"
+                src={logo}
                 objectFit="cover"
-                height={100}
-                width={100}
+                height={10}
+                width={10}
                 alt="brand"
               />
             </a>

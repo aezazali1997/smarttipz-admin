@@ -4,7 +4,7 @@ import { parseCookies } from 'nookies'
 const Home = () => {
   return (
     <div>
-
+      <p>home</p>
     </div>
   )
 }
