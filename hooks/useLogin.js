@@ -61,4 +61,4 @@ const useLogin = () => {
     loading,
   };
 };
-export default UseLogin;
+export default useLogin;
