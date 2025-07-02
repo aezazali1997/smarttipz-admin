@@ -156,7 +156,7 @@ const Login = () => {
                   <p className="w-full text-sm text-center text-gray-500 ">
                     <Link href="/auth/forgot-password">
                       <a className="text-sm font-semibold text-primary hover:underline">
-                        Forgot Password ?
+                        Forgot Password?
                       </a>
                     </Link>
                   </p>
